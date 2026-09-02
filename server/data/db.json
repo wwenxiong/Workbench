@@ -1,0 +1,355 @@
+{
+  "tasks": [
+    {
+      "id": "task_1788345491030_11q7r",
+      "title": "配合分公司处理投诉",
+      "priority": "p4",
+      "estimatedMinutes": 25,
+      "actualMinutes": 30,
+      "tags": [
+        "工作"
+      ],
+      "dueDate": "2026-09-02T10:00:00",
+      "completed": true,
+      "completedAt": "2026-09-02T10:43:03.853Z",
+      "createdAt": "2026-09-02T10:38:11.030Z",
+      "order": 5,
+      "isRecurring": true,
+      "recurringConfig": {
+        "frequency": "workday",
+        "startDate": "2026-09-02",
+        "endDate": null
+      },
+      "recurringParentId": null,
+      "timeSpan": "9-10点",
+      "startTime": "09:00",
+      "endTime": "10:00"
+    },
+    {
+      "id": "task_1788345392703_igbmx",
+      "title": "两江VIP区域2_7号楼指标监控及障监控反馈。",
+      "priority": "p4",
+      "estimatedMinutes": 25,
+      "actualMinutes": 20,
+      "tags": [
+        "工作"
+      ],
+      "dueDate": "2026-09-02T10:00:00",
+      "completed": true,
+      "completedAt": "2026-09-02T11:02:31.337Z",
+      "createdAt": "2026-09-02T10:36:32.703Z",
+      "order": 4,
+      "isRecurring": true,
+      "recurringConfig": {
+        "frequency": "workday",
+        "startDate": "2026-09-02",
+        "endDate": null
+      },
+      "recurringParentId": null,
+      "timeSpan": "8-9点",
+      "startTime": "08:00",
+      "endTime": "09:00"
+    },
+    {
+      "id": "task_1788345294177_mautk",
+      "title": "两江共享策略修改，连片改为快出，网元1个,小区2个:FZBCX0560两江融创凡尔赛领馆Ⅲ）-F21_1,FZBCX0560两江融创凡尔赛领馆Ⅲ）-F21_2",
+      "priority": "p2",
+      "estimatedMinutes": 25,
+      "actualMinutes": 20,
+      "tags": [
+        "工作"
+      ],
+      "dueDate": "2026-09-02T10:00:00",
+      "completed": true,
+      "completedAt": "2026-09-02T10:35:09.879Z",
+      "createdAt": "2026-09-02T10:34:54.177Z",
+      "order": 3,
+      "isRecurring": false,
+      "recurringConfig": null,
+      "recurringParentId": null,
+      "timeSpan": "17-18点",
+      "startTime": "17:00",
+      "endTime": "18:00"
+    },
+    {
+      "id": "task_1788345154500_bmoj9",
+      "title": "中兴区域校园故障监控梳理及通报",
+      "priority": "p4",
+      "estimatedMinutes": 25,
+      "actualMinutes": 20,
+      "tags": [
+        "工作"
+      ],
+      "dueDate": "2026-09-02T10:00:00",
+      "completed": true,
+      "completedAt": "2026-09-02T10:32:52.365Z",
+      "createdAt": "2026-09-02T10:32:34.500Z",
+      "order": 2,
+      "isRecurring": true,
+      "recurringConfig": {
+        "frequency": "workday",
+        "startDate": "2026-09-02",
+        "endDate": null
+      },
+      "recurringParentId": null,
+      "timeSpan": "8-9点",
+      "startTime": "08:00",
+      "endTime": "09:00"
+    },
+    {
+      "id": "task_1788345081582_7a9dx",
+      "title": "两江区域不合规参数修改，涉及语音用户移动性开关,非GBR业务DRX使能开关,频内小区重选优先级,频间小区重选优先级,EPS Fallback结束快速返回开关,增强的SI调度开关,是否包含Sib24,基带资源参考信号功率,SA用户定向迁移开关,QCI权重因子参数，网元243个。",
+      "priority": "p2",
+      "estimatedMinutes": 25,
+      "actualMinutes": 420,
+      "tags": [
+        "工作"
+      ],
+      "dueDate": "2026-09-02T10:00:00",
+      "completed": true,
+      "completedAt": "2026-09-02T10:34:01.715Z",
+      "createdAt": "2026-09-02T10:31:21.582Z",
+      "order": 2,
+      "isRecurring": false,
+      "recurringConfig": null,
+      "recurringParentId": null,
+      "timeSpan": "9-16点",
+      "startTime": "09:00",
+      "endTime": "16:00"
+    },
+    {
+      "id": "task_1788333067032_3dkg8",
+      "title": "两江区域异常小区监控通报",
+      "priority": "p4",
+      "estimatedMinutes": 25,
+      "actualMinutes": 20,
+      "tags": [
+        "工作"
+      ],
+      "dueDate": "2026-09-02T10:00:00",
+      "completed": true,
+      "completedAt": "2026-09-02T08:57:38.712Z",
+      "createdAt": "2026-09-02T07:11:07.032Z",
+      "order": 5,
+      "isRecurring": true,
+      "recurringConfig": {
+        "frequency": "workday",
+        "startDate": "2026-09-02",
+        "endDate": null
+      },
+      "recurringParentId": null,
+      "timeSpan": "8-9点",
+      "startTime": "08:00",
+      "endTime": "09:00"
+    }
+  ],
+  "focusLogs": [
+    {
+      "id": "log_demo_1",
+      "taskId": "task_demo_1",
+      "taskTitle": "完成工作台 Excel Hub 单元格免打开读取功能联调",
+      "mode": "pomodoro",
+      "durationSeconds": 1800,
+      "durationMinutes": 30,
+      "timestamp": "2026-09-02T03:02:23.526Z",
+      "date": "2026-09-02"
+    },
+    {
+      "id": "log_demo_2",
+      "taskId": "task_demo_2",
+      "taskTitle": "优化番茄钟整点报时与提示音体验",
+      "mode": "pomodoro",
+      "durationSeconds": 1500,
+      "durationMinutes": 25,
+      "timestamp": "2026-09-02T03:32:23.526Z",
+      "date": "2026-09-02"
+    }
+  ],
+  "dailyReports": {
+    "2026-09-01": {
+      "date": "2026-09-01",
+      "deliverables": "1. 推进重点任务交付\n2. 沟通各方需求与进展",
+      "blockers": "推进顺利，无明显阻塞项",
+      "tomorrowPlan": "1. 两江区域异常小区监控通报",
+      "customNotes": "今日完成待办 0 项，专注耗时 0 分钟。",
+      "completedTasksCount": 0,
+      "totalFocusMinutes": 0,
+      "syncedToExcel": false,
+      "syncedAt": null,
+      "updatedAt": "2026-09-02T09:02:32.249Z"
+    },
+    "2026-08-31": {
+      "date": "2026-08-31",
+      "deliverables": "1. 推进重点任务交付\n2. 沟通各方需求与进展",
+      "blockers": "推进顺利，无明显阻塞项",
+      "tomorrowPlan": "1. 按计划推进重点工作\n2. 跟进日常事务协同",
+      "customNotes": "今日完成待办 0 项，专注耗时 0 分钟。",
+      "completedTasksCount": 0,
+      "totalFocusMinutes": 0,
+      "syncedToExcel": false,
+      "syncedAt": null,
+      "updatedAt": "2026-09-02T09:02:45.710Z"
+    },
+    "2026-09-02": {
+      "date": "2026-09-02",
+      "deliverables": "1. 两江VIP区域2_7号楼指标监控及障监控反馈。（完成时间：8-9点，20分钟）\n2. 中兴区域校园故障监控梳理及通报（完成时间：8-9点，20分钟）\n3. 两江区域异常小区监控通报（完成时间：8-9点，20分钟）\n4. 配合分公司处理投诉（完成时间：9-10点，30分钟）\n5. 两江区域不合规参数修改，涉及语音用户移动性开关,非GBR业务DRX使能开关,频内小区重选优先级,频间小区重选优先级,EPS Fallback结束快速返回开关,增强的SI调度开关,是否包含Sib24,基带资源参考信号功率,SA用户定向迁移开关,QCI权重因子参数，网元243个。（完成时间：9-16点，420分钟）\n6. 两江共享策略修改，连片改为快出，网元1个,小区2个:FZBCX0560两江融创凡尔赛领馆Ⅲ）-F21_1,FZBCX0560两江融创凡尔赛领馆Ⅲ）-F21_2（完成时间：17-18点，20分钟）\n7、完成两江高负荷小区分析反馈2个（完成时间：14-15点，20分钟）\n8、完成两江校园投诉分析2例（完成时间：17-18点，20分钟）",
+      "blockers": "推进顺利，无明显阻塞项",
+      "tomorrowPlan": "1. 配合分公司处理投诉\n2. 两江VIP区域2_7号楼指标监控及障监控反馈。\n3. 中兴区域校园故障监控梳理及通报\n4. 两江区域异常小区监控通报",
+      "customNotes": "今日完成待办 6 项。",
+      "completedTasksCount": 6,
+      "totalFocusMinutes": 55,
+      "syncedToExcel": false,
+      "syncedAt": null,
+      "updatedAt": "2026-09-02T10:45:07.564Z"
+    }
+  },
+  "excelConfigs": [
+    {
+      "id": "cfg_sample_ledger",
+      "name": "年度工作总台账 (本地示例)",
+      "category": "个人台账",
+      "filePath": "C:\\Users\\Admin\\OneDrive\\附件\\work\\server\\data\\年度工作总台账.xlsx",
+      "targetSheet": "工作日志台账",
+      "isAnnualLedger": true,
+      "monitoredCells": [
+        {
+          "label": "年度累计已交付",
+          "sheet": "指标看板",
+          "cell": "B2"
+        },
+        {
+          "label": "本月专注总学时(h)",
+          "sheet": "指标看板",
+          "cell": "B3"
+        },
+        {
+          "label": "待攻坚关键事项",
+          "sheet": "指标看板",
+          "cell": "B4"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    {
+      "id": "note_1788345907564_yx77m",
+      "type": "daily_report",
+      "title": "2026-09-02 工作日报",
+      "content": "今日完成待办 6 项。",
+      "date": "2026-09-02",
+      "time": "18:43",
+      "tags": [
+        "工作日报"
+      ],
+      "isPinned": false,
+      "bg": "bg-emerald-50/60 border-emerald-100",
+      "dailyReportData": {
+        "deliverables": "1. 两江VIP区域2_7号楼指标监控及障监控反馈。（完成时间：8-9点，20分钟）\n2. 中兴区域校园故障监控梳理及通报（完成时间：8-9点，20分钟）\n3. 两江区域异常小区监控通报（完成时间：8-9点，20分钟）\n4. 配合分公司处理投诉（完成时间：9-10点，30分钟）\n5. 两江区域不合规参数修改，涉及语音用户移动性开关,非GBR业务DRX使能开关,频内小区重选优先级,频间小区重选优先级,EPS Fallback结束快速返回开关,增强的SI调度开关,是否包含Sib24,基带资源参考信号功率,SA用户定向迁移开关,QCI权重因子参数，网元243个。（完成时间：9-16点，420分钟）\n6. 两江共享策略修改，连片改为快出，网元1个,小区2个:FZBCX0560两江融创凡尔赛领馆Ⅲ）-F21_1,FZBCX0560两江融创凡尔赛领馆Ⅲ）-F21_2（完成时间：17-18点，20分钟）\n7、完成两江高负荷小区分析反馈2个（完成时间：14-15点，20分钟）\n8、完成两江校园投诉分析2例（完成时间：17-18点，20分钟）",
+        "blockers": "推进顺利，无明显阻塞项",
+        "tomorrowPlan": "1. 配合分公司处理投诉\n2. 两江VIP区域2_7号楼指标监控及障监控反馈。\n3. 中兴区域校园故障监控梳理及通报\n4. 两江区域异常小区监控通报",
+        "completedCount": 6,
+        "focusMinutes": 55
+      },
+      "createdAt": "2026-09-02T10:45:07.564Z",
+      "updatedAt": "2026-09-02T10:45:07.564Z"
+    },
+    {
+      "id": "note_1788339765710_0sh86",
+      "type": "daily_report",
+      "title": "2026-08-31 工作日报",
+      "content": "今日完成待办 0 项，专注耗时 0 分钟。",
+      "date": "2026-08-31",
+      "time": "17:02",
+      "tags": [
+        "工作日报"
+      ],
+      "isPinned": false,
+      "bg": "bg-emerald-50/60 border-emerald-100",
+      "dailyReportData": {
+        "deliverables": "1. 推进重点任务交付\n2. 沟通各方需求与进展",
+        "blockers": "推进顺利，无明显阻塞项",
+        "tomorrowPlan": "1. 按计划推进重点工作\n2. 跟进日常事务协同",
+        "completedCount": 0,
+        "focusMinutes": 0
+      },
+      "createdAt": "2026-09-02T09:02:45.710Z",
+      "updatedAt": "2026-09-02T09:02:45.710Z"
+    },
+    {
+      "id": "note_1788339752249_b5kt8",
+      "type": "daily_report",
+      "title": "2026-09-01 工作日报",
+      "content": "今日完成待办 0 项，专注耗时 0 分钟。",
+      "date": "2026-09-01",
+      "time": "17:02",
+      "tags": [
+        "工作日报"
+      ],
+      "isPinned": false,
+      "bg": "bg-emerald-50/60 border-emerald-100",
+      "dailyReportData": {
+        "deliverables": "1. 推进重点任务交付\n2. 沟通各方需求与进展",
+        "blockers": "推进顺利，无明显阻塞项",
+        "tomorrowPlan": "1. 两江区域异常小区监控通报",
+        "completedCount": 0,
+        "focusMinutes": 0
+      },
+      "createdAt": "2026-09-02T09:02:32.249Z",
+      "updatedAt": "2026-09-02T09:02:32.249Z"
+    },
+    {
+      "id": "note_demo_1",
+      "type": "daily_report",
+      "title": "昨日工作日报归档",
+      "content": "完成个人工作台 2.0 架构升级，实现日常待办管理与时间统计全链路打通。",
+      "date": "2026-09-01",
+      "time": "18:30",
+      "tags": [
+        "工作日报",
+        "产出"
+      ],
+      "isPinned": true,
+      "bg": "bg-emerald-50/60 border-emerald-100",
+      "createdAt": "2026-09-01T06:42:49.787Z",
+      "updatedAt": "2026-09-01T06:42:49.787Z",
+      "dailyReportData": {
+        "deliverables": "1. 完成个人工作台 2.0 架构升级；\n2. 联调待办与时钟统计。",
+        "blockers": "无明显阻塞。",
+        "tomorrowPlan": "继续完善快速记录与日历时间联动。",
+        "completedCount": 3,
+        "focusMinutes": 120
+      }
+    },
+    {
+      "id": "note_demo_2",
+      "type": "note",
+      "title": "用户交互反馈",
+      "content": "希望增加深色模式和快捷键支持，优化弹窗动画性能。",
+      "date": "2026-09-02",
+      "time": "10:15",
+      "tags": [
+        "体验",
+        "UI"
+      ],
+      "isPinned": true,
+      "bg": "bg-white",
+      "createdAt": "2026-09-02T06:42:49.787Z",
+      "updatedAt": "2026-09-02T06:42:49.787Z"
+    }
+  ],
+  "linkedFiles": [
+    {
+      "id": "file_1788344468563_5gggf",
+      "name": "网管数据_2026-09-02.xlsx",
+      "filePath": "C:\\Users\\Admin\\Desktop\\网管数据_2026-09-02.xlsx",
+      "fileType": "xlsx",
+      "size": 13538811,
+      "category": "数据表格",
+      "createdAt": "2026-09-02T10:21:08.563Z",
+      "updatedAt": "2026-09-02T10:21:08.563Z",
+      "lastOpenedAt": null,
+      "isPinned": false,
+      "notes": ""
+    }
+  ]
+}
