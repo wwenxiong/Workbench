@@ -23,8 +23,16 @@ import db, {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+process.on('uncaughtException', (err) => {
+  console.error('[CRITICAL] Uncaught Exception:', err);
+});
+process.on('unhandledRejection', (reason) => {
+  console.error('[CRITICAL] Unhandled Rejection:', reason);
+});
+
 const app = express();
 const PORT = process.env.PORT || 3001;
+
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
@@ -2122,7 +2130,8 @@ if (fs.existsSync(DIST_DIR)) {
 }
 
 // Start listening
-app.listen(PORT, () => {
-  console.log(`Workbench Backend API Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Workbench Backend API Server running on http://0.0.0.0:${PORT}`);
 });
+
 

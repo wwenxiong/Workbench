@@ -16,11 +16,16 @@ const DB_PATH = path.join(DATA_DIR, 'workbench.db');
 const OLD_JSON_PATH = path.join(DATA_DIR, 'db.json');
 
 // Initialize SQLite database instance
-const db = new Database(DB_PATH);
+let db;
+try {
+  db = new Database(DB_PATH);
+  db.pragma('journal_mode = WAL');
+  db.pragma('foreign_keys = ON');
+} catch (err) {
+  console.error(`[CRITICAL] Failed to open SQLite database at "${DB_PATH}". Please check directory write permissions. Error:`, err);
+  throw err;
+}
 
-// Enable WAL mode for better concurrency and write performance
-db.pragma('journal_mode = WAL');
-db.pragma('foreign_keys = ON');
 
 // 1. Initialize Tables
 function initSchema() {
