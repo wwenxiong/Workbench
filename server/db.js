@@ -15,11 +15,16 @@ if (!fs.existsSync(DATA_DIR)) {
 const DB_PATH = path.join(DATA_DIR, 'workbench.db');
 const OLD_JSON_PATH = path.join(DATA_DIR, 'db.json');
 
+console.log(`[BOOT] Initializing SQLite database at: ${DB_PATH}`);
+
 // Initialize SQLite database instance
 let db;
 try {
   db = new Database(DB_PATH);
-  db.pragma('journal_mode = WAL');
+
+  // Use DELETE mode for maximum compatibility across Docker volume mounts and NAS storage filesystems
+  db.pragma('journal_mode = DELETE');
+  db.pragma('synchronous = NORMAL');
   db.pragma('foreign_keys = ON');
 } catch (err) {
   console.error(`[CRITICAL] Failed to open SQLite database at "${DB_PATH}". Please check directory write permissions. Error:`, err);
