@@ -58,6 +58,10 @@ export interface DailyReport {
   syncedToExcel: boolean;
   syncedAt: string | null;
   updatedAt?: string | null;
+  isExisting?: boolean;
+  suggestedDeliverables?: string;
+  suggestedBlockers?: string;
+  suggestedTomorrowPlan?: string;
 }
 
 export interface WeeklyReportData {
@@ -156,3 +160,49 @@ export interface DateMemo {
   createdAt: string;
   updatedAt: string;
 }
+
+// User Profile for Auth & Settings
+export interface UserProfile {
+  id: number;
+  username: string;
+  avatar_url: string;
+  created_at: string;
+}
+
+// AI Configuration (OpenAI Universal Interface)
+export interface AiConfig {
+  baseUrl: string;
+  apiKey?: string;
+  model: string;
+  hasKey?: boolean;
+  maskedKey?: string;
+}
+
+// NLU Parsed Task & Smart Item
+export type SmartItemCategory = 'task' | 'schedule' | 'note' | 'meeting' | 'idea';
+
+export interface ParsedSmartItem {
+  id: string;
+  category: SmartItemCategory;
+  title: string;
+  content?: string;
+  date: string;
+  time?: string | null;
+  priority?: Priority;
+  tags: string[];
+  estimatedMinutes?: number;
+  note?: string;
+}
+
+export interface ParsedTaskItem {
+  id: string;
+  title: string;
+  dueDate: string;
+  startTime?: string | null;
+  priority: Priority;
+  tags: string[];
+  estimatedMinutes?: number;
+  note?: string;
+  category?: SmartItemCategory;
+}
+

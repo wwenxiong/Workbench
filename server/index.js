@@ -2,9 +2,23 @@ import express from 'express';
 import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import { exec, spawn } from 'child_process';
 import ExcelJS from 'exceljs';
+import multer from 'multer';
+import db, {
+  userRepo,
+  authRepo,
+  taskRepo,
+  focusRepo,
+  dailyReportRepo,
+  noteRepo,
+  memoRepo,
+  excelConfigRepo,
+  fileRepo,
+  aiConfigRepo
+} from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,139 +29,309 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
-// Data Directory & DB File
+// Directories
 const DATA_DIR = path.join(__dirname, 'data');
-const DB_FILE = path.join(DATA_DIR, 'db.json');
+const UPLOADS_DIR = path.join(__dirname, 'uploads');
+const AVATARS_DIR = path.join(UPLOADS_DIR, 'avatars');
 
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+if (!fs.existsSync(AVATARS_DIR)) fs.mkdirSync(AVATARS_DIR, { recursive: true });
 
-// Initial DB template
-const defaultDb = {
-  tasks: [
-    {
-      id: 'task_demo_1',
-      title: '完成工作台 Excel Hub 单元格免打开读取功能联调',
-      priority: 'p1', // p1: 紧急且重要, p2: 重要不紧急, p3: 紧急不重要, p4: 不重要不紧急
-      estimatedMinutes: 45,
-      actualMinutes: 30,
-      tags: ['开发', 'Excel Hub'],
-      dueDate: new Date().toISOString().slice(0, 10),
-      completed: true,
-      completedAt: new Date(Date.now() - 3600000).toISOString(),
-      createdAt: new Date(Date.now() - 7200000).toISOString(),
-      order: 0,
-    },
-    {
-      id: 'task_demo_2',
-      title: '优化番茄钟整点报时与提示音体验',
-      priority: 'p2',
-      estimatedMinutes: 30,
-      actualMinutes: 25,
-      tags: ['交互', '时钟'],
-      dueDate: new Date().toISOString().slice(0, 10),
-      completed: true,
-      completedAt: new Date(Date.now() - 1800000).toISOString(),
-      createdAt: new Date(Date.now() - 7000000).toISOString(),
-      order: 1,
-    },
-    {
-      id: 'task_demo_3',
-      title: '整理本周项目推进周报并同步至年度总台账',
-      priority: 'p1',
-      estimatedMinutes: 20,
-      actualMinutes: 0,
-      tags: ['周报', '归档'],
-      dueDate: new Date().toISOString().slice(0, 10),
-      completed: false,
-      completedAt: null,
-      createdAt: new Date(Date.now() - 5000000).toISOString(),
-      order: 2,
-    },
-    {
-      id: 'task_demo_4',
-      title: '梳理下季度个人技术路线与关键业务指标',
-      priority: 'p2',
-      estimatedMinutes: 60,
-      actualMinutes: 0,
-      tags: ['规划'],
-      dueDate: new Date().toISOString().slice(0, 10),
-      completed: false,
-      completedAt: null,
-      createdAt: new Date().toISOString(),
-      order: 3,
-    }
-  ],
-  focusLogs: [
-    {
-      id: 'log_demo_1',
-      taskId: 'task_demo_1',
-      taskTitle: '完成工作台 Excel Hub 单元格免打开读取功能联调',
-      mode: 'pomodoro',
-      durationSeconds: 1800,
-      durationMinutes: 30,
-      timestamp: new Date(Date.now() - 3600000).toISOString(),
-      date: new Date().toISOString().slice(0, 10)
-    },
-    {
-      id: 'log_demo_2',
-      taskId: 'task_demo_2',
-      taskTitle: '优化番茄钟整点报时与提示音体验',
-      mode: 'pomodoro',
-      durationSeconds: 1500,
-      durationMinutes: 25,
-      timestamp: new Date(Date.now() - 1800000).toISOString(),
-      date: new Date().toISOString().slice(0, 10)
-    }
-  ],
-  dailyReports: {},
-  excelConfigs: [
-    {
-      id: 'cfg_sample_ledger',
-      name: '年度工作总台账 (本地示例)',
-      category: '个人台账',
-      filePath: path.join(__dirname, 'data', '年度工作总台账.xlsx'),
-      targetSheet: '工作日志台账',
-      isAnnualLedger: true,
-      monitoredCells: [
-        { label: '年度累计已交付', sheet: '指标看板', cell: 'B2' },
-        { label: '本月专注总学时(h)', sheet: '指标看板', cell: 'B3' },
-        { label: '待攻坚关键事项', sheet: '指标看板', cell: 'B4' }
-      ]
-    }
-  ]
-};
+// Serve static uploads
+app.use('/uploads', express.static(UPLOADS_DIR));
 
-// Database helper functions
-function readDb() {
-  try {
-    if (!fs.existsSync(DB_FILE)) {
-      writeDb(defaultDb);
-      return defaultDb;
+// Multer storage for cross-platform multi-device uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, UPLOADS_DIR),
+  filename: (req, file, cb) => {
+    const unique = `${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+    const originalName = Buffer.from(file.originalname, 'latin1').toString('utf8');
+    const ext = path.extname(originalName);
+    const base = path.basename(originalName, ext);
+    cb(null, `${base}_${unique}${ext}`);
+  }
+});
+const upload = multer({ storage, limits: { fileSize: 100 * 1024 * 1024 } }); // 100MB limit
+
+// Avatar upload configuration (2MB limit, JPG/PNG/WebP, anti-overwrite unique hash)
+const avatarStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, AVATARS_DIR),
+  filename: (req, file, cb) => {
+    const userId = req.user?.id || 'u';
+    const rand = crypto.randomBytes(4).toString('hex');
+    const ext = path.extname(file.originalname).toLowerCase() || '.png';
+    cb(null, `avatar_${userId}_${Date.now()}_${rand}${ext}`);
+  }
+});
+const avatarUpload = multer({
+  storage: avatarStorage,
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB max
+  fileFilter: (req, file, cb) => {
+    const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+    if (allowed.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('头像格式仅支持 JPG、PNG 或 WebP'));
     }
-    const raw = fs.readFileSync(DB_FILE, 'utf-8');
-    return JSON.parse(raw);
-  } catch (err) {
-    console.error('Failed to read db:', err);
-    return defaultDb;
+  }
+});
+
+// ==================== MULTI-DEVICE REAL-TIME SYNC (SSE) ====================
+
+const sseClients = new Set();
+
+function broadcastSync(entity, action, data = null) {
+  const payload = JSON.stringify({
+    entity,
+    action,
+    timestamp: Date.now(),
+    data
+  });
+  for (const client of sseClients) {
+    try {
+      client.write(`data: ${payload}\n\n`);
+    } catch {
+      sseClients.delete(client);
+    }
   }
 }
 
-function writeDb(data) {
-  try {
-    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
-  } catch (err) {
-    console.error('Failed to write db:', err);
+// SSE Connection Endpoint (with token check support)
+app.get('/api/sync/events', (req, res) => {
+  const token = req.query.token || (req.headers.authorization?.startsWith('Bearer ') ? req.headers.authorization.slice(7) : null);
+  if (!authRepo.validateSession(token)) {
+    return res.status(401).json({ success: false, message: 'SSE Unauthorized' });
   }
-}
 
-// Ensure sample Excel ledger exists
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive'
+  });
+
+  res.write('data: {"type":"connected","timestamp":' + Date.now() + '}\n\n');
+  sseClients.add(res);
+
+  // Heartbeat to keep connection alive through proxies
+  const heartbeat = setInterval(() => {
+    try {
+      res.write(':heartbeat\n\n');
+    } catch {
+      clearInterval(heartbeat);
+      sseClients.delete(res);
+    }
+  }, 25000);
+
+  req.on('close', () => {
+    clearInterval(heartbeat);
+    sseClients.delete(res);
+  });
+});
+
+// ==================== AUTHENTICATION MIDDLEWARE & APIS ====================
+
+// Public white-list endpoints (no token required)
+const PUBLIC_PATHS = [
+  '/api/auth/login',
+  '/api/auth/register',
+  '/api/auth/status'
+];
+
+// Auth middleware for all /api routes
+app.use('/api', (req, res, next) => {
+  const currentPath = req.originalUrl.split('?')[0];
+  if (PUBLIC_PATHS.includes(currentPath)) {
+    return next();
+  }
+
+  const authHeader = req.headers.authorization;
+  const token = (authHeader && authHeader.startsWith('Bearer '))
+    ? authHeader.slice(7)
+    : (req.headers['x-access-token'] || req.query.token);
+
+  const user = authRepo.validateSession(token);
+  if (!user) {
+    return res.status(401).json({
+      success: false,
+      message: '未授权或登录已过期，请重新登录',
+      code: 'UNAUTHORIZED'
+    });
+  }
+
+  req.authToken = token;
+  req.user = user;
+  next();
+});
+
+// Register
+app.post('/api/auth/register', (req, res) => {
+  const { username, password, confirmPassword } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ success: false, message: '用户名和密码不能为空' });
+  }
+  const trimmed = username.trim();
+  if (trimmed.length < 2 || trimmed.length > 16) {
+    return res.status(400).json({ success: false, message: '用户名长度需在 2 到 16 个字符之间' });
+  }
+  if (password.length < 6) {
+    return res.status(400).json({ success: false, message: '密码长度至少需 6 个字符' });
+  }
+  if (confirmPassword !== undefined && password !== confirmPassword) {
+    return res.status(400).json({ success: false, message: '两次输入的密码不一致' });
+  }
+
+  const presetNum = Math.floor(Math.random() * 8) + 1;
+  const defaultAvatar = `/uploads/avatars/presets/avatar-${presetNum}.svg`;
+
+  const result = userRepo.createUser(trimmed, password, defaultAvatar);
+  if (!result.success) {
+    return res.status(400).json(result);
+  }
+
+  const session = authRepo.createSession(result.user.id, 30);
+  res.json({
+    success: true,
+    message: '注册成功',
+    data: {
+      token: session.token,
+      expiresAt: session.expiresAt,
+      user: result.user
+    }
+  });
+});
+
+// Login
+app.post('/api/auth/login', (req, res) => {
+  const { username, password, rememberMe = true } = req.body;
+  if (!username || !username.trim()) {
+    return res.status(400).json({ success: false, message: '用户名不能为空' });
+  }
+  if (!password) {
+    return res.status(400).json({ success: false, message: '密码不能为空' });
+  }
+
+  const user = userRepo.verifyUser(username.trim(), password);
+  if (!user) {
+    return res.status(401).json({ success: false, message: '用户名或密码错误' });
+  }
+
+  const days = rememberMe ? 30 : 1;
+  const session = authRepo.createSession(user.id, days);
+
+  res.json({
+    success: true,
+    data: {
+      token: session.token,
+      expiresAt: session.expiresAt,
+      user
+    }
+  });
+});
+
+// Auth Status check
+app.get('/api/auth/status', (req, res) => {
+  const authHeader = req.headers.authorization;
+  const token = (authHeader && authHeader.startsWith('Bearer '))
+    ? authHeader.slice(7)
+    : (req.headers['x-access-token'] || req.query.token);
+
+  const status = authRepo.getStatus(token);
+  res.json({ success: true, data: status });
+});
+
+// Logout
+app.post('/api/auth/logout', (req, res) => {
+  if (req.authToken) {
+    authRepo.revokeSession(req.authToken);
+  }
+  res.json({ success: true });
+});
+
+// ==================== USER PROFILE & SETTINGS APIS ====================
+
+// Update Username
+app.put('/api/user/username', (req, res) => {
+  const { newUsername } = req.body;
+  if (!newUsername || !newUsername.trim()) {
+    return res.status(400).json({ success: false, message: '新用户名不能为空' });
+  }
+  const result = userRepo.updateUsername(req.user.id, newUsername);
+  if (!result.success) {
+    return res.status(400).json(result);
+  }
+  res.json({ success: true, message: '用户名修改成功', data: result.user });
+});
+
+// Change Password
+app.post('/api/user/password', (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  if (!oldPassword || !newPassword) {
+    return res.status(400).json({ success: false, message: '原密码和新密码均不能为空' });
+  }
+  const result = userRepo.updatePassword(req.user.id, oldPassword, newPassword);
+  if (!result.success) {
+    return res.status(400).json(result);
+  }
+  res.json({ success: true, message: '密码修改成功' });
+});
+
+// Legacy Change Password route compatibility
+app.post('/api/auth/change-password', (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const result = userRepo.updatePassword(req.user.id, oldPassword, newPassword);
+  if (!result.success) {
+    return res.status(400).json(result);
+  }
+  const newSession = authRepo.createSession(req.user.id, 30);
+  res.json({
+    success: true,
+    message: '密码修改成功',
+    data: { token: newSession.token }
+  });
+});
+
+// Custom Avatar Upload
+app.post('/api/user/avatar/upload', (req, res) => {
+  avatarUpload.single('avatar')(req, res, (err) => {
+    if (err) {
+      return res.status(400).json({ success: false, message: err.message || '头像上传失败' });
+    }
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: '请选择要上传的头像文件' });
+    }
+
+    const avatarUrl = `/uploads/avatars/${req.file.filename}`;
+    userRepo.updateAvatar(req.user.id, avatarUrl);
+
+    res.json({
+      success: true,
+      message: '头像上传成功',
+      data: { avatarUrl }
+    });
+  });
+});
+
+// Set Preset Avatar
+app.put('/api/user/avatar/preset', (req, res) => {
+  const { avatarUrl } = req.body;
+  if (!avatarUrl || typeof avatarUrl !== 'string') {
+    return res.status(400).json({ success: false, message: '请选择预设头像' });
+  }
+  userRepo.updateAvatar(req.user.id, avatarUrl);
+  res.json({
+    success: true,
+    message: '头像更换成功',
+    data: { avatarUrl }
+  });
+});
+
+// ==================== SAMPLE INITIALIZATION ====================
+
 async function ensureSampleExcel(filePath) {
   if (fs.existsSync(filePath)) return;
   const workbook = new ExcelJS.Workbook();
-  
-  // Sheet 1: 指标看板
+
   const kpiSheet = workbook.addWorksheet('指标看板');
   kpiSheet.columns = [
     { header: '指标名称', key: 'name', width: 22 },
@@ -158,7 +342,6 @@ async function ensureSampleExcel(filePath) {
   kpiSheet.addRow({ name: '本月专注总学时(h)', value: '38.5', desc: '深度专注有效时长' });
   kpiSheet.addRow({ name: '待攻坚关键事项', value: '3 个', desc: '近期 P1 重点推进中' });
 
-  // Style header
   kpiSheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
   kpiSheet.getRow(1).fill = {
     type: 'pattern',
@@ -166,7 +349,6 @@ async function ensureSampleExcel(filePath) {
     fgColor: { argb: 'FF2563EB' }
   };
 
-  // Sheet 2: 工作日志台账
   const ledgerSheet = workbook.addWorksheet('工作日志台账');
   ledgerSheet.columns = [
     { header: '日期', key: 'date', width: 14 },
@@ -197,149 +379,53 @@ async function ensureSampleExcel(filePath) {
   await workbook.xlsx.writeFile(filePath);
 }
 
-// Initialize on start
-(async () => {
-  const db = readDb();
-  if (db.excelConfigs && db.excelConfigs.length > 0) {
-    const sample = db.excelConfigs.find(c => c.id === 'cfg_sample_ledger');
-    if (sample && sample.filePath) {
-      await ensureSampleExcel(sample.filePath);
-    }
-  }
-
-  // Initialize sample notes if empty
-  if (!db.notes || db.notes.length === 0) {
-    const today = new Date().toISOString().slice(0, 10);
-    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-    db.notes = [
-      {
-        id: 'note_demo_1',
-        type: 'daily_report',
-        title: '昨日工作日报归档',
-        content: '完成个人工作台 2.0 架构升级，实现日常待办管理与时间统计全链路打通。',
-        date: yesterday,
-        time: '18:30',
-        tags: ['工作日报', '产出'],
-        isPinned: true,
-        bg: 'bg-emerald-50/60 border-emerald-100',
-        createdAt: new Date(Date.now() - 86400000).toISOString(),
-        updatedAt: new Date(Date.now() - 86400000).toISOString(),
-        dailyReportData: {
-          deliverables: '1. 完成个人工作台 2.0 架构升级；\n2. 联调待办与时钟统计。',
-          blockers: '无明显阻塞。',
-          tomorrowPlan: '继续完善快速记录与日历时间联动。',
-          completedCount: 3,
-          focusMinutes: 120
-        }
-      },
-      {
-        id: 'note_demo_2',
-        type: 'note',
-        title: '用户交互反馈',
-        content: '希望增加深色模式和快捷键支持，优化弹窗动画性能。',
-        date: today,
-        time: '10:15',
-        tags: ['体验', 'UI'],
-        isPinned: true,
-        bg: 'bg-white',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-      {
-        id: 'note_demo_3',
-        type: 'meeting',
-        title: 'Q2 推广计划沟通纪要',
-        content: '与市场团队深入沟通 Q2 推广计划细节，确认首期宣发物料进度。',
-        date: today,
-        time: '14:20',
-        tags: ['市场', '会议'],
-        isPinned: false,
-        bg: 'bg-[#FFFBEB] border-amber-100',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
+const demoExcelPath = path.join(DATA_DIR, 'demo_ledger.xlsx');
+if (!fs.existsSync(demoExcelPath)) {
+  try {
+    const wb = new ExcelJS.Workbook();
+    const ws = wb.addWorksheet('工作日志台账');
+    ws.columns = [
+      { header: '日期', key: 'date', width: 14 },
+      { header: '今日工作成果', key: 'deliverables', width: 40 },
+      { header: '明日计划', key: 'tomorrowPlan', width: 30 },
+      { header: '完成数', key: 'completedCount', width: 10 },
+      { header: '归档时间', key: 'syncedAt', width: 22 }
     ];
-    writeDb(db);
+    ws.addRow({
+      date: '2026-09-02',
+      deliverables: '两江区域异常小区监控通报（完成时间：8-9点，20分钟）',
+      tomorrowPlan: '日常运维巡检',
+      completedCount: 5,
+      syncedAt: new Date().toLocaleString()
+    });
+    wb.xlsx.writeFile(demoExcelPath);
+  } catch (e) {
+    console.error('Failed to create demo Excel:', e);
+  }
+}
+
+(async () => {
+  const configs = excelConfigRepo.getAll();
+  const sample = configs.find(c => c.id === 'cfg_sample_ledger');
+  if (sample && sample.filePath) {
+    await ensureSampleExcel(sample.filePath);
   }
 })();
 
 // ==================== TASK APIS ====================
 
-// Helper: Sync recurring tasks for given date (e.g. daily, workday, weekly)
-function syncRecurringTasks(db, targetDate) {
-  if (!db.tasks || !Array.isArray(db.tasks)) return false;
-  
-  const today = new Date().toISOString().slice(0, 10);
-  const checkDate = targetDate || today;
-  const dObj = new Date(checkDate + 'T00:00:00');
-  const dayOfWeek = dObj.getDay(); // 0: Sunday, 1..5: Mon..Fri, 6: Saturday
-  const isWorkday = dayOfWeek >= 1 && dayOfWeek <= 5;
-
-  let changed = false;
-
-  // Find all recurring parent tasks
-  const recurringParents = db.tasks.filter(t => t.isRecurring && !t.recurringParentId && t.recurringConfig);
-
-  recurringParents.forEach(parent => {
-    const { frequency, startDate, endDate } = parent.recurringConfig;
-    if (!startDate) return;
-
-    // Check date bounds
-    if (checkDate < startDate) return;
-    if (endDate && checkDate > endDate) return;
-
-    // Check frequency
-    if (frequency === 'workday' && !isWorkday) return;
-    if (frequency === 'weekly') {
-      const startDayOfWeek = new Date(startDate + 'T00:00:00').getDay();
-      if (dayOfWeek !== startDayOfWeek) return;
-    }
-
-    // Check if an instance already exists for checkDate
-    const existingInstance = db.tasks.find(t => {
-      const taskDate = (t.dueDate || '').slice(0, 10);
-      return taskDate === checkDate && (t.recurringParentId === parent.id || t.id === parent.id);
-    });
-
-    if (!existingInstance) {
-      // Auto generate daily instance
-      const instance = {
-        id: `task_rec_${parent.id}_${checkDate}`,
-        title: parent.title,
-        priority: parent.priority,
-        estimatedMinutes: parent.estimatedMinutes,
-        actualMinutes: 0,
-        tags: parent.tags,
-        dueDate: `${checkDate}${parent.dueDate?.includes('T') ? 'T' + parent.dueDate.split('T')[1] : ''}`,
-        completed: false,
-        completedAt: null,
-        createdAt: new Date().toISOString(),
-        order: db.tasks.length,
-        isRecurring: true,
-        recurringParentId: parent.id,
-        recurringConfig: parent.recurringConfig
-      };
-      db.tasks.unshift(instance);
-      changed = true;
-    }
-  });
-
-  return changed;
-}
-
 // Get all tasks (auto syncs recurring tasks for current day / target date)
 app.get('/api/tasks', (req, res) => {
-  const db = readDb();
   const date = req.query.date || new Date().toISOString().slice(0, 10);
-  if (syncRecurringTasks(db, date)) {
-    writeDb(db);
+  const changed = taskRepo.syncRecurringTasks(date);
+  if (changed) {
+    broadcastSync('tasks', 'sync_recurring');
   }
-  res.json({ success: true, data: db.tasks });
+  res.json({ success: true, data: taskRepo.getAll() });
 });
 
 // Create task
 app.post('/api/tasks', (req, res) => {
-  const db = readDb();
   const newTask = {
     id: `task_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
     title: req.body.title || '新待办事项',
@@ -351,50 +437,46 @@ app.post('/api/tasks', (req, res) => {
     completed: false,
     completedAt: null,
     createdAt: new Date().toISOString(),
-    order: db.tasks.length,
     isRecurring: !!req.body.isRecurring,
     recurringConfig: req.body.recurringConfig || null,
     recurringParentId: req.body.recurringParentId || null,
     ...req.body
   };
-  db.tasks.unshift(newTask);
 
-  // If this is recurring, also ensure today's instance exists if within range
-  const today = new Date().toISOString().slice(0, 10);
-  syncRecurringTasks(db, today);
+  const created = taskRepo.create(newTask);
 
-  writeDb(db);
-  res.json({ success: true, data: newTask });
+  if (newTask.isRecurring) {
+    const today = new Date().toISOString().slice(0, 10);
+    taskRepo.syncRecurringTasks(today);
+  }
+
+  broadcastSync('tasks', 'create', created);
+  res.json({ success: true, data: created });
 });
 
 // Update task
 app.put('/api/tasks/:id', (req, res) => {
-  const db = readDb();
-  const idx = db.tasks.findIndex(t => t.id === req.params.id);
-  if (idx === -1) {
+  const existing = taskRepo.getById(req.params.id);
+  if (!existing) {
     return res.status(404).json({ success: false, message: '任务不存在' });
   }
 
-  const prev = db.tasks[idx];
-  const updated = { ...prev, ...req.body };
-
-  // If completed changed to true and no completedAt, auto set timestamp
-  if (req.body.completed === true && !prev.completed) {
-    updated.completedAt = req.body.completedAt || new Date().toISOString();
+  const updates = { ...req.body };
+  if (req.body.completed === true && !existing.completed) {
+    updates.completedAt = req.body.completedAt || new Date().toISOString();
   } else if (req.body.completed === false) {
-    updated.completedAt = null;
+    updates.completedAt = null;
   }
 
-  db.tasks[idx] = updated;
-  writeDb(db);
+  const updated = taskRepo.update(req.params.id, updates);
+  broadcastSync('tasks', 'update', updated);
   res.json({ success: true, data: updated });
 });
 
 // Delete task
 app.delete('/api/tasks/:id', (req, res) => {
-  const db = readDb();
-  db.tasks = db.tasks.filter(t => t.id !== req.params.id);
-  writeDb(db);
+  taskRepo.delete(req.params.id);
+  broadcastSync('tasks', 'delete', { id: req.params.id });
   res.json({ success: true });
 });
 
@@ -404,53 +486,39 @@ app.post('/api/tasks/reorder', (req, res) => {
   if (!Array.isArray(taskIds)) {
     return res.status(400).json({ success: false, message: 'Invalid taskIds' });
   }
-  const db = readDb();
-  const taskMap = new Map(db.tasks.map(t => [t.id, t]));
-  const reordered = [];
-  taskIds.forEach((id, idx) => {
-    if (taskMap.has(id)) {
-      const task = taskMap.get(id);
-      task.order = idx;
-      reordered.push(task);
-      taskMap.delete(id);
-    }
-  });
-  taskMap.forEach(task => reordered.push(task));
-  db.tasks = reordered;
-  writeDb(db);
-  res.json({ success: true, data: db.tasks });
+  const tasks = taskRepo.reorder(taskIds);
+  broadcastSync('tasks', 'reorder', tasks);
+  res.json({ success: true, data: tasks });
 });
 
 // ==================== FOCUS LOG APIS ====================
 
 // Get focus logs
 app.get('/api/focus-logs', (req, res) => {
-  const db = readDb();
   const { date } = req.query;
-  let logs = db.focusLogs || [];
-  if (date) {
-    logs = logs.filter(l => l.date === date);
-  }
+  const logs = focusRepo.getAll(date);
   res.json({ success: true, data: logs });
 });
 
 // Record focus log & link with task
 app.post('/api/focus-logs', (req, res) => {
-  const db = readDb();
   const { taskId, mode, durationSeconds, note } = req.body;
   const durationSec = Number(durationSeconds) || 0;
   const durationMin = Math.round(durationSec / 60);
 
   let taskTitle = '';
   if (taskId) {
-    const task = db.tasks.find(t => t.id === taskId);
+    const task = taskRepo.getById(taskId);
     if (task) {
       taskTitle = task.title;
-      task.actualMinutes = (task.actualMinutes || 0) + durationMin;
+      taskRepo.update(taskId, {
+        actualMinutes: (task.actualMinutes || 0) + durationMin
+      });
+      broadcastSync('tasks', 'update');
     }
   }
 
-  const newLog = {
+  const newLog = focusRepo.create({
     id: `log_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
     taskId: taskId || null,
     taskTitle: taskTitle || (mode === 'pomodoro' ? '番茄钟专注' : '正计时专注'),
@@ -460,12 +528,9 @@ app.post('/api/focus-logs', (req, res) => {
     note: note || '',
     timestamp: new Date().toISOString(),
     date: new Date().toISOString().slice(0, 10)
-  };
+  });
 
-  db.focusLogs = db.focusLogs || [];
-  db.focusLogs.unshift(newLog);
-  writeDb(db);
-
+  broadcastSync('focus_logs', 'create', newLog);
   res.json({ success: true, data: newLog });
 });
 
@@ -473,37 +538,18 @@ app.post('/api/focus-logs', (req, res) => {
 
 // Get notes (supports ?type= and ?date=)
 app.get('/api/notes', (req, res) => {
-  const db = readDb();
-  let notes = db.notes || [];
-  
   const { type, date } = req.query;
-  if (type && type !== 'all') {
-    notes = notes.filter(n => n.type === type);
-  }
-  if (date) {
-    notes = notes.filter(n => n.date === date);
-  }
-
-  // Sort: pinned first, then newest first
-  notes.sort((a, b) => {
-    if (a.isPinned && !b.isPinned) return -1;
-    if (!a.isPinned && b.isPinned) return 1;
-    return new Date(b.createdAt || b.date).getTime() - new Date(a.createdAt || a.date).getTime();
-  });
-
+  const notes = noteRepo.getAll({ type, date });
   res.json({ success: true, data: notes });
 });
 
 // Create note
 app.post('/api/notes', (req, res) => {
-  const db = readDb();
-  db.notes = db.notes || [];
-
   const now = new Date();
   const noteDate = req.body.date || now.toISOString().slice(0, 10);
   const noteTime = req.body.time || `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
-  const newNote = {
+  const newNoteData = {
     id: `note_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
     type: req.body.type || 'note',
     title: req.body.title || '',
@@ -518,11 +564,11 @@ app.post('/api/notes', (req, res) => {
     updatedAt: now.toISOString()
   };
 
-  // If this is a work daily report, link and sync with db.dailyReports[noteDate]
+  const newNote = noteRepo.create(newNoteData);
+
   if (newNote.type === 'daily_report') {
-    db.dailyReports = db.dailyReports || {};
-    const prevRep = db.dailyReports[noteDate] || {};
-    db.dailyReports[noteDate] = {
+    const prevRep = dailyReportRepo.getByDate(noteDate) || {};
+    dailyReportRepo.save(noteDate, {
       date: noteDate,
       deliverables: newNote.dailyReportData?.deliverables || newNote.content || '工作成果已记录',
       blockers: newNote.dailyReportData?.blockers || '无明显阻塞',
@@ -533,56 +579,47 @@ app.post('/api/notes', (req, res) => {
       syncedToExcel: prevRep.syncedToExcel || false,
       syncedAt: prevRep.syncedAt || null,
       updatedAt: now.toISOString()
-    };
+    });
+    broadcastSync('reports', 'update');
   }
 
-  db.notes.unshift(newNote);
-  writeDb(db);
+  broadcastSync('notes', 'create', newNote);
   res.json({ success: true, data: newNote });
 });
 
 // Update note
 app.put('/api/notes/:id', (req, res) => {
-  const db = readDb();
-  db.notes = db.notes || [];
-  const idx = db.notes.findIndex(n => n.id === req.params.id);
-  if (idx === -1) {
+  const existing = noteRepo.getById(req.params.id);
+  if (!existing) {
     return res.status(404).json({ success: false, message: '记录不存在' });
   }
 
-  const prev = db.notes[idx];
-  const updated = {
-    ...prev,
-    ...req.body,
-    updatedAt: new Date().toISOString()
-  };
+  const updated = noteRepo.update(req.params.id, req.body);
 
-  db.notes[idx] = updated;
-
-  // If daily_report, sync with dailyReports
   if (updated.type === 'daily_report') {
-    db.dailyReports = db.dailyReports || {};
-    db.dailyReports[updated.date] = {
-      ...(db.dailyReports[updated.date] || {}),
-      date: updated.date,
+    dailyReportRepo.save(updated.date, {
       deliverables: updated.dailyReportData?.deliverables || updated.content,
       blockers: updated.dailyReportData?.blockers || '无明显阻塞',
       tomorrowPlan: updated.dailyReportData?.tomorrowPlan || '',
       customNotes: updated.content,
       updatedAt: new Date().toISOString()
-    };
+    });
+    broadcastSync('reports', 'update');
   }
 
-  writeDb(db);
+  broadcastSync('notes', 'update', updated);
   res.json({ success: true, data: updated });
 });
 
 // Delete note
 app.delete('/api/notes/:id', (req, res) => {
-  const db = readDb();
-  db.notes = db.notes || [];
-  db.notes = db.notes.filter(n => n.id !== req.params.id);
-  writeDb(db);
+  const existing = noteRepo.getById(req.params.id);
+  noteRepo.delete(req.params.id);
+  if (existing && existing.type === 'daily_report' && existing.date) {
+    dailyReportRepo.delete(existing.date);
+    broadcastSync('reports', 'delete', { date: existing.date });
+  }
+  broadcastSync('notes', 'delete', { id: req.params.id });
   res.json({ success: true });
 });
 
@@ -590,21 +627,15 @@ app.delete('/api/notes/:id', (req, res) => {
 
 // Get memos (supports ?date=YYYY-MM-DD)
 app.get('/api/memos', (req, res) => {
-  const db = readDb();
-  let memos = db.memos || [];
   const { date } = req.query;
-  if (date) {
-    memos = memos.filter(m => m.date === date);
-  }
+  const memos = memoRepo.getAll(date);
   res.json({ success: true, data: memos });
 });
 
 // Create memo
 app.post('/api/memos', (req, res) => {
-  const db = readDb();
-  db.memos = db.memos || [];
   const now = new Date();
-  const newMemo = {
+  const newMemo = memoRepo.create({
     id: `memo_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
     date: req.body.date || now.toISOString().slice(0, 10),
     time: req.body.time || '',
@@ -613,35 +644,555 @@ app.post('/api/memos', (req, res) => {
     tag: req.body.tag || '备忘',
     createdAt: now.toISOString(),
     updatedAt: now.toISOString()
-  };
-  db.memos.unshift(newMemo);
-  writeDb(db);
+  });
+  broadcastSync('memos', 'create', newMemo);
   res.json({ success: true, data: newMemo });
 });
 
 // Update memo
 app.put('/api/memos/:id', (req, res) => {
-  const db = readDb();
-  db.memos = db.memos || [];
-  const idx = db.memos.findIndex(m => m.id === req.params.id);
-  if (idx === -1) {
+  const updated = memoRepo.update(req.params.id, req.body);
+  if (!updated) {
     return res.status(404).json({ success: false, message: '备忘不存在' });
   }
-  db.memos[idx] = {
-    ...db.memos[idx],
-    ...req.body,
-    updatedAt: new Date().toISOString()
-  };
-  writeDb(db);
-  res.json({ success: true, data: db.memos[idx] });
+  broadcastSync('memos', 'update', updated);
+  res.json({ success: true, data: updated });
 });
 
 // Delete memo
 app.delete('/api/memos/:id', (req, res) => {
-  const db = readDb();
-  db.memos = (db.memos || []).filter(m => m.id !== req.params.id);
-  writeDb(db);
+  memoRepo.delete(req.params.id);
+  broadcastSync('memos', 'delete', { id: req.params.id });
   res.json({ success: true });
+});
+
+// ==================== AI CONFIGURATION & NLU PARSING APIS ====================
+
+// Helper to safely extract JSON from LLM output
+function extractJsonFromLlmOutput(rawText) {
+  if (!rawText || typeof rawText !== 'string') return null;
+  const codeBlockMatch = rawText.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+  const textToParse = (codeBlockMatch ? codeBlockMatch[1] : rawText).trim();
+
+  let parsed = null;
+  try {
+    parsed = JSON.parse(textToParse);
+  } catch {
+    const firstBrace = textToParse.indexOf('{');
+    const firstBracket = textToParse.indexOf('[');
+
+    if (firstBracket !== -1 && (firstBrace === -1 || firstBracket < firstBrace)) {
+      const lastBracket = textToParse.lastIndexOf(']');
+      if (lastBracket > firstBracket) {
+        try {
+          parsed = JSON.parse(textToParse.substring(firstBracket, lastBracket + 1));
+        } catch {}
+      }
+    }
+
+    if (!parsed && firstBrace !== -1) {
+      const lastBrace = textToParse.lastIndexOf('}');
+      if (lastBrace > firstBrace) {
+        try {
+          parsed = JSON.parse(textToParse.substring(firstBrace, lastBrace + 1));
+        } catch {}
+      }
+    }
+
+    if (!parsed && firstBracket !== -1) {
+      const lastBracket = textToParse.lastIndexOf(']');
+      if (lastBracket > firstBracket) {
+        try {
+          parsed = JSON.parse(textToParse.substring(firstBracket, lastBracket + 1));
+        } catch {}
+      }
+    }
+  }
+
+  if (Array.isArray(parsed)) {
+    return { items: parsed, tasks: parsed };
+  }
+  if (parsed && !parsed.tasks && !parsed.items && parsed.title) {
+    return { items: [parsed], tasks: [parsed] };
+  }
+  return parsed;
+}
+
+// Get AI Config
+app.get('/api/ai/config', (req, res) => {
+  const config = aiConfigRepo.getConfig();
+  let maskedKey = '';
+  if (config.apiKey) {
+    maskedKey = config.apiKey.length > 8
+      ? `sk-***${config.apiKey.slice(-4)}`
+      : 'sk-***';
+  }
+  res.json({
+    success: true,
+    data: {
+      baseUrl: config.baseUrl,
+      model: config.model,
+      hasKey: config.hasKey,
+      maskedKey
+    }
+  });
+});
+
+// Save AI Config
+app.post('/api/ai/config', (req, res) => {
+  const { baseUrl, apiKey, model } = req.body;
+  const updated = aiConfigRepo.saveConfig({ baseUrl, apiKey, model });
+  res.json({ success: true, data: updated });
+});
+
+// Test AI Connection
+app.post('/api/ai/test', async (req, res) => {
+  try {
+    const savedConfig = aiConfigRepo.getConfig();
+    const baseUrl = (req.body.baseUrl || savedConfig.baseUrl || 'https://api.openai.com/v1').trim().replace(/\/+$/, '');
+    let apiKey = req.body.apiKey !== undefined ? req.body.apiKey.trim() : savedConfig.apiKey;
+    if (apiKey.startsWith('sk-***')) {
+      apiKey = savedConfig.apiKey;
+    }
+    const model = (req.body.model || savedConfig.model || 'gpt-4o-mini').trim();
+
+    if (!apiKey) {
+      return res.status(400).json({ success: false, message: '请提供有效的 API Key' });
+    }
+
+    const endpointUrl = `${baseUrl}/chat/completions`;
+    const startTime = Date.now();
+
+    const response = await fetch(endpointUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: 'user', content: 'Say "OK" in 1 word.' }
+        ],
+        max_tokens: 10,
+        temperature: 0.1
+      }),
+      signal: AbortSignal.timeout(15000)
+    });
+
+    const latencyMs = Date.now() - startTime;
+
+    if (!response.ok) {
+      const errText = await response.text().catch(() => '');
+      let errMsg = `上游接口响应错误 (${response.status})`;
+      try {
+        const errObj = JSON.parse(errText);
+        if (errObj.error?.message) errMsg = errObj.error.message;
+      } catch {
+        if (errText) errMsg += `: ${errText.slice(0, 100)}`;
+      }
+      return res.status(response.status).json({ success: false, message: errMsg });
+    }
+
+    const json = await response.json();
+    const reply = json.choices?.[0]?.message?.content || '';
+
+    res.json({
+      success: true,
+      data: {
+        latencyMs,
+        model,
+        reply: reply.trim(),
+        message: `测试成功！延迟 ${latencyMs}ms，模型响应正常`
+      }
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.name === 'TimeoutError'
+        ? '请求超时 (15s)，请检查 API Base URL 网络连通性'
+        : (err.message || '连接测试失败')
+    });
+  }
+});
+
+// Helper: Local Intelligent Rule-Based Extractor (Fallback & Zero-Config Support)
+function parseTextWithRules(text, todayStr, now = new Date()) {
+  const lines = text
+    .split(/[\n；;。]+/)
+    .map((s) => s.trim())
+    .filter((s) => s.length > 1);
+
+  if (lines.length === 0 && text.trim()) {
+    lines.push(text.trim());
+  }
+
+  const pad = (n) => String(n).padStart(2, '0');
+  const formatD = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+
+  return lines.map((raw, i) => {
+    let cat = 'note';
+    let priority = 'p3';
+    let time = null;
+    let targetDate = todayStr;
+    const tags = [];
+
+    // 1. Date extraction
+    if (raw.includes('大后天')) {
+      const d = new Date(now);
+      d.setDate(d.getDate() + 3);
+      targetDate = formatD(d);
+    } else if (raw.includes('后天')) {
+      const d = new Date(now);
+      d.setDate(d.getDate() + 2);
+      targetDate = formatD(d);
+    } else if (raw.includes('明天')) {
+      const d = new Date(now);
+      d.setDate(d.getDate() + 1);
+      targetDate = formatD(d);
+    } else if (raw.includes('今天') || raw.includes('今日')) {
+      targetDate = todayStr;
+    } else {
+      const mMatch = raw.match(/(\d{1,2})月(\d{1,2})[日号]?/);
+      if (mMatch) {
+        const m = parseInt(mMatch[1], 10);
+        const day = parseInt(mMatch[2], 10);
+        const d = new Date(now.getFullYear(), m - 1, day);
+        targetDate = formatD(d);
+      } else {
+        const weekMatch = raw.match(/(?:下周|本周|这周|周|星期)([一二三四五六日天])/);
+        if (weekMatch) {
+          const map = { '一': 1, '二': 2, '三': 3, '四': 4, '五': 5, '六': 6, '日': 0, '天': 0 };
+          const targetDay = map[weekMatch[1]];
+          const curDay = now.getDay();
+          let diff = targetDay - curDay;
+          if (raw.includes('下周') || diff <= 0) diff += 7;
+          const d = new Date(now);
+          d.setDate(d.getDate() + diff);
+          targetDate = formatD(d);
+        }
+      }
+    }
+
+    // 2. Time extraction
+    const timeMatch = raw.match(/(?:(?:上午|中午|下午|晚上|今晚|明早)?\s*(\d{1,2})[:：](\d{2}))|(?:(上午|中午|下午|晚上|今晚|明早)?\s*(\d{1,2})点(?:半|(\d{1,2})分)?)/);
+    if (timeMatch) {
+      if (timeMatch[1] && timeMatch[2]) {
+        let h = parseInt(timeMatch[1], 10);
+        const m = timeMatch[2];
+        if ((raw.includes('下午') || raw.includes('晚上') || raw.includes('今晚')) && h < 12) h += 12;
+        time = `${pad(h)}:${m}`;
+      } else if (timeMatch[4]) {
+        let h = parseInt(timeMatch[4], 10);
+        let m = '00';
+        if (raw.includes('半')) m = '30';
+        else if (timeMatch[5]) m = pad(parseInt(timeMatch[5], 10));
+        const period = timeMatch[3] || '';
+        if ((period.includes('下午') || period.includes('晚上') || period.includes('今晚') || raw.includes('下午') || raw.includes('晚上')) && h < 12) h += 12;
+        time = `${pad(h)}:${m}`;
+      }
+    }
+
+    // 3. Priority extraction
+    if (/紧急|极高|立刻|马上|严重|加急|p1/i.test(raw)) {
+      priority = 'p1';
+    } else if (/重要|尽快|优先|重点|p2/i.test(raw)) {
+      priority = 'p2';
+    } else if (/低|闲暇|有空|顺便|稍后|p4/i.test(raw)) {
+      priority = 'p4';
+    }
+
+    // 4. Category determination (meeting | idea | schedule | task | note)
+    if (/会议|开会|例会|评审会|讨论会|站会|复盘会|沟通纪要|会议纪要|对齐会/.test(raw)) {
+      cat = 'meeting';
+      tags.push('会议');
+    } else if (/灵感|想法|创意|闪念|脑洞|构思|突发奇想|新功能思路|建议尝试/.test(raw)) {
+      cat = 'idea';
+      tags.push('灵感');
+    } else if (/日程|拜访|约见|接待|来访|出差|团建|发布会|航班|高铁|看病|体检|培训/.test(raw) || (time && /参加|前往|到达|见客户/.test(raw))) {
+      cat = 'schedule';
+      tags.push('日程');
+    } else if (/完成|提交|制作|修复|开发|审核|发布|撰写|编写|发送|优化|联系|购买|整理|核对|提醒/.test(raw)) {
+      cat = 'task';
+      tags.push('待办');
+    } else if (/笔记|总结|记录|学习|阅读|摘录|心得|知识点|备忘|参考|链接/.test(raw)) {
+      cat = 'note';
+      tags.push('笔记');
+    } else {
+      if (time || raw.includes('提醒') || raw.includes('记得')) {
+        cat = 'task';
+        tags.push('待办');
+      } else {
+        cat = 'note';
+        tags.push('速记');
+      }
+    }
+
+    let title = raw.replace(/^(今天|明天|后天|大后天|下周[一二三四五六日天]|周[一二三四五六日天])[\s,，]*/, '').trim();
+    if (!title) title = raw;
+    if (title.length > 40) title = title.slice(0, 38) + '...';
+
+    return {
+      id: `item_${Date.now()}_${i}`,
+      category: cat,
+      title,
+      content: raw,
+      date: targetDate,
+      time: time || (cat === 'schedule' ? '全天' : null),
+      priority,
+      tags: tags.length > 0 ? tags : ['速记'],
+      estimatedMinutes: 30
+    };
+  });
+}
+
+// NLU Smart Quick Note Multi-Dimensional AI Recognition
+app.post('/api/ai/parse-task', async (req, res) => {
+  const { text } = req.body;
+  if (!text || typeof text !== 'string' || !text.trim()) {
+    return res.status(400).json({ success: false, message: '请输入要解析的文字内容' });
+  }
+
+  const now = new Date();
+  const weekDayMap = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const weekDayName = weekDayMap[now.getDay()];
+
+  const config = aiConfigRepo.getConfig();
+  const hasAiConfig = !!(config && config.hasKey && config.apiKey && config.apiKey.trim());
+
+  // If no OpenAI config is set, seamlessly provide high-accuracy local rule parsing
+  if (!hasAiConfig) {
+    const localItems = parseTextWithRules(text.trim(), todayStr, now);
+    const legacyTasks = localItems.map((item, idx) => ({
+      id: `task_${Date.now()}_${idx}`,
+      title: item.title,
+      dueDate: item.date,
+      startTime: item.time && /^\d{2}:\d{2}$/.test(item.time) ? item.time : null,
+      priority: item.priority || 'p3',
+      tags: item.tags,
+      estimatedMinutes: item.estimatedMinutes || 30,
+      note: item.content || '',
+      category: item.category
+    }));
+
+    return res.json({
+      success: true,
+      data: {
+        items: localItems,
+        tasks: legacyTasks,
+        isRuleFallback: true,
+        noAiConfig: true,
+        message: '已通过本地智能规则完成识别。配置 OpenAI API Key 可获得更深度的语义理解'
+      }
+    });
+  }
+
+  try {
+    const systemPrompt = `你是一个专业的工作台多维自然语言理解（NLU）助理。
+你的任务是将用户提供的杂乱文本（如聊天记录、会议纪要、随笔想法、口头备忘、待办列表等）智能识别并提取为一个或多个结构化条目。
+
+【当前基准时间】
+今天是：${todayStr} (${weekDayName})。
+请严格以此日期为基准计算相对时间（例如“今天”、“明天”、“后天”、“周五”、“下周一”、“下午3点”等）。
+
+【条目分类规则 (category)】
+请根据文本语义将每个条目准确归类为以下 5 种类别之一：
+1. "task" (待办任务)：具有具体待执行行动、截止时间或交付物的行动项（如“写PPT”、“提交周报”、“修复登录Bug”、“联系客户核对发票”）；
+2. "schedule" (日程安排)：具有明确约定时刻的会议、拜访、预约、出行、活动或特定时间段事项（如“明天下午2点客户来访”、“周三上午10点部门例会”、“周五全天团建”）；
+3. "note" (快速记录 - 笔记)：信息摘录、工作记录、备忘备查资料、技术总结、知识点等；
+4. "meeting" (快速记录 - 会议)：会议纪要、沟通记录、评审意见、讨论结论与要点等；
+5. "idea" (快速记录 - 灵感)：临时脑洞、产品构思、设计创意、改进点子、灵光一现的想法等。
+
+【输出格式规范】
+必须且仅返回标准 JSON 对象，不要输出任何 Markdown 外部文字或问候语：
+{
+  "items": [
+    {
+      "category": "task" | "schedule" | "note" | "meeting" | "idea",
+      "title": "条目标题/核心概要（简洁有力，动宾短语或主题，10~30字）",
+      "content": "详细内容/正文/要点说明（对笔记、会议、灵感保留丰富细节，任务可为备注说明）",
+      "date": "YYYY-MM-DD（绝对日期，基于当前基准时间推导，未明确提及则默认为 ${todayStr}）",
+      "time": "HH:mm（若文中提及明确时间如 14:30、09:00，没有则填 null 或在日程中填 '全天'）",
+      "priority": "p1" | "p2" | "p3" | "p4"（p1极高/紧急，p2重要，p3普通，p4低。主要用于 task 和 schedule）,
+      "tags": ["标签1", "标签2"]（自动提炼1~3个简明标签，如 会议、研发、设计、沟通、财务、灵感、生活等）,
+      "estimatedMinutes": 30（仅在 task 时生效，预估耗时分钟数，数字）
+    }
+  ]
+}
+
+【解析准则】
+1. 若输入包含多段内容或多个事项，必须拆分为多个独立 item；
+2. 准确识别每项的最佳类别（笔记/会议/灵感/日程/待办）；
+3. 准确推导相对日期与时间点；
+4. 只能输出纯 JSON，禁止任何前言后语。`;
+
+    const endpointUrl = `${config.baseUrl}/chat/completions`;
+
+    const response = await fetch(endpointUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${config.apiKey}`
+      },
+      body: JSON.stringify({
+        model: config.model || 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: text.trim() }
+        ],
+        temperature: 0.2
+      }),
+      signal: AbortSignal.timeout(30000)
+    });
+
+    if (!response.ok) {
+      const errText = await response.text().catch(() => '');
+      let errMsg = `AI 接口调用失败 (${response.status})`;
+      try {
+        const errObj = JSON.parse(errText);
+        if (errObj.error?.message) errMsg = errObj.error.message;
+      } catch {}
+
+      // Fallback to local rule parsing so user is not blocked
+      const localItems = parseTextWithRules(text.trim(), todayStr, now);
+      const legacyTasks = localItems.map((item, idx) => ({
+        id: `task_${Date.now()}_${idx}`,
+        title: item.title,
+        dueDate: item.date,
+        startTime: item.time && /^\d{2}:\d{2}$/.test(item.time) ? item.time : null,
+        priority: item.priority || 'p3',
+        tags: item.tags,
+        estimatedMinutes: item.estimatedMinutes || 30,
+        note: item.content || '',
+        category: item.category
+      }));
+
+      return res.json({
+        success: true,
+        data: {
+          items: localItems,
+          tasks: legacyTasks,
+          isRuleFallback: true,
+          message: `AI 接口临时不可用 (${errMsg})，已采用本地语义规则为您解析`
+        }
+      });
+    }
+
+    const resultJson = await response.json();
+    const rawContent = resultJson.choices?.[0]?.message?.content || '';
+
+    const parsed = extractJsonFromLlmOutput(rawContent);
+    const rawList = (parsed && (parsed.items || parsed.tasks)) || [];
+
+    if (!Array.isArray(rawList) || rawList.length === 0) {
+      const fallbackItems = parseTextWithRules(text.trim(), todayStr, now);
+      const legacyTasks = fallbackItems.map((item, idx) => ({
+        id: `task_${Date.now()}_${idx}`,
+        title: item.title,
+        dueDate: item.date,
+        startTime: item.time && /^\d{2}:\d{2}$/.test(item.time) ? item.time : null,
+        priority: item.priority || 'p3',
+        tags: item.tags,
+        estimatedMinutes: item.estimatedMinutes || 30,
+        note: item.content || '',
+        category: item.category
+      }));
+
+      return res.json({
+        success: true,
+        data: {
+          items: fallbackItems,
+          tasks: legacyTasks,
+          rawContent
+        }
+      });
+    }
+
+    // Sanitize Items
+    const validCategories = ['task', 'schedule', 'note', 'meeting', 'idea'];
+    const sanitizedItems = rawList.map((t, idx) => {
+      let cat = t.category;
+      if (!cat || !validCategories.includes(cat)) {
+        if (/会议|开会|例会|纪要/.test(t.title || '')) cat = 'meeting';
+        else if (/灵感|想法|创意|脑洞/.test(t.title || '')) cat = 'idea';
+        else if (/日程|拜访|约见|活动/.test(t.title || '') || t.startTime) cat = 'schedule';
+        else cat = 'task';
+      }
+
+      const validPriority = ['p1', 'p2', 'p3', 'p4'].includes(t.priority) ? t.priority : 'p3';
+      let validDate = t.date || t.dueDate;
+      if (!validDate || !/^\d{4}-\d{2}-\d{2}$/.test(validDate)) {
+        validDate = todayStr;
+      }
+
+      const timeVal = t.time !== undefined ? t.time : t.startTime;
+      let validTime = null;
+      if (typeof timeVal === 'string') {
+        if (timeVal === '全天' || /^\d{2}:\d{2}$/.test(timeVal)) {
+          validTime = timeVal;
+        }
+      }
+
+      return {
+        id: `item_${Date.now()}_${idx}`,
+        category: cat,
+        title: (t.title || `智能记录 ${idx + 1}`).trim(),
+        content: (t.content || t.note || t.title || '').trim(),
+        date: validDate,
+        time: validTime,
+        priority: validPriority,
+        tags: Array.isArray(t.tags) ? t.tags.filter(tag => typeof tag === 'string' && tag.trim()).slice(0, 4) : [cat === 'task' ? '待办' : cat === 'schedule' ? '日程' : cat === 'meeting' ? '会议' : cat === 'idea' ? '灵感' : '笔记'],
+        estimatedMinutes: typeof t.estimatedMinutes === 'number' && t.estimatedMinutes > 0 ? t.estimatedMinutes : 30
+      };
+    });
+
+    // Legacy tasks compatibility
+    const sanitizedTasks = sanitizedItems.map((item, idx) => ({
+      id: `parsed_${Date.now()}_${idx}`,
+      title: item.title,
+      dueDate: item.date,
+      startTime: item.time && /^\d{2}:\d{2}$/.test(item.time) ? item.time : null,
+      priority: item.priority,
+      tags: item.tags,
+      estimatedMinutes: item.estimatedMinutes,
+      note: item.content,
+      category: item.category
+    }));
+
+    res.json({
+      success: true,
+      data: {
+        items: sanitizedItems,
+        tasks: sanitizedTasks,
+        rawContent
+      }
+    });
+  } catch (err) {
+    // If an error occurs (e.g. timeout), gracefully fallback to local rules
+    const localItems = parseTextWithRules(text.trim(), todayStr, now);
+    const legacyTasks = localItems.map((item, idx) => ({
+      id: `task_${Date.now()}_${idx}`,
+      title: item.title,
+      dueDate: item.date,
+      startTime: item.time && /^\d{2}:\d{2}$/.test(item.time) ? item.time : null,
+      priority: item.priority || 'p3',
+      tags: item.tags,
+      estimatedMinutes: item.estimatedMinutes || 30,
+      note: item.content || '',
+      category: item.category
+    }));
+
+    res.json({
+      success: true,
+      data: {
+        items: localItems,
+        tasks: legacyTasks,
+        isRuleFallback: true,
+        message: `AI 接口调用超时或异常 (${err.message})，已采用本地语义规则为您解析`
+      }
+    });
+  }
 });
 
 // ==================== DAILY & WEEKLY REPORT APIS ====================
@@ -649,22 +1200,16 @@ app.delete('/api/memos/:id', (req, res) => {
 // Get daily report for date (with auto aggregation)
 app.get('/api/reports/daily/:date', (req, res) => {
   const { date } = req.params;
-  const db = readDb();
-  
-  // Find completed tasks on this date
-  const completedTasks = db.tasks.filter(t => {
+  const allTasks = taskRepo.getAll();
+
+  const completedTasks = allTasks.filter(t => {
     if (!t.completed) return false;
     const completedDate = (t.completedAt || t.createdAt || '').slice(0, 10);
     return completedDate === date;
   });
 
-  // Helper to extract chronological sort key (earliest timestamp first)
   const getTaskTimestampValue = (t) => {
-    // 1. If explicit startTime exists, e.g. "08:00" -> "2026-09-02T08:00:00"
-    if (t.startTime) {
-      return `${date}T${t.startTime}:00`;
-    }
-    // 2. If timeSpan exists, e.g. "8-9点", "08:00-09:00", "8:30-9:00"
+    if (t.startTime) return `${date}T${t.startTime}:00`;
     if (t.timeSpan) {
       const match = t.timeSpan.match(/^(\d{1,2})(?::(\d{1,2}))?/);
       if (match) {
@@ -673,49 +1218,29 @@ app.get('/api/reports/daily/:date', (req, res) => {
         return `${date}T${hour}:${min}:00`;
       }
     }
-    // 3. Fallback to completedAt timestamp
-    if (t.completedAt) {
-      return t.completedAt;
-    }
-    // 4. Fallback to dueDate
-    if (t.dueDate && t.dueDate.includes('T')) {
-      return t.dueDate;
-    }
-    // 5. Fallback to createdAt timestamp
+    if (t.completedAt) return t.completedAt;
+    if (t.dueDate && t.dueDate.includes('T')) return t.dueDate;
     return t.createdAt || '';
   };
 
-  // Sort completed tasks by chronological timestamp (earliest to latest)
-  completedTasks.sort((a, b) => {
-    const timeA = getTaskTimestampValue(a);
-    const timeB = getTaskTimestampValue(b);
-    return timeA.localeCompare(timeB);
-  });
+  completedTasks.sort((a, b) => getTaskTimestampValue(a).localeCompare(getTaskTimestampValue(b)));
 
-  // Find incomplete tasks on this date
-  const incompleteTasks = db.tasks.filter(t => {
+  const incompleteTasks = allTasks.filter(t => {
     if (t.completed) return false;
     const dueDate = (t.dueDate || '').slice(0, 10);
     return dueDate <= date;
   });
 
-  // Focus logs for this date
-  const dayLogs = (db.focusLogs || []).filter(l => l.date === date);
+  const dayLogs = focusRepo.getAll(date);
   const totalFocusMinutes = dayLogs.reduce((sum, l) => sum + (l.durationMinutes || 0), 0);
 
-  // Existing saved report
-  const existing = (db.dailyReports && db.dailyReports[date]) || null;
+  const existing = dailyReportRepo.getByDate(date);
 
-  // Auto generated summary draft
-  let defaultDeliverables = completedTasks.length > 0 
+  let defaultDeliverables = completedTasks.length > 0
     ? completedTasks.map((t, i) => {
         const timeParts = [];
-        if (t.timeSpan) {
-          timeParts.push(`完成时间：${t.timeSpan}`);
-        }
-        if (t.actualMinutes) {
-          timeParts.push(`${t.actualMinutes}分钟`);
-        }
+        if (t.timeSpan) timeParts.push(`完成时间：${t.timeSpan}`);
+        if (t.actualMinutes) timeParts.push(`${t.actualMinutes}分钟`);
         const suffix = timeParts.length > 0 ? `（${timeParts.join('，')}）` : '';
         return `${i + 1}. ${t.title}${suffix}`;
       }).join('\n')
@@ -725,7 +1250,6 @@ app.get('/api/reports/daily/:date', (req, res) => {
     ? incompleteTasks.map((t, i) => `${i + 1}. [${t.priority.toUpperCase()}] ${t.title}`).join('\n')
     : '推进顺利，无明显阻塞项';
 
-  // Calculate tomorrow's date for this report
   const dParts = date.split('-').map(Number);
   const targetDateObj = new Date(dParts[0], dParts[1] - 1, dParts[2]);
   targetDateObj.setDate(targetDateObj.getDate() + 1);
@@ -733,8 +1257,7 @@ app.get('/api/reports/daily/:date', (req, res) => {
   const tomorrowDayOfWeek = targetDateObj.getDay();
   const isTomorrowWorkday = tomorrowDayOfWeek >= 1 && tomorrowDayOfWeek <= 5;
 
-  // Find recurring parent tasks applicable to tomorrow
-  const recurringParents = (db.tasks || []).filter(t => t.isRecurring && !t.recurringParentId && t.recurringConfig);
+  const recurringParents = allTasks.filter(t => t.isRecurring && !t.recurringParentId && t.recurringConfig);
   const tomorrowRecurringTasks = recurringParents.filter(parent => {
     const { frequency, startDate, endDate } = parent.recurringConfig;
     if (!startDate || tomorrowStr < startDate) return false;
@@ -747,15 +1270,13 @@ app.get('/api/reports/daily/:date', (req, res) => {
     return true;
   });
 
-  // Also any tasks whose dueDate is explicitly tomorrow
-  const tomorrowDueTasks = (db.tasks || []).filter(t => {
+  const tomorrowDueTasks = allTasks.filter(t => {
     if (t.completed) return false;
     if (t.isRecurring) return false;
     const due = (t.dueDate || '').slice(0, 10);
     return due === tomorrowStr;
   });
 
-  // Combine tomorrow items
   const allTomorrowTitles = [
     ...tomorrowRecurringTasks.map(t => t.title),
     ...tomorrowDueTasks.map(t => t.title)
@@ -765,12 +1286,18 @@ app.get('/api/reports/daily/:date', (req, res) => {
     ? allTomorrowTitles.map((title, i) => `${i + 1}. ${title}`).join('\n')
     : '1. 按计划推进重点工作\n2. 跟进日常事务协同';
 
+  const isExisting = !!existing;
+
   const reportData = {
     date,
-    deliverables: existing?.deliverables || defaultDeliverables,
+    isExisting,
+    deliverables: existing ? existing.deliverables : '',
     chronologicalDeliverables: defaultDeliverables,
-    blockers: existing?.blockers || defaultBlockers,
-    tomorrowPlan: existing?.tomorrowPlan || defaultTomorrow,
+    suggestedDeliverables: defaultDeliverables,
+    blockers: existing ? existing.blockers : '',
+    suggestedBlockers: defaultBlockers,
+    tomorrowPlan: existing ? existing.tomorrowPlan : '',
+    suggestedTomorrowPlan: defaultTomorrow,
     customNotes: existing?.customNotes || '',
     completedTasksCount: completedTasks.length,
     totalFocusMinutes,
@@ -793,98 +1320,76 @@ app.get('/api/reports/daily/:date', (req, res) => {
 // Save or update daily report
 app.post('/api/reports/daily/:date', (req, res) => {
   const { date } = req.params;
-  const db = readDb();
-  db.dailyReports = db.dailyReports || {};
-  
-  db.dailyReports[date] = {
-    date,
+  const existing = dailyReportRepo.getByDate(date);
+
+  const saved = dailyReportRepo.save(date, {
     deliverables: req.body.deliverables || '',
     blockers: req.body.blockers || '',
     tomorrowPlan: req.body.tomorrowPlan || '',
     customNotes: req.body.customNotes || '',
-    syncedToExcel: req.body.syncedToExcel !== undefined ? req.body.syncedToExcel : (db.dailyReports[date]?.syncedToExcel || false),
-    syncedAt: req.body.syncedAt || db.dailyReports[date]?.syncedAt || null,
-    updatedAt: new Date().toISOString()
-  };
+    syncedToExcel: req.body.syncedToExcel !== undefined ? req.body.syncedToExcel : (existing?.syncedToExcel || false),
+    syncedAt: req.body.syncedAt || existing?.syncedAt || null
+  });
 
-  // Also update or create corresponding note in db.notes
-  if (db.notes && Array.isArray(db.notes)) {
-    const noteIdx = db.notes.findIndex(n => n.type === 'daily_report' && n.date === date);
-    if (noteIdx !== -1) {
-      db.notes[noteIdx] = {
-        ...db.notes[noteIdx],
-        content: req.body.deliverables || db.notes[noteIdx].content,
-        dailyReportData: {
-          deliverables: req.body.deliverables || '',
-          blockers: req.body.blockers || '',
-          tomorrowPlan: req.body.tomorrowPlan || '',
-          completedCount: db.dailyReports[date].completedTasksCount || 0,
-          focusMinutes: db.dailyReports[date].totalFocusMinutes || 0,
-        },
-        updatedAt: new Date().toISOString()
-      };
-    }
+  const matchingNotes = noteRepo.getAll({ type: 'daily_report', date });
+  if (matchingNotes.length > 0) {
+    noteRepo.update(matchingNotes[0].id, {
+      content: req.body.deliverables || matchingNotes[0].content,
+      dailyReportData: {
+        deliverables: req.body.deliverables || '',
+        blockers: req.body.blockers || '',
+        tomorrowPlan: req.body.tomorrowPlan || '',
+        completedCount: saved.completedTasksCount || 0,
+        focusMinutes: saved.totalFocusMinutes || 0,
+      }
+    });
+    broadcastSync('notes', 'update');
   }
 
-  writeDb(db);
-  res.json({ success: true, data: db.dailyReports[date] });
+  broadcastSync('reports', 'update', saved);
+  res.json({ success: true, data: saved });
 });
 
 // Delete daily report
 app.delete('/api/reports/daily/:date', (req, res) => {
   const { date } = req.params;
-  const db = readDb();
-  if (db.dailyReports && db.dailyReports[date]) {
-    delete db.dailyReports[date];
-  }
-  if (db.notes && Array.isArray(db.notes)) {
-    db.notes = db.notes.filter(n => !(n.type === 'daily_report' && n.date === date));
-  }
-  writeDb(db);
+  dailyReportRepo.delete(date);
+
+  const matchingNotes = noteRepo.getAll({ type: 'daily_report', date });
+  matchingNotes.forEach(n => noteRepo.delete(n.id));
+
+  broadcastSync('reports', 'delete', { date });
   res.json({ success: true });
 });
 
 // Get all daily reports sorted by date descending
 app.get('/api/reports/daily-list', (req, res) => {
-  const db = readDb();
-  const reports = db.dailyReports || {};
-  const list = Object.keys(reports).map(dateKey => {
-    const rep = reports[dateKey];
-    return {
-      ...rep,
-      date: dateKey,
-    };
-  });
+  const reports = dailyReportRepo.getAll();
+  const list = Object.values(reports);
   list.sort((a, b) => b.date.localeCompare(a.date));
   res.json({ success: true, data: list });
 });
 
-// Export daily reports to Excel (.xlsx) by date or date range
+// Export daily reports to Excel
 app.get('/api/reports/export/excel', async (req, res) => {
   try {
     const { startDate, endDate, date } = req.query;
-    const db = readDb();
-    const reports = db.dailyReports || {};
+    const reports = dailyReportRepo.getAll();
 
     let targetDates = Object.keys(reports);
-
     if (date) {
       targetDates = targetDates.filter(d => d === date);
     } else {
       if (startDate) targetDates = targetDates.filter(d => d >= startDate);
       if (endDate) targetDates = targetDates.filter(d => d <= endDate);
     }
-
     targetDates.sort((a, b) => b.localeCompare(a));
 
     const workbook = new ExcelJS.Workbook();
     workbook.creator = 'Personal Workspace';
     workbook.created = new Date();
 
-    const sheet = workbook.addWorksheet('工作日报台账', {
-      views: [{ showGridLines: true }]
-    });
-
+    const sheet = workbook.addWorksheet('工作日报台账', { views: [{ showGridLines: true }] });
     sheet.columns = [
       { header: '日期', key: 'date', width: 15 },
       { header: '星期', key: 'weekday', width: 12 },
@@ -897,7 +1402,6 @@ app.get('/api/reports/export/excel', async (req, res) => {
       { header: '更新时间', key: 'updatedAt', width: 22 },
     ];
 
-    // Header styling
     const headerRow = sheet.getRow(1);
     headerRow.height = 30;
     headerRow.font = { name: 'Microsoft YaHei', size: 10, bold: true, color: { argb: 'FFFFFFFF' } };
@@ -905,7 +1409,7 @@ app.get('/api/reports/export/excel', async (req, res) => {
     headerRow.fill = {
       type: 'pattern',
       pattern: 'solid',
-      fgColor: { argb: 'FF0071E3' } // Apple Blue
+      fgColor: { argb: 'FF0071E3' }
     };
 
     const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
@@ -936,7 +1440,6 @@ app.get('/api/reports/export/excel', async (req, res) => {
       row.font = { name: 'Microsoft YaHei', size: 9 };
     });
 
-    // Clean cell borders
     sheet.eachRow((row) => {
       row.eachCell((cell) => {
         cell.border = {
@@ -963,13 +1466,11 @@ app.get('/api/reports/export/excel', async (req, res) => {
 
 // Weekly report aggregation
 app.get('/api/reports/weekly', (req, res) => {
-  const db = readDb();
   const targetDateStr = req.query.date ? String(req.query.date) : new Date().toISOString().slice(0, 10);
   const targetDate = new Date(targetDateStr);
 
-  // Compute Monday of current week
   const day = targetDate.getDay();
-  const diffToMonday = day === 0 ? -6 : 1 - day; // 0 is Sunday
+  const diffToMonday = day === 0 ? -6 : 1 - day;
   const monday = new Date(targetDate);
   monday.setDate(targetDate.getDate() + diffToMonday);
 
@@ -984,17 +1485,17 @@ app.get('/api/reports/weekly', (req, res) => {
   const fridayStr = weekDates[4];
   const sundayStr = weekDates[6];
 
-  // Aggregate daily reports & completed tasks
-  const weekTasks = db.tasks.filter(t => {
+  const allTasks = taskRepo.getAll();
+  const weekTasks = allTasks.filter(t => {
     if (!t.completed || !t.completedAt) return false;
     const d = t.completedAt.slice(0, 10);
     return weekDates.includes(d);
   });
 
-  const weekLogs = (db.focusLogs || []).filter(l => weekDates.includes(l.date));
+  const allLogs = focusRepo.getAll();
+  const weekLogs = allLogs.filter(l => weekDates.includes(l.date));
   const totalWeekFocusMinutes = weekLogs.reduce((s, l) => s + (l.durationMinutes || 0), 0);
 
-  // Group deliverables by tags
   const tagGroups = {};
   weekTasks.forEach(task => {
     const tag = (task.tags && task.tags[0]) || '综合交付';
@@ -1015,22 +1516,21 @@ app.get('/api/reports/weekly', (req, res) => {
     deliverablesSummary = '本周暂无已完成的结构化待办交付。';
   }
 
-  const generatedDraft = `# 本周工作总结与下周规划 (${mondayStr} ~ ${fridayStr})
+  const generatedDraft = `# 本周工作总结 (${mondayStr} ~ ${fridayStr})
 
-## 一、 本周核心工作交付成果
-- **完成待办总数**：${weekTasks.length} 项
-- **深度专注耗时**：${(totalWeekFocusMinutes / 60).toFixed(1)} 小时 (${totalWeekFocusMinutes} 分钟)
+## 一、 本周完成工作
+- **完成任务**：${weekTasks.length} 项
+- **工作用时**：${(totalWeekFocusMinutes / 60).toFixed(1)} 小时
 
 ${deliverablesSummary.trim()}
 
-## 二、 关键成效与复盘
-- 各业务线按计划稳步推进，重点解决了关键功能链路与数据闭环。
-- 深度专注时长保持稳定，待办清单流转顺畅。
+## 二、 总结与体会
+- 本周各项工作按计划完成，整体进展顺利。
 
-## 三、 下周工作规划初稿
-1. 持续跟踪未完结任务及待攻坚事项；
-2. 推进下一阶段重点里程碑交付与台账归档；
-3. 持续优化工作流，提升日常协同与研发效能。
+## 三、 下周工作计划
+1. 继续跟进未完成的工作；
+2. 按计划推进下周重点事项；
+3. 做好日常工作记录。
 `;
 
   res.json({
@@ -1050,11 +1550,13 @@ ${deliverablesSummary.trim()}
 // ==================== CALENDAR SUMMARY API ====================
 
 app.get('/api/calendar/summary', (req, res) => {
-  const db = readDb();
+  const tasks = taskRepo.getAll();
+  const logs = focusRepo.getAll();
+  const reports = dailyReportRepo.getAll();
+
   const summaryMap = {};
 
-  // Analyze tasks
-  db.tasks.forEach(t => {
+  tasks.forEach(t => {
     const date = (t.dueDate || t.createdAt || '').slice(0, 10);
     if (!summaryMap[date]) {
       summaryMap[date] = { totalTasks: 0, completedTasks: 0, focusMinutes: 0, hasReport: false, status: 'gray' };
@@ -1065,8 +1567,7 @@ app.get('/api/calendar/summary', (req, res) => {
     }
   });
 
-  // Analyze focus logs
-  (db.focusLogs || []).forEach(l => {
+  logs.forEach(l => {
     const d = l.date;
     if (!summaryMap[d]) {
       summaryMap[d] = { totalTasks: 0, completedTasks: 0, focusMinutes: 0, hasReport: false, status: 'gray' };
@@ -1074,20 +1575,13 @@ app.get('/api/calendar/summary', (req, res) => {
     summaryMap[d].focusMinutes += (l.durationMinutes || 0);
   });
 
-  // Analyze reports
-  if (db.dailyReports) {
-    Object.keys(db.dailyReports).forEach(d => {
-      if (!summaryMap[d]) {
-        summaryMap[d] = { totalTasks: 0, completedTasks: 0, focusMinutes: 0, hasReport: false, status: 'gray' };
-      }
-      summaryMap[d].hasReport = true;
-    });
-  }
+  Object.keys(reports).forEach(d => {
+    if (!summaryMap[d]) {
+      summaryMap[d] = { totalTasks: 0, completedTasks: 0, focusMinutes: 0, hasReport: false, status: 'gray' };
+    }
+    summaryMap[d].hasReport = true;
+  });
 
-  // Calculate status:
-  // green: hasReport && all tasks completed (totalTasks > 0 && completedTasks === totalTasks)
-  // yellow: completedTasks > 0 but some incomplete or report not submitted
-  // red: totalTasks > completedTasks
   Object.keys(summaryMap).forEach(d => {
     const item = summaryMap[d];
     if (item.totalTasks > 0 && item.completedTasks === item.totalTasks) {
@@ -1108,14 +1602,12 @@ app.get('/api/calendar/summary', (req, res) => {
 
 // List Excel configs
 app.get('/api/excel/configs', (req, res) => {
-  const db = readDb();
-  res.json({ success: true, data: db.excelConfigs || [] });
+  res.json({ success: true, data: excelConfigRepo.getAll() });
 });
 
 // Add Excel config
 app.post('/api/excel/configs', (req, res) => {
-  const db = readDb();
-  const newConfig = {
+  const newConfig = excelConfigRepo.create({
     id: `cfg_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
     name: req.body.name || '新表格快捷跳板',
     category: req.body.category || '日常办公',
@@ -1123,66 +1615,61 @@ app.post('/api/excel/configs', (req, res) => {
     targetSheet: req.body.targetSheet || 'Sheet1',
     isAnnualLedger: !!req.body.isAnnualLedger,
     monitoredCells: Array.isArray(req.body.monitoredCells) ? req.body.monitoredCells : []
-  };
-
-  db.excelConfigs = db.excelConfigs || [];
-  db.excelConfigs.push(newConfig);
-  writeDb(db);
+  });
+  broadcastSync('excel_configs', 'create', newConfig);
   res.json({ success: true, data: newConfig });
 });
 
 // Update Excel config
 app.put('/api/excel/configs/:id', (req, res) => {
-  const db = readDb();
-  const idx = (db.excelConfigs || []).findIndex(c => c.id === req.params.id);
-  if (idx === -1) {
+  const updated = excelConfigRepo.update(req.params.id, req.body);
+  if (!updated) {
     return res.status(404).json({ success: false, message: '配置不存在' });
   }
-  db.excelConfigs[idx] = { ...db.excelConfigs[idx], ...req.body };
-  writeDb(db);
-  res.json({ success: true, data: db.excelConfigs[idx] });
+  broadcastSync('excel_configs', 'update', updated);
+  res.json({ success: true, data: updated });
 });
 
 // Delete Excel config
 app.delete('/api/excel/configs/:id', (req, res) => {
-  const db = readDb();
-  db.excelConfigs = (db.excelConfigs || []).filter(c => c.id !== req.params.id);
-  writeDb(db);
+  excelConfigRepo.delete(req.params.id);
+  broadcastSync('excel_configs', 'delete', { id: req.params.id });
   res.json({ success: true });
 });
 
-// Shared helper to open file with system default application on the interactive desktop
+// Shared helper to open file with system default application on the interactive desktop (Windows only)
 function openWithSystemDefault(filePath, res, successMsg, onOpened) {
   try {
-    const vbsPath = path.join(__dirname, 'open_helper.vbs');
+    if (process.platform !== 'win32') {
+      return res.json({
+        success: true,
+        openedLocally: false,
+        message: '服务器运行在非 Windows 环境，建议直接通过浏览器下载或预览',
+        downloadPath: filePath
+      });
+    }
 
-    // schtasks with /it flag runs the task in Session 1 on the interactive desktop
-    // This solves the Windows background daemon GUI suppression
+    const vbsPath = path.join(__dirname, 'open_helper.vbs');
     const taskCmd = `schtasks /create /tn "OpenWorkbenchFile" /tr "wscript.exe \\"${vbsPath}\\" \\"${filePath}\\"" /sc ONCE /st 23:59 /it /f`;
 
     exec(taskCmd, (createErr) => {
       if (!createErr) {
         exec('schtasks /run /tn "OpenWorkbenchFile"', (runErr) => {
           if (runErr) {
-            console.warn('schtasks run failed, falling back to direct wscript:', runErr);
             const fb = spawn('wscript.exe', [vbsPath, filePath], { detached: true, stdio: 'ignore' });
             fb.unref();
           }
         });
       } else {
-        console.warn('schtasks create failed, falling back to direct wscript:', createErr);
         const fb = spawn('wscript.exe', [vbsPath, filePath], { detached: true, stdio: 'ignore' });
         fb.unref();
       }
     });
 
-    if (onOpened) {
-      onOpened();
-    }
+    if (onOpened) onOpened();
 
-    return res.json({ success: true, message: successMsg || '已通过系统默认应用快速打开' });
+    return res.json({ success: true, openedLocally: true, message: successMsg || '已通过系统默认应用快速打开' });
   } catch (err) {
-    console.error('Failed to launch application:', err);
     return res.status(500).json({ success: false, message: `打开文件失败: ${err.message}` });
   }
 }
@@ -1194,9 +1681,8 @@ app.post('/api/excel/open', (req, res) => {
     return res.status(400).json({ success: false, message: '文件路径不能为空' });
   }
 
-  // Check file exists
   if (!fs.existsSync(filePath)) {
-    return res.status(404).json({ success: false, message: `本地文件不存在: ${filePath}` });
+    return res.status(404).json({ success: false, message: `文件不存在: ${filePath}` });
   }
 
   return openWithSystemDefault(filePath, res, '已唤起系统应用打开表格');
@@ -1237,7 +1723,6 @@ app.post('/api/excel/snapshot', async (req, res) => {
       const cell = sheet.getCell(cellRef);
       let val = cell.value;
       
-      // Handle exceljs formula results or rich text
       if (val && typeof val === 'object') {
         if (val.result !== undefined) {
           val = val.result;
@@ -1271,14 +1756,14 @@ app.post('/api/excel/snapshot', async (req, res) => {
 // Append daily summary row into target Excel ledger
 app.post('/api/excel/append-daily', async (req, res) => {
   const { configId, date, deliverables, blockers, tomorrowPlan, totalFocusMinutes, completedCount } = req.body;
-  const db = readDb();
+  const configs = excelConfigRepo.getAll();
 
   let targetConfig = null;
   if (configId) {
-    targetConfig = (db.excelConfigs || []).find(c => c.id === configId);
+    targetConfig = configs.find(c => c.id === configId);
   }
   if (!targetConfig) {
-    targetConfig = (db.excelConfigs || []).find(c => c.isAnnualLedger) || (db.excelConfigs || [])[0];
+    targetConfig = configs.find(c => c.isAnnualLedger) || configs[0];
   }
 
   if (!targetConfig || !targetConfig.filePath) {
@@ -1327,15 +1812,13 @@ app.post('/api/excel/append-daily', async (req, res) => {
 
     await workbook.xlsx.writeFile(filePath);
 
-    // Update daily report synced status
     const reportDate = date || new Date().toISOString().slice(0, 10);
-    db.dailyReports = db.dailyReports || {};
-    if (!db.dailyReports[reportDate]) {
-      db.dailyReports[reportDate] = { date: reportDate };
-    }
-    db.dailyReports[reportDate].syncedToExcel = true;
-    db.dailyReports[reportDate].syncedAt = nowStr;
-    writeDb(db);
+    dailyReportRepo.save(reportDate, {
+      syncedToExcel: true,
+      syncedAt: nowStr
+    });
+
+    broadcastSync('reports', 'update');
 
     res.json({
       success: true,
@@ -1348,114 +1831,74 @@ app.post('/api/excel/append-daily', async (req, res) => {
   }
 });
 
-// ==================== LINKED FILES HUB APIS ====================
-
-// Ensure uploads directory exists
-const UPLOADS_DIR = path.join(__dirname, 'uploads');
-if (!fs.existsSync(UPLOADS_DIR)) {
-  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-}
-
-// Ensure demo Excel exists for quick testing
-const demoExcelPath = path.join(DATA_DIR, 'demo_ledger.xlsx');
-if (!fs.existsSync(demoExcelPath)) {
-  try {
-    const wb = new ExcelJS.Workbook();
-    const ws = wb.addWorksheet('工作日志台账');
-    ws.columns = [
-      { header: '日期', key: 'date', width: 14 },
-      { header: '今日工作成果', key: 'deliverables', width: 40 },
-      { header: '明日计划', key: 'tomorrowPlan', width: 30 },
-      { header: '完成数', key: 'completedCount', width: 10 },
-      { header: '归档时间', key: 'syncedAt', width: 22 }
-    ];
-    ws.addRow({
-      date: '2026-09-02',
-      deliverables: '两江区域异常小区监控通报（完成时间：8-9点，20分钟）',
-      tomorrowPlan: '日常运维巡检',
-      completedCount: 5,
-      syncedAt: new Date().toLocaleString()
-    });
-    wb.xlsx.writeFile(demoExcelPath);
-  } catch (e) {
-    console.error('Failed to create demo Excel:', e);
-  }
-}
+// ==================== CROSS-PLATFORM LINKED FILES APIS ====================
 
 // Get all linked files
 app.get('/api/files', (req, res) => {
-  const db = readDb();
-  if (!db.linkedFiles || db.linkedFiles.length === 0) {
-    db.linkedFiles = [
-      {
-        id: 'file_demo_1',
-        name: '工作日志与日常台账.xlsx',
-        filePath: demoExcelPath,
-        fileType: 'xlsx',
-        size: 14520,
-        category: '数据表格',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        lastOpenedAt: null,
-        isPinned: true,
-        notes: '团队核心工作台账'
-      },
-      {
-        id: 'file_demo_2',
-        name: '工作台设计规划与架构说明.md',
-        filePath: path.join(__dirname, '..', 'package.json'),
-        fileType: 'json',
-        size: 1049,
-        category: '工作文档',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        lastOpenedAt: null,
-        isPinned: true,
-        notes: '产品工程与依赖配置'
-      },
-      {
-        id: 'file_demo_3',
-        name: '本地持久化数据.json',
-        filePath: DB_FILE,
-        fileType: 'json',
-        size: 24500,
-        category: '开发配置',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        lastOpenedAt: null,
-        isPinned: false,
-        notes: '个人工作台本地数据'
-      }
-    ];
-    writeDb(db);
-  }
-  res.json({ success: true, data: db.linkedFiles });
+  res.json({ success: true, data: fileRepo.getAll() });
 });
 
-// Link new local file as a pure hyperlink to the user's actual original file
+// Multi-device file upload (Upload file from mobile / web browser to server)
+app.post('/api/files/upload', upload.single('file'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ success: false, message: '未接收到上传的文件' });
+  }
+
+  const originalName = Buffer.from(req.file.originalname, 'latin1').toString('utf8');
+  const ext = path.extname(originalName).replace('.', '').toLowerCase();
+
+  const newFile = fileRepo.create({
+    id: `file_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+    name: originalName,
+    filePath: req.file.path,
+    fileType: ext || 'file',
+    size: req.file.size,
+    category: req.body.category || '数据表格',
+    isPinned: req.body.isPinned === 'true',
+    notes: req.body.notes || '多端上传文件'
+  });
+
+  broadcastSync('files', 'create', newFile);
+  res.json({ success: true, data: newFile });
+});
+
+// Download file directly to browser (for mobile or remote terminals)
+app.get('/api/files/download/:id', (req, res) => {
+  const file = fileRepo.getById(req.params.id);
+  if (!file) {
+    return res.status(404).json({ success: false, message: '文件记录不存在' });
+  }
+
+  if (!fs.existsSync(file.filePath)) {
+    return res.status(404).json({ success: false, message: '服务器端物理文件不存在或已被移动' });
+  }
+
+  fileRepo.updateLastOpened(file.id);
+  broadcastSync('files', 'open', { id: file.id });
+
+  // Proper UTF-8 filename header
+  res.download(file.filePath, file.name);
+});
+
+// Link local path manually
 app.post('/api/files', (req, res) => {
-  const db = readDb();
   let { name, filePath, fileType, size, category, isPinned, notes } = req.body;
 
   if (!filePath) {
     return res.status(400).json({ success: false, message: '请提供本地文件路径' });
   }
 
-  // Strip surrounding quotes if pasted with quotes (e.g. from Windows "Copy as path")
   filePath = filePath.replace(/^["']|["']$/g, '').trim();
 
-  // If name not provided or matches a path, take the real base filename
   if (!name || name === filePath) {
     name = path.basename(filePath);
   }
 
-  // Derive fileType from extension if needed
   if (!fileType && filePath) {
     const ext = path.extname(filePath).toLowerCase().replace('.', '');
     fileType = ext || 'file';
   }
 
-  // Get real file size if not provided
   if (!size && fs.existsSync(filePath)) {
     try {
       size = fs.statSync(filePath).size;
@@ -1464,102 +1907,150 @@ app.post('/api/files', (req, res) => {
     }
   }
 
-  const newFile = {
+  const newFile = fileRepo.create({
     id: `file_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-    name: name,
-    filePath: filePath,
+    name,
+    filePath,
     fileType: (fileType || 'file').toLowerCase(),
     size: size || 0,
     category: category || '数据表格',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    lastOpenedAt: null,
     isPinned: !!isPinned,
     notes: notes || ''
-  };
+  });
 
-  db.linkedFiles = db.linkedFiles || [];
-  db.linkedFiles.unshift(newFile);
-  writeDb(db);
-
+  broadcastSync('files', 'create', newFile);
   res.json({ success: true, data: newFile });
 });
 
 // Update linked file
 app.put('/api/files/:id', (req, res) => {
-  const db = readDb();
-  const idx = (db.linkedFiles || []).findIndex(f => f.id === req.params.id);
-  if (idx === -1) {
+  const updated = fileRepo.update(req.params.id, req.body);
+  if (!updated) {
     return res.status(404).json({ success: false, message: '文件链接不存在' });
   }
-
-  db.linkedFiles[idx] = {
-    ...db.linkedFiles[idx],
-    ...req.body,
-    updatedAt: new Date().toISOString()
-  };
-  writeDb(db);
-  res.json({ success: true, data: db.linkedFiles[idx] });
+  broadcastSync('files', 'update', updated);
+  res.json({ success: true, data: updated });
 });
 
-// Delete linked file
+// Delete linked file (with physical disk cleanup to free server storage)
 app.delete('/api/files/:id', (req, res) => {
-  const db = readDb();
-  db.linkedFiles = (db.linkedFiles || []).filter(f => f.id !== req.params.id);
-  writeDb(db);
-  res.json({ success: true });
+  const file = fileRepo.getById(req.params.id);
+  if (!file) {
+    return res.status(404).json({ success: false, message: '文件不存在' });
+  }
+
+  // 同步物理删除服务器存储中的文件，避免浪费磁盘空间
+  if (file.filePath) {
+    try {
+      const normalizedPath = path.resolve(file.filePath);
+      const normalizedUploads = path.resolve(UPLOADS_DIR);
+      const rel = path.relative(normalizedUploads, normalizedPath);
+      const isInsideUploads = !rel.startsWith('..') && !path.isAbsolute(rel);
+
+      if (fs.existsSync(normalizedPath)) {
+        // 如果文件位于服务器 uploads 目录下，或标记为多端上传文件，彻底删除磁盘物理文件
+        if (isInsideUploads || (file.notes && file.notes.includes('上传')) || file.filePath.includes('uploads')) {
+          fs.unlinkSync(normalizedPath);
+          console.log(`[Storage Cleanup] 已同步从服务器磁盘删除文件: ${normalizedPath}`);
+        }
+      }
+    } catch (err) {
+      console.error(`[Storage Cleanup Error] 清理物理文件失败: ${file.filePath}`, err);
+    }
+  }
+
+  fileRepo.delete(req.params.id);
+  broadcastSync('files', 'delete', { id: req.params.id });
+  res.json({ success: true, message: '文件及服务器存储已同步删除' });
 });
 
-// Quick open file with Windows default application
+// Smart open file: opens locally if on desktop Windows, or falls back to browser download
 app.post('/api/files/open', (req, res) => {
   const { filePath, id } = req.body;
-  if (!filePath) {
+  if (!filePath && !id) {
     return res.status(400).json({ success: false, message: '文件路径不能为空' });
   }
 
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).json({ success: false, message: `本地文件不存在: ${filePath}` });
+  let file = null;
+  if (id) {
+    file = fileRepo.getById(id);
+  }
+  const targetPath = filePath || (file && file.filePath);
+
+  if (!targetPath || !fs.existsSync(targetPath)) {
+    return res.status(404).json({
+      success: false,
+      message: `服务端物理文件未找到: ${targetPath || '未知路径'}`
+    });
   }
 
-  return openWithSystemDefault(filePath, res, '已通过系统默认应用快速打开', () => {
-    if (id) {
-      const db = readDb();
-      const file = (db.linkedFiles || []).find(f => f.id === id);
-      if (file) {
-        file.lastOpenedAt = new Date().toISOString();
-        writeDb(db);
+  const downloadUrl = id ? `/api/files/download/${id}` : null;
+
+  // If on Windows and running interactively, attempt native open
+  if (process.platform === 'win32') {
+    return openWithSystemDefault(targetPath, res, '已通过系统默认应用快速打开', () => {
+      if (id) {
+        fileRepo.updateLastOpened(id);
+        broadcastSync('files', 'open', { id });
       }
-    }
+    });
+  }
+
+  // Non-Windows server: provide browser download url
+  if (id) {
+    fileRepo.updateLastOpened(id);
+    broadcastSync('files', 'open', { id });
+  }
+
+  return res.json({
+    success: true,
+    openedLocally: false,
+    downloadUrl,
+    message: '已生成浏览器下载链接'
   });
 });
 
-// Reveal file in Windows Explorer
+// Reveal file in Windows Explorer (gracefully handled on other platforms)
 app.post('/api/files/reveal', (req, res) => {
   const { filePath } = req.body;
   if (!filePath || !fs.existsSync(filePath)) {
     return res.status(404).json({ success: false, message: '文件不存在' });
   }
-  const taskCmd = `schtasks /create /tn "RevealWorkbenchFile" /tr "explorer.exe /select,\\"${filePath}\\"" /sc ONCE /st 23:59 /it /f`;
-  exec(taskCmd, (taskErr) => {
-    if (!taskErr) {
-      exec('schtasks /run /tn "RevealWorkbenchFile"');
-    } else {
-      exec(`explorer /select,"${filePath}"`);
-    }
+
+  if (process.platform === 'win32') {
+    const taskCmd = `schtasks /create /tn "RevealWorkbenchFile" /tr "explorer.exe /select,\\"${filePath}\\"" /sc ONCE /st 23:59 /it /f`;
+    exec(taskCmd, (taskErr) => {
+      if (!taskErr) {
+        exec('schtasks /run /tn "RevealWorkbenchFile"');
+      } else {
+        exec(`explorer /select,"${filePath}"`);
+      }
+    });
+    return res.json({ success: true, message: '已在资源管理器中定位' });
+  }
+
+  return res.json({
+    success: true,
+    message: '非 Windows 系统环境，文件位于服务器本地存储'
   });
-  res.json({ success: true, message: '已在资源管理器中定位' });
 });
 
-// Interactive File Picker Dialog via Windows OpenFileDialog
+// Interactive File Picker (Legacy Windows Dialog fallback)
 app.post('/api/files/pick', (req, res) => {
-  const resultFile = 'C:\\Users\\Admin\\OneDrive\\2304~1\\work\\server\\data\\picked_file.txt';
-  const pickerExe = 'C:\\Users\\Admin\\OneDrive\\2304~1\\work\\server\\picker.exe';
+  if (process.platform !== 'win32') {
+    return res.json({
+      success: false,
+      message: '服务器运行在非 Windows 桌面环境，请直接点击“上传文件”从手机或电脑中选择文件'
+    });
+  }
+
+  const resultFile = path.join(DATA_DIR, 'picked_file.txt');
+  const pickerExe = path.join(__dirname, 'picker.exe');
 
   if (fs.existsSync(resultFile)) {
     try { fs.unlinkSync(resultFile); } catch (e) {}
   }
 
-  // Pre-ensure scheduled task points to fast native picker.exe
   const runTask = () => {
     exec('schtasks /run /tn "PickWorkbenchFile"', (runErr) => {
       if (runErr) {
@@ -1593,29 +2084,29 @@ app.post('/api/files/pick', (req, res) => {
 
         const cleanPath = rawContent.replace(/^["']|["']$/g, '').trim();
         const fileName = path.basename(cleanPath);
-            const ext = path.extname(cleanPath).toLowerCase().replace('.', '');
-            let size = 0;
-            if (fs.existsSync(cleanPath)) {
-              try { size = fs.statSync(cleanPath).size; } catch (e) {}
-            }
-
-            return res.json({
-              success: true,
-              filePath: cleanPath,
-              fileName: fileName,
-              fileType: ext,
-              size: size
-            });
-          } catch (readErr) {
-            return res.status(500).json({ success: false, message: '读取选择结果失败' });
-          }
+        const ext = path.extname(cleanPath).toLowerCase().replace('.', '');
+        let size = 0;
+        if (fs.existsSync(cleanPath)) {
+          try { size = fs.statSync(cleanPath).size; } catch (e) {}
         }
 
-        if (Date.now() - startTime > 90000) {
-          clearInterval(interval);
-          return res.status(408).json({ success: false, message: '选择文件超时' });
-        }
-      }, 150);
+        return res.json({
+          success: true,
+          filePath: cleanPath,
+          fileName: fileName,
+          fileType: ext,
+          size: size
+        });
+      } catch (readErr) {
+        return res.status(500).json({ success: false, message: '读取选择结果失败' });
+      }
+    }
+
+    if (Date.now() - startTime > 90000) {
+      clearInterval(interval);
+      return res.status(408).json({ success: false, message: '选择文件超时' });
+    }
+  }, 150);
 });
 
 // Start listening

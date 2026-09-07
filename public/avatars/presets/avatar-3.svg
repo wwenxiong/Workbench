@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4EBA8E"/>
+      <stop offset="100%" stop-color="#9DE7C8"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="36" fill="url(#bg3)"/>
+  <!-- Ears -->
+  <circle cx="34" cy="36" r="12" fill="#2B2D42"/>
+  <circle cx="86" cy="36" r="12" fill="#2B2D42"/>
+  <!-- Head -->
+  <circle cx="60" cy="66" r="34" fill="#FFFFFF"/>
+  <!-- Eye Patches -->
+  <ellipse cx="46" cy="62" rx="9" ry="11" transform="rotate(-15, 46, 62)" fill="#2B2D42"/>
+  <ellipse cx="74" cy="62" rx="9" ry="11" transform="rotate(15, 74, 62)" fill="#2B2D42"/>
+  <!-- Eyes -->
+  <circle cx="47" cy="61" r="3.5" fill="#FFFFFF"/>
+  <circle cx="47.5" cy="60.5" r="1.5" fill="#2B2D42"/>
+  <circle cx="73" cy="61" r="3.5" fill="#FFFFFF"/>
+  <circle cx="72.5" cy="60.5" r="1.5" fill="#2B2D42"/>
+  <!-- Nose & Mouth -->
+  <ellipse cx="60" cy="71" rx="4.5" ry="3.2" fill="#2B2D42"/>
+  <path d="M56,76 Q60,78.5 60,76 Q60,78.5 64,76" fill="none" stroke="#2B2D42" stroke-width="2" stroke-linecap="round"/>
+  <!-- Blush -->
+  <circle cx="38" cy="72" r="5" fill="#FF8BA7" opacity="0.65"/>
+  <circle cx="82" cy="72" r="5" fill="#FF8BA7" opacity="0.65"/>
+</svg>

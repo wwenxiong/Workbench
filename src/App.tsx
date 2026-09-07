@@ -8,26 +8,46 @@ import { WeeklyReportView } from './components/Report/WeeklyReportView';
 import { DailyReportView } from './components/Report/DailyReportView';
 import { CalendarFullView } from './components/Calendar/CalendarFullView';
 import { FilesView } from './components/Files/FilesView';
-import type { Task, DailyReport, ExcelConfig, CalendarDaySummary, Note } from './types';
-import { api } from './services/api';
+import { ToolsView } from './components/Tools/ToolsView';
+import { SettingsView } from './components/Settings/SettingsView';
+import { FloatingTimerWidget } from './components/Tools/FloatingTimerWidget';
+import { TimerProvider } from './contexts/TimerContext';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { AuthLockModal } from './components/Auth/AuthLockModal';
+import type { Task, DailyReport, ExcelConfig, CalendarDaySummary, Note, UserProfile } from './types';
+import { api, getStoredToken } from './services/api';
+import { syncService, type SyncEventPayload } from './services/syncService';
 import { formatLocalDate } from './utils/date';
 
 const WorkbenchContent: React.FC = () => {
   const { showToast } = useToast();
   const todayStr = formatLocalDate(new Date());
 
-  // Global States with localStorage persistence to prevent accidental resets
+  // Authentication & Security States
+  const [isLocked, setIsLocked] = useState<boolean>(!getStoredToken());
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+  const [hasUsers, setHasUsers] = useState<boolean>(true);
+
+  // Global View States
   const [selectedDate, setSelectedDate] = useState<string>(todayStr);
   const [activeView, setActiveView] = useState<string>(() => {
     try {
-      return localStorage.getItem('workbench_active_view') || 'dashboard';
+      const saved = localStorage.getItem('workbench_active_view') || 'dashboard';
+      return saved === 'projects' ? 'dashboard' : saved;
     } catch {
       return 'dashboard';
     }
   });
 
   const handleSetActiveView = (view: string) => {
-    setActiveView(view);
+    const isReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!isReduced && typeof document !== 'undefined' && 'startViewTransition' in document) {
+      (document as any).startViewTransition(() => {
+        setActiveView(view);
+      });
+    } else {
+      setActiveView(view);
+    }
     try {
       localStorage.setItem('workbench_active_view', view);
     } catch {
@@ -92,24 +112,126 @@ const WorkbenchContent: React.FC = () => {
     }
   }, []);
 
-  // Initialize
+  // Full Refresh
+  const refreshAllData = useCallback(async () => {
+    await Promise.all([
+      loadTasks(),
+      loadNotes(),
+      loadDailyReport(selectedDate),
+      loadCalendarSummaries(),
+      loadExcelConfigs(),
+    ]);
+  }, [loadTasks, loadNotes, loadDailyReport, selectedDate, loadCalendarSummaries, loadExcelConfigs]);
+
+  // Auth Status check on launch
   useEffect(() => {
-    const init = async () => {
-      await Promise.all([
-        loadTasks(),
-        loadNotes(),
-        loadDailyReport(todayStr),
-        loadCalendarSummaries(),
-        loadExcelConfigs(),
-      ]);
+    const checkAuth = async () => {
+      try {
+        const res = await api.getAuthStatus();
+        if (res.hasUsers !== undefined) {
+          setHasUsers(res.hasUsers);
+        }
+        if (!res.authenticated || !res.user) {
+          setIsLocked(true);
+          setCurrentUser(null);
+        } else {
+          setIsLocked(false);
+          setCurrentUser(res.user);
+          syncService.connect();
+          refreshAllData();
+        }
+      } catch {
+        setIsLocked(true);
+        setCurrentUser(null);
+      }
     };
-    init();
-  }, [loadTasks, loadNotes, loadDailyReport, loadCalendarSummaries, loadExcelConfigs, todayStr]);
+    checkAuth();
+  }, [refreshAllData]);
+
+  // Handle Unlocked / Logged in Event
+  const handleUnlocked = (user: UserProfile) => {
+    setIsLocked(false);
+    setCurrentUser(user);
+    setHasUsers(true);
+    syncService.connect();
+    refreshAllData();
+    showToast(`欢迎回来，${user.username}`, { type: 'success' });
+  };
+
+  // Handle Logout Event
+  const handleLogout = async () => {
+    try {
+      await api.logout();
+    } catch {
+      // ignore
+    } finally {
+      setIsLocked(true);
+      setCurrentUser(null);
+      syncService.disconnect();
+      showToast('已安全退出登录', { type: 'info' });
+    }
+  };
+
+  // Sync Service Event Listeners
+  useEffect(() => {
+    const handleUnauthorizedEvent = () => {
+      setIsLocked(true);
+      setCurrentUser(null);
+      syncService.disconnect();
+    };
+
+    const handleSyncEvent = (e: any) => {
+      const payload: SyncEventPayload = e.detail;
+      if (!payload) {
+        refreshAllData();
+        return;
+      }
+
+      if (payload.entity === 'tasks') {
+        loadTasks();
+        loadDailyReport(selectedDate);
+        loadCalendarSummaries();
+      } else if (payload.entity === 'notes') {
+        loadNotes();
+      } else if (payload.entity === 'reports') {
+        loadDailyReport(selectedDate);
+        loadCalendarSummaries();
+      } else if (payload.entity === 'focus_logs') {
+        loadCalendarSummaries();
+        loadDailyReport(selectedDate);
+      } else {
+        refreshAllData();
+      }
+    };
+
+    window.addEventListener('workbench:unauthorized', handleUnauthorizedEvent);
+    window.addEventListener('workbench:sync', handleSyncEvent);
+
+    return () => {
+      window.removeEventListener('workbench:unauthorized', handleUnauthorizedEvent);
+      window.removeEventListener('workbench:sync', handleSyncEvent);
+    };
+  }, [refreshAllData, loadTasks, loadNotes, loadDailyReport, selectedDate, loadCalendarSummaries]);
 
   // Sync daily report when selectedDate changes
   useEffect(() => {
-    loadDailyReport(selectedDate);
-  }, [selectedDate, loadDailyReport]);
+    if (!isLocked) {
+      loadDailyReport(selectedDate);
+    }
+  }, [selectedDate, loadDailyReport, isLocked]);
+
+  // Listen to timer countdown finished event
+  useEffect(() => {
+    const handleTimerDone = (e: any) => {
+      showToast('倒计时已结束！', {
+        type: 'success',
+        message: e.detail?.title ? `${e.detail.title} 目标时间达成` : '您设定的倒计时已完成',
+        duration: 6000,
+      });
+    };
+    window.addEventListener('workbench:timer-done', handleTimerDone);
+    return () => window.removeEventListener('workbench:timer-done', handleTimerDone);
+  }, [showToast]);
 
   // Task Mutations
   const handleToggleTask = async (id: string, completed: boolean, extraUpdates?: Partial<Task>) => {
@@ -130,6 +252,38 @@ const WorkbenchContent: React.FC = () => {
       }
     } catch (err) {
       console.error(err);
+      showToast('更新任务失败', { type: 'error' });
+    }
+  };
+
+  const handleAddTask = async (taskData: {
+    title: string;
+    dueDate?: string;
+    tags?: string[];
+    priority?: string;
+    isRecurring?: boolean;
+    recurringConfig?: any;
+  }) => {
+    try {
+      const cleanTitle = taskData.title.trim();
+      const created = await api.createTask({
+        title: cleanTitle,
+        priority: (taskData.priority as any) || 'p2',
+        estimatedMinutes: 25,
+        tags: taskData.tags || ['工作'],
+        dueDate: taskData.dueDate || selectedDate,
+        isRecurring: taskData.isRecurring,
+        recurringConfig: taskData.recurringConfig,
+      });
+      setTasks((prev) => [created, ...prev]);
+      loadCalendarSummaries();
+      showToast(created.isRecurring ? '每日固定循环待办已开启' : '新待办已创建', {
+        message: created.isRecurring ? '系统将根据设置的有效日期在每天自动同步' : `${created.title} · ${created.dueDate?.slice(0, 10)}`,
+        type: 'success',
+      });
+    } catch (err) {
+      console.error(err);
+      showToast('创建任务失败', { type: 'error' });
     }
   };
 
@@ -139,41 +293,9 @@ const WorkbenchContent: React.FC = () => {
       setTasks((prev) => prev.map((t) => (t.id === id ? updated : t)));
       loadDailyReport(selectedDate);
       loadCalendarSummaries();
-      return updated;
     } catch (err) {
       console.error(err);
-      showToast('更新失败', { type: 'error' });
-    }
-  };
-
-  const handleAddTask = async (taskData: {
-    title: string;
-    dueDate: string;
-    tags?: string[];
-    priority?: string;
-    isRecurring?: boolean;
-    recurringConfig?: any;
-  }) => {
-    try {
-      const created = await api.createTask({
-        title: taskData.title.trim(),
-        priority: (taskData.priority as any) || 'p2',
-        estimatedMinutes: 25,
-        tags: taskData.tags || ['工作'],
-        dueDate: taskData.dueDate || selectedDate,
-        isRecurring: taskData.isRecurring,
-        recurringConfig: taskData.recurringConfig,
-      });
-      setTasks((prev) => [created, ...prev]);
-      loadDailyReport(selectedDate);
-      loadCalendarSummaries();
-      showToast(created.isRecurring ? '每日固定循环待办已开启' : '新待办已创建', {
-        message: created.isRecurring ? '系统将根据设置的有效日期在每天自动同步' : `${created.title} · ${created.dueDate?.slice(0, 10)}`,
-        type: 'success',
-      });
-    } catch (err) {
-      console.error(err);
-      showToast('创建失败', { type: 'error' });
+      showToast('更新任务失败', { type: 'error' });
     }
   };
 
@@ -183,18 +305,18 @@ const WorkbenchContent: React.FC = () => {
       setTasks((prev) => prev.filter((t) => t.id !== id));
       loadDailyReport(selectedDate);
       loadCalendarSummaries();
-      showToast('待办已删除', { type: 'info' });
+      showToast('任务已删除', { type: 'info' });
     } catch (err) {
       console.error(err);
-      showToast('删除失败', { type: 'error' });
+      showToast('删除任务失败', { type: 'error' });
     }
   };
 
-  // Note Mutations
-  const handleAddNote = async (noteData: Partial<Note>) => {
+  // Quick Note Mutations
+  const handleAddNote = async (data: Partial<Note>) => {
     try {
-      const created = await api.createNote(noteData);
-      setNotes((prev) => [created, ...prev.filter((n) => n.id !== created.id)]);
+      const created = await api.createNote(data);
+      setNotes((prev) => [created, ...prev]);
       if (created.type === 'daily_report') {
         loadDailyReport(created.date);
         loadCalendarSummaries();
@@ -238,13 +360,21 @@ const WorkbenchContent: React.FC = () => {
   const focusHours = Number((totalFocusMinutes / 60).toFixed(1));
 
   return (
-    <div className="relative flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#F4F7FC] via-[#EEF3FA] to-[#F8FAFD] font-sans antialiased text-slate-800">
-      {/* Soft Ambient Blurred Glows in Background */}
+    <div className="relative flex h-screen w-screen overflow-hidden bg-[#F4F6FB] text-slate-800 font-sans antialiased">
+      {/* Soft Ambient Sky Light */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-blue-200/40 blur-[100px]"></div>
-        <div className="absolute top-1/3 -right-24 w-[500px] h-[500px] rounded-full bg-indigo-200/30 blur-[120px]"></div>
-        <div className="absolute -bottom-24 left-1/3 w-[600px] h-[600px] rounded-full bg-sky-200/35 blur-[110px]"></div>
+        <div className="absolute -top-32 right-1/4 w-[600px] h-[450px] rounded-full bg-blue-100/35 blur-[120px]" />
+        <div className="absolute bottom-0 -left-20 w-[500px] h-[500px] rounded-full bg-indigo-50/40 blur-[130px]" />
       </div>
+
+      {/* Security Auth Lock Modal */}
+      <AuthLockModal
+        isOpen={isLocked}
+        onUnlocked={handleUnlocked}
+        currentUser={currentUser}
+        onSwitchAccount={handleLogout}
+        initialMode={hasUsers === false ? 'register' : 'login'}
+      />
 
       {/* Left Floating Frosted Glass Sidebar */}
       <LeftSidebar
@@ -253,6 +383,10 @@ const WorkbenchContent: React.FC = () => {
         tasks={tasks}
         focusHours={focusHours}
         focusGoalHours={5}
+        currentUser={currentUser}
+        onOpenSettings={() => handleSetActiveView('settings')}
+        onLogout={handleLogout}
+        onLock={() => setIsLocked(true)}
       />
 
       {/* Center Main Work Area */}
@@ -270,14 +404,22 @@ const WorkbenchContent: React.FC = () => {
           totalNotes={notes.filter(n => n.type !== 'daily_report').length}
           notes={notes}
           onAddNote={handleAddNote}
+          onUpdateNote={handleUpdateNote}
           onDeleteNote={handleDeleteNote}
           onViewAllNotes={() => handleSetActiveView('notes')}
           onViewAllFiles={() => handleSetActiveView('files')}
+          currentUser={currentUser}
+          onOpenSettings={() => handleSetActiveView('settings')}
+          onLogout={handleLogout}
+          onNavigateView={(view, date) => {
+            if (date) setSelectedDate(date);
+            handleSetActiveView(view);
+          }}
         />
       )}
 
       {activeView === 'todos' && (
-        <main className="flex-1 p-8 overflow-y-auto z-10 custom-scrollbar">
+        <main className="flex-1 p-8 overflow-y-auto z-10 custom-scrollbar ios-view-entrance">
           <div className="max-w-5xl mx-auto">
             <TodoList
               tasks={tasks}
@@ -313,7 +455,7 @@ const WorkbenchContent: React.FC = () => {
       )}
 
       {activeView === 'reports' && (
-        <main className="flex-1 p-8 overflow-y-auto z-10 custom-scrollbar">
+        <main className="flex-1 p-8 overflow-y-auto z-10 custom-scrollbar ios-view-entrance">
           <DailyReportView
             onSelectDateForCalendar={(d) => {
               setSelectedDate(d);
@@ -323,12 +465,13 @@ const WorkbenchContent: React.FC = () => {
               setSelectedDate(d);
               handleSetActiveView('dashboard');
             }}
+            onRefreshSummaries={loadCalendarSummaries}
           />
         </main>
       )}
 
       {activeView === 'notes' && (
-        <main className="flex-1 p-8 overflow-y-auto z-10 custom-scrollbar">
+        <main className="flex-1 p-8 overflow-y-auto z-10 custom-scrollbar ios-view-entrance">
           <div className="max-w-6xl mx-auto h-[calc(100vh-64px)]">
             <NotesView
               notes={notes}
@@ -345,11 +488,11 @@ const WorkbenchContent: React.FC = () => {
       )}
 
       {activeView === 'calendar' && (
-        <div className="flex-1 z-10 overflow-y-auto">
+        <div className="flex-1 z-10 overflow-y-auto p-6 custom-scrollbar ios-view-entrance">
           <CalendarFullView
             calendarSummaries={calendarSummaries}
             tasks={tasks}
-            onAddTask={handleAddTask}
+            onAddTask={(taskData) => handleAddTask(taskData)}
             onToggleTask={handleToggleTask}
             onDeleteTask={handleDeleteTask}
             onSelectDateForDashboard={(d) => {
@@ -363,19 +506,41 @@ const WorkbenchContent: React.FC = () => {
       )}
 
       {activeView === 'statistics' && (
-        <div className="flex-1 z-10 overflow-y-auto p-6">
+        <div className="flex-1 z-10 overflow-y-auto p-6 ios-view-entrance">
           <WeeklyReportView />
         </div>
       )}
 
       {activeView === 'files' && (
-        <div className="flex-1 z-10 overflow-y-auto p-6 custom-scrollbar">
+        <div className="flex-1 z-10 overflow-y-auto p-6 custom-scrollbar ios-view-entrance">
           <FilesView />
         </div>
       )}
 
+      {activeView === 'tools' && (
+        <div className="flex-1 overflow-y-auto z-10 custom-scrollbar ios-view-entrance">
+          <ToolsView />
+        </div>
+      )}
+
+      {activeView === 'settings' && (
+        <div className="flex-1 overflow-hidden z-10 ios-view-entrance flex flex-col">
+          <SettingsView
+            currentUser={currentUser}
+            onUserUpdated={(u) => setCurrentUser(u)}
+            onLogout={handleLogout}
+          />
+        </div>
+      )}
+
+      {/* Floating mini timer widget when running in background */}
+      <FloatingTimerWidget
+        currentView={activeView}
+        onOpenTools={() => handleSetActiveView('tools')}
+      />
+
       {/* Fallback for other views */}
-      {!['dashboard', 'todos', 'reports', 'notes', 'calendar', 'statistics', 'files'].includes(activeView) && (
+      {!['dashboard', 'todos', 'reports', 'notes', 'calendar', 'statistics', 'files', 'tools', 'settings'].includes(activeView) && (
         <main className="flex-1 flex items-center justify-center z-10">
           <div className="text-center p-8 rounded-3xl bg-white/70 backdrop-blur-md border border-white/80 shadow-sm">
             <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#0071E3] flex items-center justify-center mx-auto mb-4 border border-blue-100/60 shadow-2xs">
@@ -394,10 +559,69 @@ const WorkbenchContent: React.FC = () => {
   );
 };
 
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, ErrorBoundaryState> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('App ErrorBoundary caught an error:', error, errorInfo);
+  }
+
+  handleReset = () => {
+    this.setState({ hasError: false, error: null });
+    window.location.reload();
+  };
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex h-screen w-screen items-center justify-center bg-[#F4F6FB] p-6">
+          <div className="max-w-md w-full p-6 rounded-3xl bg-white/95 backdrop-blur-xl border border-white/80 shadow-xl text-center space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <h2 className="text-base font-bold text-[#1D1D1F]">界面遇到了一个小问题</h2>
+            <p className="text-xs text-[#86868B] leading-relaxed">
+              系统已安全保护您的所有待办、日程与笔记数据。点击下方按钮即可一键恢复工作台。
+            </p>
+            <button
+              type="button"
+              onClick={this.handleReset}
+              className="px-5 py-2.5 rounded-xl bg-[#0071E3] hover:bg-[#0077ED] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
+            >
+              重新恢复工作台
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function App() {
   return (
-    <ToastProvider>
-      <WorkbenchContent />
-    </ToastProvider>
+    <ErrorBoundary>
+      <ToastProvider>
+        <TimerProvider>
+          <ThemeProvider>
+            <WorkbenchContent />
+          </ThemeProvider>
+        </TimerProvider>
+      </ToastProvider>
+    </ErrorBoundary>
   );
 }

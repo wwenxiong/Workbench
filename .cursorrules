@@ -1,0 +1,20 @@
+# 项目开发规范与设计系统指令 (Workbench Project Guidelines)
+
+## 1. 界面字体与排版设计准则（必须严格遵守）
+- 必须严格遵循 `TYPOGRAPHY.md` 中定义的 **Apple iOS 字体规范**：
+  - 正文字体栈：`-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "PingFang SC", "Hiragino Sans GB", "Helvetica Neue", Helvetica, Arial, sans-serif`
+  - 数字与时间戳：必须使用 `font-mono`，基于 `"SF Mono", Menlo, Monaco, Consolas, monospace` 并开启等宽对齐特性。
+  - 严禁引入任何非 Apple 风格的第三方外部网络字体。
+- **字阶与字号标准**：
+  - 严禁出现小于 11px 的不可读小字；
+  - 核心待办/正文必须保持在 13.5px 左右清晰易读的标准；
+  - 标题与小标题遵循 15px ~ 17px 的阶梯标准。
+
+## 2. 界面文案与风格准则
+- 严禁使用任何 AI 味词汇（如“矩阵、加权、维度、赋能、闭环、打通、底层逻辑、综合评估”等）；
+- 采用口语化、平实、通俗的日常大白话；
+- 文字短小精悍，能用 5 个字表达绝不用长句。
+
+## 3. 待办事项交互与布局准则
+- 待办列表默认保持单行规整展示，超长文本通过下拉按钮展开查看完整内容，禁止大段长文随意把卡片撑爆。
+- 当前日期必须自动置顶，历史旧日期自动向下按时间倒序排列，已完成事项默认自动收起折叠。

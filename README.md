@@ -7,6 +7,11 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
+## 设计与排版规范 (Design System)
+本项目严格执行 Apple iOS 字体规范与字阶体系，详细规则请见：
+- **字体与字阶规范**：[TYPOGRAPHY.md](./TYPOGRAPHY.md)
+- **开发与交互守则**：[.cursorrules](./.cursorrules)
+
 ## React Compiler
 
 The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).

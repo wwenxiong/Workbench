@@ -1,24 +1,45 @@
 @import "tailwindcss";
 
 :root {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  /* Apple iOS Typography Stack */
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "PingFang SC", "Hiragino Sans GB", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color-scheme: light;
   --color-primary: #0071E3;
   --color-primary-light: #F0F6FF;
   --color-bg: #F7F8FA;
   --color-surface: #FFFFFF;
   --color-border: rgba(255, 255, 255, 0.85);
+  --color-text-title: #1D1D1F;
+  --color-text-body: #48484A;
+  --color-text-muted: #86868B;
+  --theme-card-radius: 24px;
+  --theme-pill-radius: 14px;
+  /* Apple iOS Motion System Easing Curves */
+  --ios-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ios-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ios-ease-spring: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "PingFang SC", "Hiragino Sans GB", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px; /* 全局基准字号整体适度放大 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #F7F8FA;
+  background-color: #F4F6FB;
   color: #1D1D1F;
   min-height: 100vh;
   overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "PingFang SC", "Hiragino Sans GB", "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
 }
 
 #root {
@@ -26,42 +47,52 @@ body {
   display: flex;
 }
 
-/* Apple Liquid Glass Utility Classes */
-.liquid-glass-sidebar {
-  background: rgba(255, 255, 255, 0.68);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.025), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+/* SF Mono / Geist Mono for numbers & clocks */
+.font-mono {
+  font-family: "SF Mono", Menlo, Monaco, Consolas, "PingFang SC", monospace !important;
+  font-feature-settings: "tnum" 1;
 }
 
-.liquid-glass-card {
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.92);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.02), inset 0 1px 1px rgba(255, 255, 255, 0.95);
+/* =========================================================
+   Acrylic Frosted Glass + Solid White Bento Architecture
+   Reference: Semi-transparent blurred acrylic sidebar + Solid pure white cards
+========================================================= */
+.acrylic-sidebar,
+.liquid-glass-sidebar {
+  background: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(30px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(190%) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.6) !important;
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.4), 0 8px 32px rgba(0, 0, 0, 0.03) !important;
+}
+
+.acrylic-pill-active,
+.liquid-glass-capsule-active {
+  background: #FFFFFF !important;
+  color: #1D1D1F !important;
+  border: 1px solid rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+.bento-card,
+.solid-card,
+.liquid-glass-card,
+.liquid-glass {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
 }
 
 .liquid-glass-hero {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(240, 246, 255, 0.6) 50%, rgba(255, 255, 255, 0.85) 100%);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
-  border: 1px solid rgba(255, 255, 255, 0.95);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.03), inset 0 1px 2px rgba(255, 255, 255, 1);
+  background: #FFFFFF !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.035), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
 }
 
-.liquid-glass-capsule-active {
-  background: rgba(0, 113, 227, 0.08);
-  color: #0071E3;
-  border: 1px solid rgba(0, 113, 227, 0.15);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
-}
-
-/* Custom scrollbars - Apple native minimal style */
+/* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
@@ -69,18 +100,412 @@ body {
 ::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.12);
   border-radius: 9999px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  transition: background 0.2s ease;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.22);
+  background: rgba(0, 0, 0, 0.28);
 }
 
-/* Smooth transitions globally */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 8px 0;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.14);
+  border-radius: 9999px;
+  transition: background 0.2s ease;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.32);
+}
+
+/* Smooth transitions globally (optimized) */
 * {
-  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow;
   transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
   transition-duration: 180ms;
 }
 
 .preload * {
   transition: none !important;
+}
+
+/* =========================================================
+   Apple / iOS Liquid Glass Motion Design System
+========================================================= */
+
+/* 1. Global Button Micro-interactions (Apple Scale-on-Press) */
+button:not(:disabled),
+.ios-btn {
+  transition: transform 150ms var(--ios-ease), filter 150ms var(--ios-ease), background-color 150ms ease, opacity 150ms ease !important;
+}
+button:not(:disabled):hover,
+.ios-btn:hover {
+  filter: brightness(1.02);
+}
+button:not(:disabled):active,
+.ios-btn:active {
+  transform: scale(0.98) !important;
+  transition-duration: 90ms !important;
+}
+
+/* 2. Page Initial Load Stagger Animations */
+@keyframes iosSidebarEntrance {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes iosHeaderEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes iosHeroEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes iosCardEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ios-sidebar-entrance {
+  animation: iosSidebarEntrance 400ms var(--ios-ease-out) both;
+}
+
+.ios-header-entrance {
+  animation: iosHeaderEntrance 350ms var(--ios-ease-out) 60ms both;
+}
+
+.ios-hero-entrance {
+  animation: iosHeroEntrance 500ms var(--ios-ease-out) 120ms both;
+}
+
+.ios-stagger-card-1 {
+  animation: iosCardEntrance 400ms var(--ios-ease-out) 180ms both;
+}
+.ios-stagger-card-2 {
+  animation: iosCardEntrance 400ms var(--ios-ease-out) 240ms both;
+}
+.ios-stagger-card-3 {
+  animation: iosCardEntrance 400ms var(--ios-ease-out) 300ms both;
+}
+.ios-stagger-card-4 {
+  animation: iosCardEntrance 400ms var(--ios-ease-out) 360ms both;
+}
+.ios-stagger-card-5 {
+  animation: iosCardEntrance 400ms var(--ios-ease-out) 420ms both;
+}
+
+/* 3. Hero Liquid Glass Ambient Motion */
+@keyframes iosHeroOrbFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.025);
+  }
+}
+
+.ios-hero-orb-float {
+  animation: iosHeroOrbFloat 12s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes iosHeroSpecular {
+  0% {
+    transform: translateX(-100%) rotate(25deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.05;
+  }
+  50% {
+    transform: translateX(180%) rotate(25deg);
+    opacity: 0.05;
+  }
+  51%, 100% {
+    transform: translateX(180%) rotate(25deg);
+    opacity: 0;
+  }
+}
+
+.ios-hero-specular-beam {
+  animation: iosHeroSpecular 10s ease-in-out infinite;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+/* 4. Schedule Current Time Indicator Pulse */
+@keyframes iosTimePulse {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.82;
+    transform: scale(1.08);
+  }
+}
+
+.ios-time-pulse {
+  animation: iosTimePulse 2.5s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+/* 5. Checkbox Checked Stroke Animation */
+@keyframes iosCheckDraw {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.ios-check-draw {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: iosCheckDraw 240ms var(--ios-ease-out) forwards;
+}
+
+/* 6. Page View Transitions (Spatial Continuity) */
+::view-transition-old(root) {
+  animation: 240ms var(--ios-ease) both iosViewTransitionFadeOut;
+}
+
+::view-transition-new(root) {
+  animation: 280ms var(--ios-ease) both iosViewTransitionSlideIn;
+}
+
+@keyframes iosViewTransitionFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes iosViewTransitionSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 7. Aurora Shimmer & Pulse Ring Animations */
+@keyframes auroraGlow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-aurora-glow {
+  background-size: 200% auto;
+  animation: auroraGlow 5s ease infinite;
+}
+
+@keyframes pulseSubtleRing {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.4);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(0, 113, 227, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 113, 227, 0);
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulseSubtleRing 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+/* Dynamic Colorful Rotating Text Animation */
+@keyframes dynamicColorFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.dynamic-gradient-text {
+  background: linear-gradient(
+    120deg,
+    #0071E3 0%,
+    #5E5CE6 22%,
+    #AF52DE 45%,
+    #FF2D55 68%,
+    #FF9500 85%,
+    #0071E3 100%
+  );
+  background-size: 260% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: dynamicColorFlow 6s ease-in-out infinite;
+}
+
+/* Ambient Floating Micro-Particles around Text */
+@keyframes particleFloatSlow {
+  0%, 100% {
+    transform: translateY(0px) scale(0.85);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateY(-5px) scale(1.2);
+    opacity: 0.9;
+  }
+}
+
+@keyframes particleFloatFast {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-7px) scale(0.75);
+    opacity: 0.25;
+  }
+}
+
+.animate-particle-float-1 {
+  animation: particleFloatSlow 3.2s ease-in-out infinite;
+}
+
+.animate-particle-float-2 {
+  animation: particleFloatFast 2.4s ease-in-out infinite 0.6s;
+}
+
+.animate-particle-float-3 {
+  animation: particleFloatSlow 4s ease-in-out infinite 1.2s;
+}
+
+/* 8. Accessibility: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .ios-hero-orb-float,
+  .ios-hero-specular-beam,
+  .ios-time-pulse {
+    animation: none !important;
+  }
+}
+
+/* 9. BoardUI Agent Thinking Animations */
+@keyframes bui-agent-thinking-star {
+  0%, 100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.8);
+    opacity: 0.9;
+  }
+}
+
+.bui-agent-thinking-star {
+  transform: scale(0);
+  animation-name: bui-agent-thinking-star;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes bui-agent-thinking-dash {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+.bui-agent-thinking-comet {
+  animation-name: bui-agent-thinking-dash;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes bui-text-shimmer {
+  from {
+    background-position: 200% center;
+  }
+  to {
+    background-position: -100% center;
+  }
+}
+
+.bui-agent-thinking-label {
+  color: transparent;
+  background-image: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--bui-agent-thinking-tone, #1677FF) 60%, transparent) 30%,
+    var(--bui-agent-thinking-tone, #1677FF) 50%,
+    color-mix(in srgb, var(--bui-agent-thinking-tone, #1677FF) 60%, transparent) 70%
+  );
+  background-position: 200% center;
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: bui-text-shimmer 2.8s linear infinite;
+  will-change: background-position;
 }

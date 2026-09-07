@@ -28,4 +28,9 @@ server/uploads/*
 !server/uploads/.gitkeep
 server/data/picked_file.txt
 server/data/run_open.bat
+server/data/*.db
+server/data/*.db-shm
+server/data/*.db-wal
+server/data/*.bak
+
 

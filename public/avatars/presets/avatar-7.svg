@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bg7" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFB703"/>
+      <stop offset="100%" stop-color="#FFE6A7"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="36" fill="url(#bg7)"/>
+  <!-- Lion Mane -->
+  <circle cx="60" cy="65" r="39" fill="#FB8500"/>
+  <!-- Ears -->
+  <circle cx="36" cy="38" r="8" fill="#FFD166"/>
+  <circle cx="36" cy="38" r="4" fill="#FB8500"/>
+  <circle cx="84" cy="38" r="8" fill="#FFD166"/>
+  <circle cx="84" cy="38" r="4" fill="#FB8500"/>
+  <!-- Face -->
+  <circle cx="60" cy="66" r="28" fill="#FFD166"/>
+  <!-- Eyes -->
+  <ellipse cx="49" cy="62" rx="3.8" ry="4.8" fill="#023047"/>
+  <circle cx="50.5" cy="60.5" r="1.5" fill="#FFFFFF"/>
+  <ellipse cx="71" cy="62" rx="3.8" ry="4.8" fill="#023047"/>
+  <circle cx="72.5" cy="60.5" r="1.5" fill="#FFFFFF"/>
+  <!-- Nose & Mouth -->
+  <polygon points="60,69 56.5,73 63.5,73" fill="#FB8500"/>
+  <path d="M55,75 Q60,78 60,75 Q60,78 65,75" fill="none" stroke="#023047" stroke-width="2" stroke-linecap="round"/>
+  <!-- Blush -->
+  <circle cx="42" cy="72" r="4.5" fill="#FB8500" opacity="0.4"/>
+  <circle cx="78" cy="72" r="4.5" fill="#FB8500" opacity="0.4"/>
+</svg>

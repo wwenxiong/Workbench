@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bg4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF7E5F"/>
+      <stop offset="100%" stop-color="#FEB47B"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="36" fill="url(#bg4)"/>
+  <!-- Ears -->
+  <polygon points="32,52 18,16 54,34" fill="#E65100"/>
+  <polygon points="34,48 24,24 50,36" fill="#3E2723"/>
+  <polygon points="88,52 102,16 66,34" fill="#E65100"/>
+  <polygon points="86,48 96,24 70,36" fill="#3E2723"/>
+  <!-- Head -->
+  <polygon points="60,94 28,52 92,52" fill="#FF6D00"/>
+  <circle cx="46" cy="54" r="18" fill="#FF6D00"/>
+  <circle cx="74" cy="54" r="18" fill="#FF6D00"/>
+  <!-- White Cheeks -->
+  <path d="M60,90 L32,56 C34,74 48,86 60,90 Z" fill="#FFFDF9"/>
+  <path d="M60,90 L88,56 C86,74 72,86 60,90 Z" fill="#FFFDF9"/>
+  <!-- Eyes -->
+  <ellipse cx="46" cy="58" rx="4" ry="4.8" fill="#2E1C12"/>
+  <circle cx="47.5" cy="56.5" r="1.5" fill="#FFFFFF"/>
+  <ellipse cx="74" cy="58" rx="4" ry="4.8" fill="#2E1C12"/>
+  <circle cx="75.5" cy="56.5" r="1.5" fill="#FFFFFF"/>
+  <!-- Nose -->
+  <circle cx="60" cy="90" r="3.5" fill="#2E1C12"/>
+</svg>

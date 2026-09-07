@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bg6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#48CAE4"/>
+      <stop offset="100%" stop-color="#ADE8F4"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="36" fill="url(#bg6)"/>
+  <!-- Big Fluffy Ears -->
+  <circle cx="30" cy="48" r="16" fill="#8D99AE"/>
+  <circle cx="30" cy="48" r="9" fill="#EDF2F4"/>
+  <circle cx="90" cy="48" r="16" fill="#8D99AE"/>
+  <circle cx="90" cy="48" r="9" fill="#EDF2F4"/>
+  <!-- Head -->
+  <ellipse cx="60" cy="68" rx="34" ry="30" fill="#8D99AE"/>
+  <!-- Cheeks -->
+  <ellipse cx="44" cy="76" rx="6" ry="4" fill="#EDF2F4" opacity="0.8"/>
+  <ellipse cx="76" cy="76" rx="6" ry="4" fill="#EDF2F4" opacity="0.8"/>
+  <!-- Eyes -->
+  <circle cx="46" cy="63" r="4" fill="#2B2D42"/>
+  <circle cx="47.5" cy="61.5" r="1.5" fill="#FFFFFF"/>
+  <circle cx="74" cy="63" r="4" fill="#2B2D42"/>
+  <circle cx="75.5" cy="61.5" r="1.5" fill="#FFFFFF"/>
+  <!-- Big Koala Nose -->
+  <ellipse cx="60" cy="71" rx="9" ry="13" fill="#2B2D42"/>
+  <ellipse cx="58" cy="67" rx="3" ry="4" fill="#454955" opacity="0.6"/>
+  <!-- Blush -->
+  <circle cx="36" cy="73" r="4.5" fill="#FF8BA7" opacity="0.5"/>
+  <circle cx="84" cy="73" r="4.5" fill="#FF8BA7" opacity="0.5"/>
+</svg>

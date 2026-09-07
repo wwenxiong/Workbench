@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bg5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B388FF"/>
+      <stop offset="100%" stop-color="#E1BEE7"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="36" fill="url(#bg5)"/>
+  <!-- Long Ears -->
+  <ellipse cx="44" cy="34" rx="8" ry="24" transform="rotate(-8, 44, 34)" fill="#FFFFFF"/>
+  <ellipse cx="44" cy="34" rx="4.5" ry="17" transform="rotate(-8, 44, 34)" fill="#FF80AB"/>
+  <ellipse cx="76" cy="34" rx="8" ry="24" transform="rotate(8, 76, 34)" fill="#FFFFFF"/>
+  <ellipse cx="76" cy="34" rx="4.5" ry="17" transform="rotate(8, 76, 34)" fill="#FF80AB"/>
+  <!-- Head -->
+  <circle cx="60" cy="72" r="32" fill="#FFFFFF"/>
+  <!-- Eyes -->
+  <ellipse cx="48" cy="68" rx="4" ry="5.5" fill="#4A148C"/>
+  <circle cx="49.5" cy="66" r="1.5" fill="#FFFFFF"/>
+  <ellipse cx="72" cy="68" rx="4" ry="5.5" fill="#4A148C"/>
+  <circle cx="73.5" cy="66" r="1.5" fill="#FFFFFF"/>
+  <!-- Nose & Mouth -->
+  <polygon points="60,74 57.5,77 62.5,77" fill="#FF4081"/>
+  <path d="M56,79 Q60,82 60,79 Q60,82 64,79" fill="none" stroke="#4A148C" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- Blush -->
+  <circle cx="40" cy="76" r="5" fill="#FF80AB" opacity="0.6"/>
+  <circle cx="80" cy="76" r="5" fill="#FF80AB" opacity="0.6"/>
+</svg>

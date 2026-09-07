@@ -12,7 +12,8 @@ import {
   Zap, 
   Bookmark,
   CheckCircle2,
-  Repeat
+  Repeat,
+  Plus
 } from 'lucide-react';
 import type { Note, NoteType } from '../../types';
 import { api } from '../../services/api';
@@ -22,6 +23,7 @@ interface AddNoteModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: (noteData: Partial<Note>) => Promise<void>;
+  noteToEdit?: Note | null;
   initialDate?: string;
   initialType?: NoteType;
   allowedTypes?: NoteType[];
@@ -36,28 +38,28 @@ const TYPE_CONFIGS: Record<NoteType, { label: string; icon: any; color: string; 
     activeColor: 'bg-emerald-600 text-white shadow-emerald-500/25',
   },
   note: {
-    label: '随手笔记',
+    label: '笔记',
     icon: Feather,
     color: 'text-blue-600',
     bg: 'bg-blue-50',
     activeColor: 'bg-blue-600 text-white shadow-blue-500/25',
   },
   meeting: {
-    label: '会议纪要',
+    label: '会议',
     icon: Users,
     color: 'text-amber-600',
     bg: 'bg-amber-50',
     activeColor: 'bg-amber-600 text-white shadow-amber-500/25',
   },
   idea: {
-    label: '灵感想法',
+    label: '灵感',
     icon: Sparkles,
     color: 'text-purple-600',
     bg: 'bg-purple-50',
     activeColor: 'bg-purple-600 text-white shadow-purple-500/25',
   },
   retrospective: {
-    label: '项目复盘',
+    label: '复盘',
     icon: Target,
     color: 'text-rose-600',
     bg: 'bg-rose-50',
@@ -69,6 +71,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
   isOpen,
   onClose,
   onConfirm,
+  noteToEdit,
   initialDate,
   initialType = 'note',
   allowedTypes,
@@ -94,28 +97,47 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      const defaultT = initialType || (allowedTypes?.[0] || 'note');
-      setType(defaultT);
-      setDate(initialDate || todayStr);
-      setTitle('');
-      setContent('');
-      setDeliverables('');
-      setBlockers('');
-      setTomorrowPlan('');
-      setSelectedTag(defaultT === 'daily_report' ? '工作日报' : '日常');
-      setIsPinned(false);
-      setIsSubmitting(false);
+      if (noteToEdit) {
+        setType(noteToEdit.type || 'note');
+        setDate(noteToEdit.date || todayStr);
+        setTime(noteToEdit.time || '18:00');
+        setTitle(noteToEdit.title || '');
+        setContent(noteToEdit.content || '');
+        setSelectedTag(noteToEdit.tags?.[0] || (noteToEdit.type === 'daily_report' ? '工作日报' : '日常'));
+        setIsPinned(!!noteToEdit.isPinned);
+        if (noteToEdit.dailyReportData) {
+          setDeliverables(noteToEdit.dailyReportData.deliverables || '');
+          setBlockers(noteToEdit.dailyReportData.blockers || '');
+          setTomorrowPlan(noteToEdit.dailyReportData.tomorrowPlan || '');
+          setStats({
+            completedCount: noteToEdit.dailyReportData.completedCount || 0,
+            focusMinutes: noteToEdit.dailyReportData.focusMinutes || 0,
+          });
+        }
+      } else {
+        const defaultT = initialType || (allowedTypes?.[0] || 'note');
+        setType(defaultT);
+        setDate(initialDate || todayStr);
+        setTitle('');
+        setContent('');
+        setDeliverables('');
+        setBlockers('');
+        setTomorrowPlan('');
+        setSelectedTag(defaultT === 'daily_report' ? '工作日报' : '日常');
+        setIsPinned(false);
 
-      const now = new Date();
-      setTime(`${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`);
+        const now = new Date();
+        setTime(`${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`);
+      }
+      setIsSubmitting(false);
     }
-  }, [isOpen, initialDate, initialType, allowedTypes, todayStr]);
+  }, [isOpen, noteToEdit, initialDate, initialType, allowedTypes, todayStr]);
 
   if (!isOpen) return null;
 
   const typeKeys = (allowedTypes || (Object.keys(TYPE_CONFIGS) as NoteType[]));
 
-  // Auto-aggregate today's tasks and focus logs into daily report
+  // Auto-aggregate today's tasks into daily report
   const handleAutoImportDaily = async () => {
     try {
       setIsLoadingAuto(true);
@@ -142,7 +164,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
 
   const handleConfirm = async () => {
     const finalContent = type === 'daily_report'
-      ? (content || deliverables || `${date} 工作日报成果已整理完成`)
+      ? (content || deliverables || `${date} 日报记录`)
       : content;
 
     if (!finalContent.trim() || isSubmitting) return;
@@ -160,8 +182,8 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
         bg: type === 'daily_report' ? 'bg-emerald-50/60 border-emerald-100' : 'bg-white',
         dailyReportData: type === 'daily_report' ? {
           deliverables: deliverables || finalContent,
-          blockers: blockers || '无明显阻塞',
-          tomorrowPlan: tomorrowPlan || '按计划推进重点事项',
+          blockers: blockers || '无',
+          tomorrowPlan: tomorrowPlan || '按计划推进',
           completedCount: stats.completedCount,
           focusMinutes: stats.focusMinutes,
         } : undefined,
@@ -189,8 +211,12 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
               <Feather size={20} />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-800">新建工作记录与笔记</h3>
-              <p className="text-xs text-slate-400 mt-0.5">支持工作日报、随手笔记、会议纪要等，与日历时间管理联动</p>
+              <h3 className="text-base font-bold text-slate-800">
+                {noteToEdit ? '查看与修改记录' : '添加记录'}
+              </h3>
+              <p className="text-xs text-slate-400 mt-0.5">
+                {noteToEdit ? '放大查看完整记录，支持直接编辑修改并保存' : '记录随手想法、会议或工作总结'}
+              </p>
             </div>
           </div>
           <button 
@@ -205,53 +231,53 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
         {/* Type Selection Tabs */}
         {typeKeys.length > 1 && (
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">记录类型</label>
+            <label className="block text-xs font-bold text-slate-700 mb-1.5">类型</label>
             <div className={`grid gap-2 ${typeKeys.length === 4 ? 'grid-cols-4' : 'grid-cols-5'}`}>
               {typeKeys.map((tKey) => {
                 const cfg = TYPE_CONFIGS[tKey];
-              const IconComponent = cfg.icon;
-              const isSelected = type === tKey;
+                const IconComponent = cfg.icon;
+                const isSelected = type === tKey;
 
-              return (
-                <button
-                  key={tKey}
-                  type="button"
-                  onClick={() => {
-                    setType(tKey);
-                    if (tKey === 'daily_report') {
-                      setSelectedTag('工作日报');
-                      if (!deliverables) handleAutoImportDaily();
-                    } else if (tKey === 'meeting') {
-                      setSelectedTag('会议');
-                    }
-                  }}
-                  className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                    isSelected
-                      ? `${cfg.activeColor} shadow-sm`
-                      : `bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/60`
-                  }`}
-                >
-                  <IconComponent size={14} />
-                  <span>{cfg.label}</span>
-                </button>
-              );
-            })}
+                return (
+                  <button
+                    key={tKey}
+                    type="button"
+                    onClick={() => {
+                      setType(tKey);
+                      if (tKey === 'daily_report') {
+                        setSelectedTag('工作日报');
+                        if (!deliverables) handleAutoImportDaily();
+                      } else if (tKey === 'meeting') {
+                        setSelectedTag('会议');
+                      }
+                    }}
+                    className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                      isSelected
+                        ? `${cfg.activeColor} shadow-sm`
+                        : `bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/60`
+                    }`}
+                  >
+                    <IconComponent size={14} />
+                    <span>{cfg.label}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
         {/* Date & Time Row */}
         <div>
           <div className="flex items-center justify-between mb-1.5">
             <label className="text-xs font-bold text-slate-700 flex items-center gap-1">
               <CalendarIcon size={14} className="text-blue-600" />
-              <span>关联日期与时间</span>
+              <span>日期与时间</span>
             </label>
             <div className="flex items-center gap-1">
               <button
                 type="button"
                 onClick={() => setDate(todayStr)}
-                className={`px-2 py-0.5 text-[10px] rounded-md transition-colors ${
+                className={`px-2 py-0.5 text-[10px] rounded-md transition-colors cursor-pointer ${
                   date === todayStr ? 'bg-blue-600 text-white font-medium' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
@@ -260,7 +286,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
               <button
                 type="button"
                 onClick={() => setDate(yesterdayStr)}
-                className={`px-2 py-0.5 text-[10px] rounded-md transition-colors ${
+                className={`px-2 py-0.5 text-[10px] rounded-md transition-colors cursor-pointer ${
                   date === yesterdayStr ? 'bg-blue-600 text-white font-medium' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
@@ -288,11 +314,11 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
         {/* Title Input */}
         <div>
           <label className="block text-xs font-bold text-slate-700 mb-1.5">
-            标题 / 主题 <span className="text-slate-400 font-normal">(可选)</span>
+            标题 <span className="text-slate-400 font-normal">(可选)</span>
           </label>
           <input
             type="text"
-            placeholder={type === 'daily_report' ? `${date} 工作日报与总结` : '输入笔记或会议主题...'}
+            placeholder={type === 'daily_report' ? `${date} 工作日报` : '例如: 讨论要点...'}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 placeholder-slate-400 shadow-2xs"
@@ -306,7 +332,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-1.5 text-emerald-800 font-bold">
                 <CheckCircle2 size={15} className="text-emerald-600" />
-                <span>与日历时间管理联动中</span>
+                <span>已关联日历</span>
               </div>
               <button
                 type="button"
@@ -315,7 +341,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
                 className="flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 bg-white border border-emerald-200 hover:border-emerald-300 rounded-lg shadow-2xs transition-all cursor-pointer"
               >
                 <Zap size={12} className="text-amber-500" />
-                <span>{isLoadingAuto ? '汇总中...' : '一键同步当日已完成待办与耗时'}</span>
+                <span>{isLoadingAuto ? '汇总中...' : '同步今天待办'}</span>
               </button>
             </div>
 
@@ -325,14 +351,14 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
                 <label className="block text-xs font-bold text-slate-700">
                   今日工作
                 </label>
-                <span className="text-[10px] text-slate-400">支持自由补充与分行编辑</span>
+                <span className="text-[10px] text-slate-400">分行记录</span>
               </div>
               <textarea
-                rows={10}
+                rows={8}
                 placeholder="1. XXXXX&#10;2. XXXXX"
                 value={deliverables}
                 onChange={(e) => setDeliverables(e.target.value)}
-                className="w-full px-3.5 py-2.5 text-xs leading-relaxed bg-white border border-emerald-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-800 placeholder-slate-400 min-h-[220px] resize-y shadow-2xs"
+                className="w-full px-3.5 py-2.5 text-xs leading-relaxed bg-white border border-emerald-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-800 placeholder-slate-400 min-h-[180px] resize-y shadow-2xs"
               />
             </div>
 
@@ -349,17 +375,17 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
                       try {
                         const rep = await api.getDailyReport(date);
                         if (rep.tomorrowTasksList && rep.tomorrowTasksList.length > 0) {
-                          setTomorrowPlan(rep.tomorrowTasksList.map((title, i) => `${i + 1}. ${title}`).join('\n'));
+                          setTomorrowPlan(rep.tomorrowTasksList.map((t, i) => `${i + 1}. ${t}`).join('\n'));
                         }
                       } catch (e) {
                         console.error(e);
                       }
                     }}
                     className="flex items-center gap-0.5 text-[10px] text-emerald-700 hover:underline font-medium cursor-pointer"
-                    title="联动明日循环任务"
+                    title="导入明日计划"
                   >
                     <Repeat size={11} strokeWidth={2} />
-                    <span>联动循环</span>
+                    <span>导入计划</span>
                   </button>
                 </div>
                 <textarea
@@ -367,40 +393,47 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
                   placeholder="1. xxx&#10;2. xxx"
                   value={tomorrowPlan}
                   onChange={(e) => setTomorrowPlan(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-xs leading-relaxed bg-white border border-emerald-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-800 placeholder-slate-400 min-h-[110px] resize-y shadow-2xs"
+                  className="w-full px-3.5 py-2.5 text-xs leading-relaxed bg-white border border-emerald-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-800 placeholder-slate-400 min-h-[100px] resize-y shadow-2xs"
                 />
               </div>
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                  遇到阻碍与未完成项 (可选)
+                  遇到问题 (可选)
                 </label>
                 <textarea
                   rows={4}
-                  placeholder="无明显阻塞..."
+                  placeholder="无..."
                   value={blockers}
                   onChange={(e) => setBlockers(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-xs leading-relaxed bg-white border border-emerald-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-800 placeholder-slate-400 min-h-[110px] resize-y shadow-2xs"
+                  className="w-full px-3.5 py-2.5 text-xs leading-relaxed bg-white border border-emerald-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-800 placeholder-slate-400 min-h-[100px] resize-y shadow-2xs"
                 />
               </div>
             </div>
           </div>
         ) : (
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">
-              详细内容 <span className="text-rose-500">*</span>
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-bold text-slate-700">
+                内容 <span className="text-rose-500">*</span>
+              </label>
+              {content.length > 0 && (
+                <span className="text-[11px] text-slate-400 font-mono">
+                  {content.length} 字
+                </span>
+              )}
+            </div>
             <textarea
-              rows={4}
+              rows={8}
               placeholder={
                 type === 'meeting'
-                  ? '记录会议议程、参会人员要点与后续行动项 Action Items...'
+                  ? '记录会议内容与结论...'
                   : type === 'idea'
-                  ? '记录这一刻的灵感与突发奇想...'
-                  : '随手记下当下的想法、参考信息或待办备忘...'
+                  ? '记下当下的想法...'
+                  : '记点什么...'
               }
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 placeholder-slate-400 shadow-2xs"
+              className="w-full px-3.5 py-2.5 text-xs leading-relaxed bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 placeholder-slate-400 shadow-2xs min-h-[200px] resize-y"
             />
           </div>
         )}
@@ -410,7 +443,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
           {/* Tags */}
           <div className="flex items-center gap-1.5 flex-wrap">
             <Tag size={13} className="text-slate-400" />
-            {['工作', '体验', 'UI', '架构', '会议', '灵感', '复盘', '学习'].map((tg) => (
+            {['工作', '日常', '会议', '灵感', '复盘', '学习'].map((tg) => (
               <button
                 key={tg}
                 type="button"
@@ -440,27 +473,35 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
         </div>
 
         {/* Footer Buttons */}
-        <div className="flex items-center justify-between pt-3 border-t border-slate-100 mt-1">
-          <span className="text-[11px] text-slate-400">
-            {type === 'daily_report' ? '提交后将自动同步至日历日程标记' : '按 Esc 取消退出'}
-          </span>
-          <div className="flex items-center gap-2.5">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
-            >
-              取消
-            </button>
-            <button
-              type="button"
-              onClick={handleConfirm}
-              disabled={isSubmitting || (type !== 'daily_report' && !content.trim())}
-              className="flex items-center gap-1.5 px-5 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-md shadow-blue-500/20 transition-all cursor-pointer"
-            >
-              <span>{isSubmitting ? '保存中...' : '保存记录'}</span>
-            </button>
-          </div>
+        <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 text-xs font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
+          >
+            取消
+          </button>
+          <button
+            type="button"
+            onClick={handleConfirm}
+            disabled={(!content.trim() && !deliverables.trim()) || isSubmitting}
+            className="flex items-center gap-1.5 px-5 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-xl shadow-md shadow-blue-500/20 transition-all cursor-pointer"
+          >
+            {noteToEdit ? (
+              <CheckCircle2 size={14} strokeWidth={2} />
+            ) : (
+              <Plus size={14} strokeWidth={2} />
+            )}
+            <span>
+              {isSubmitting
+                ? noteToEdit
+                  ? '保存修改中...'
+                  : '保存中...'
+                : noteToEdit
+                ? '保存修改'
+                : '保存'}
+            </span>
+          </button>
         </div>
       </div>
     </div>,
