@@ -1,0 +1,13 @@
+services:
+  workbench:
+    build: .
+    container_name: workbench
+    restart: unless-stopped
+    ports:
+      - "3001:3001" # 飞牛NAS外部端口:容器内部端口。若家宽需换高位端口，例如 "8080:3001" 或 "28080:3001"
+    volumes:
+      - ./data:/app/server/data # 挂载数据库目录，实现数据持久化
+      - ./uploads:/app/server/uploads # 挂载附件与头像上传目录
+    environment:
+      - PORT=3001
+      - NODE_ENV=production
