@@ -15,17 +15,58 @@ if (!fs.existsSync(DATA_DIR)) {
 const DB_PATH = path.join(DATA_DIR, 'workbench.db');
 const OLD_JSON_PATH = path.join(DATA_DIR, 'db.json');
 
-console.log(`[BOOT] Initializing SQLite database at: ${DB_PATH}`);
+console.log(`[BOOT] Initializing SQLite database setup...`);
 
-// Initialize SQLite database instance
+// 1. Verify in-memory engine
+try {
+  console.log('[BOOT] 1/3 Testing SQLite in-memory engine...');
+  const memDb = new Database(':memory:');
+  memDb.exec('CREATE TABLE _test (id INT)');
+  memDb.close();
+  console.log('[BOOT] 1/3 In-memory engine verified OK');
+} catch (engineErr) {
+  console.error('[CRITICAL] SQLite binary failed to run in memory:', engineErr);
+}
+
+// 2. Verify write permission on data directory
+console.log(`[BOOT] 2/3 Checking data directory write permission at ${DATA_DIR}...`);
+try {
+  const testFile = path.join(DATA_DIR, `.perm_test_${Date.now()}`);
+  fs.writeFileSync(testFile, 'ok');
+  fs.unlinkSync(testFile);
+  console.log('[BOOT] 2/3 Data directory write verified OK');
+} catch (permErr) {
+  console.error(`[CRITICAL] Data directory is NOT writable by container user. Please chmod 777 ${DATA_DIR}:`, permErr);
+}
+
+// Clean up 0-byte broken file from previous crashes
+if (fs.existsSync(DB_PATH)) {
+  const stat = fs.statSync(DB_PATH);
+  console.log(`[BOOT] Existing DB file found: size=${stat.size} bytes`);
+  if (stat.size === 0) {
+    console.warn('[BOOT] Found 0-byte workbench.db file from previous crash. Removing to re-initialize...');
+    try { fs.unlinkSync(DB_PATH); } catch (e) {}
+  }
+} else {
+  console.log('[BOOT] No existing DB file found. A new one will be created.');
+}
+
+// Clean stale .shm file if present from prior WAL crash
+const shmPath = `${DB_PATH}-shm`;
+if (fs.existsSync(shmPath)) {
+  console.warn('[BOOT] Found stale .shm file from prior WAL crash, removing to prevent lock crash...');
+  try { fs.unlinkSync(shmPath); } catch (e) {}
+}
+
+// 3. Open actual database
+console.log(`[BOOT] 3/3 Opening database file at ${DB_PATH}...`);
 let db;
 try {
-  db = new Database(DB_PATH);
-
-  // Use DELETE mode for maximum compatibility across Docker volume mounts and NAS storage filesystems
+  db = new Database(DB_PATH, { timeout: 10000 });
   db.pragma('journal_mode = DELETE');
   db.pragma('synchronous = NORMAL');
   db.pragma('foreign_keys = ON');
+  console.log('[BOOT] Database opened and configured successfully!');
 } catch (err) {
   console.error(`[CRITICAL] Failed to open SQLite database at "${DB_PATH}". Please check directory write permissions. Error:`, err);
   throw err;
