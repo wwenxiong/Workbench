@@ -2109,7 +2109,20 @@ app.post('/api/files/pick', (req, res) => {
   }, 150);
 });
 
+// Serve frontend dist if available (SPA support for production)
+const DIST_DIR = path.join(__dirname, '../dist');
+if (fs.existsSync(DIST_DIR)) {
+  app.use(express.static(DIST_DIR));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+      return next();
+    }
+    res.sendFile(path.join(DIST_DIR, 'index.html'));
+  });
+}
+
 // Start listening
 app.listen(PORT, () => {
   console.log(`Workbench Backend API Server running on http://localhost:${PORT}`);
 });
+

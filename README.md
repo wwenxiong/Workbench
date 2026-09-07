@@ -12,6 +12,10 @@ Currently, two official plugins are available:
 - **字体与字阶规范**：[TYPOGRAPHY.md](./TYPOGRAPHY.md)
 - **开发与交互守则**：[.cursorrules](./.cursorrules)
 
+## 生产部署指南 (Deployment)
+- **宝塔面板（BT-Panel）部署教程**：[部署到宝塔的教程.md](./部署到宝塔的教程.md)
+
+
 ## React Compiler
 
 The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
