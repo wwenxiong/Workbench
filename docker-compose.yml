@@ -3,6 +3,8 @@ services:
     image: ghcr.io/wwenxiong/workbench:latest
     container_name: workbench
     restart: unless-stopped
+    command: ["node", "server/index.js"]
+    tty: true
     ports:
       - "3001:3001" # 飞牛NAS外部访问端口:容器内部端口。若80/443不可用，可修改为例如 "8080:3001" 或 "28080:3001"
     volumes:
