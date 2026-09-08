@@ -17,12 +17,15 @@ import {
   ArrowLeft,
   ChevronRight,
   Info,
-  Database
+  Database,
+  Download
 } from 'lucide-react';
 import { api } from '../../services/api';
 import type { UserProfile } from '../../types';
 import { useToast } from '../Common/Toast';
 import { useTheme } from '../../contexts/ThemeContext';
+import { usePWAInstall } from '../../hooks/usePWAInstall';
+import { PWAInstallModal } from '../Common/PWAInstallModal';
 
 interface SettingsViewProps {
   currentUser: UserProfile | null;
@@ -59,6 +62,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const { showToast } = useToast();
   const { isOledTheme } = useTheme();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { isInstallable, isStandalone, isIOS, showGuideModal, setShowGuideModal, installApp } = usePWAInstall();
 
   // Active sub-page navigation state
   const [activeSection, setActiveSection] = useState<SettingSection | null>(null);
@@ -1103,12 +1107,61 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       本地 SQLite 离线保护 · 备份目录 <code className={`font-mono px-1 py-0.5 ${isOledTheme ? 'bg-[#050607] text-[#00E5FF]' : 'bg-white/90 text-slate-800'} rounded`}>server/data/workbench.db</code>
                     </span>
                   </div>
+
+                  {/* PWA Desktop & Mobile App Card */}
+                  <div className={`p-4 rounded-2xl ${
+                    isOledTheme ? 'bg-[#111417] border border-white/[0.08]' : 'bg-white/70 border border-slate-200/60'
+                  } flex flex-col sm:flex-row sm:items-center justify-between gap-3`}>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className={`font-bold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-slate-800'}`}>
+                          桌面/手机应用 (PWA)
+                        </span>
+                        {isStandalone ? (
+                          <span className="text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200/60 px-2 py-0.5 rounded-full font-semibold">
+                            已安装独立运行
+                          </span>
+                        ) : (
+                          <span className="text-[10px] bg-blue-50 text-[#0071E3] border border-blue-200/60 px-2 py-0.5 rounded-full font-semibold">
+                            可免安装直装
+                          </span>
+                        )}
+                      </div>
+                      <p className={`text-xs ${isOledTheme ? 'text-[#7D858A]' : 'text-slate-500'} mt-1 leading-relaxed`}>
+                        脱离浏览器标签页以独立原生窗口运行，拥有专属图标、桌面快捷方式与启动加速
+                      </p>
+                    </div>
+
+                    {!isStandalone && (
+                      <button
+                        type="button"
+                        onClick={installApp}
+                        className={`px-4 py-2 rounded-xl ${
+                          isOledTheme 
+                            ? 'bg-[#00E5FF] hover:bg-[#33EAFF] text-[#050607] font-mono' 
+                            : 'bg-[#0071E3] hover:opacity-90 text-white'
+                        } text-xs font-semibold shadow-xs flex items-center justify-center gap-1.5 transition-all shrink-0 cursor-pointer active:scale-95`}
+                      >
+                        <Download size={14} />
+                        <span>安装为桌面端</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
           </div>
         )}
       </div>
+
+      {/* PWA Guidance Modal */}
+      <PWAInstallModal
+        isOpen={showGuideModal}
+        onClose={() => setShowGuideModal(false)}
+        isIOS={isIOS}
+        onNativeInstall={installApp}
+        isInstallable={isInstallable}
+      />
     </main>
   );
 };

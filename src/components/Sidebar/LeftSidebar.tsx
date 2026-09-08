@@ -10,9 +10,12 @@ import {
   Settings, 
   Lock,
   ChevronDown,
-  LogOut
+  LogOut,
+  Download
 } from 'lucide-react';
 import { useTimer } from '../../contexts/TimerContext';
+import { usePWAInstall } from '../../hooks/usePWAInstall';
+import { PWAInstallModal } from '../Common/PWAInstallModal';
 import type { UserProfile } from '../../types';
 
 interface LeftSidebarProps {
@@ -38,6 +41,7 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
 }) => {
   const { remainingSeconds, isRunning } = useTimer();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const { isInstallable, isStandalone, isIOS, showGuideModal, setShowGuideModal, installApp } = usePWAInstall();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -119,6 +123,26 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
         </nav>
       </div>
 
+      {/* PWA Install Button (Shown when not already running in standalone mode) */}
+      {!isStandalone && (
+        <div className="pt-2">
+          <button
+            type="button"
+            onClick={installApp}
+            className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs bg-blue-50/80 hover:bg-blue-100/90 text-[#1677FF] border border-blue-200/80 font-semibold transition-all cursor-pointer shadow-2xs hover:shadow-xs group active:scale-98"
+            title="将工作台安装为独立桌面/手机应用"
+          >
+            <div className="flex items-center gap-2">
+              <Download size={14} className="group-hover:translate-y-0.5 transition-transform" />
+              <span>安装为桌面应用</span>
+            </div>
+            <span className="text-[10px] bg-white text-[#1677FF] px-1.5 py-0.5 rounded font-mono font-bold shadow-2xs">
+              PWA
+            </span>
+          </button>
+        </div>
+      )}
+
       {/* Bottom Profile Card & Quick Lock (Integrated) */}
       <div className="pt-2 relative left-sidebar-user-menu-container">
         <div className="rounded-xl border border-slate-200/90 bg-slate-50/70 hover:bg-slate-50/90 p-2 flex items-center justify-between gap-2 shadow-2xs transition-colors">
@@ -176,6 +200,19 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
               </div>
               <div className="text-[10px] text-slate-400">个人空间</div>
             </div>
+            {!isStandalone && (
+              <button
+                type="button"
+                onClick={() => {
+                  setShowUserMenu(false);
+                  installApp();
+                }}
+                className="w-full px-3.5 py-2 text-xs text-left text-[#1677FF] hover:bg-blue-50 flex items-center gap-2.5 transition-colors cursor-pointer font-medium"
+              >
+                <Download size={14} />
+                <span>安装为独立应用</span>
+              </button>
+            )}
             {onOpenSettings && (
               <button
                 type="button"
@@ -205,6 +242,15 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
           </div>
         )}
       </div>
+
+      {/* PWA Installation Guidance Modal */}
+      <PWAInstallModal
+        isOpen={showGuideModal}
+        onClose={() => setShowGuideModal(false)}
+        isIOS={isIOS}
+        onNativeInstall={installApp}
+        isInstallable={isInstallable}
+      />
     </aside>
   );
 };
