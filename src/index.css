@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  /* Apple iOS Typography Stack */
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "PingFang SC", "Hiragino Sans GB", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* MiSans Typography Stack */
+  font-family: "MiSans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   color-scheme: light;
   --color-primary: #0071E3;
   --color-primary-light: #F0F6FF;
   --color-bg: #F7F8FA;
   --color-surface: #FFFFFF;
   --color-border: rgba(255, 255, 255, 0.85);
-  --color-text-title: #1D1D1F;
-  --color-text-body: #48484A;
-  --color-text-muted: #86868B;
+  --color-text-title: #1D2129;
+  --color-text-body: #1D2129;
+  --color-text-muted: #4E5969;
   --theme-card-radius: 24px;
   --theme-pill-radius: 14px;
   /* Apple iOS Motion System Easing Curves */
@@ -21,7 +21,7 @@
 }
 
 html {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "PingFang SC", "Hiragino Sans GB", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "MiSans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   font-size: 15px; /* 全局基准字号整体适度放大 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -33,10 +33,10 @@ body {
   margin: 0;
   padding: 0;
   background-color: #F4F6FB;
-  color: #1D1D1F;
+  color: #1D2129;
   min-height: 100vh;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "PingFang SC", "Hiragino Sans GB", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "MiSans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: -0.01em;
@@ -47,10 +47,11 @@ body {
   display: flex;
 }
 
-/* SF Mono / Geist Mono for numbers & clocks */
+/* Mono / Numbers with tabular-nums alignment */
 .font-mono {
-  font-family: "SF Mono", Menlo, Monaco, Consolas, "PingFang SC", monospace !important;
+  font-family: "SF Mono", Menlo, Monaco, Consolas, "MiSans", monospace !important;
   font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums;
 }
 
 /* =========================================================

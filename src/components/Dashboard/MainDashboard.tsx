@@ -829,7 +829,7 @@ export const MainDashboard: FC<MainDashboardProps> = ({
               }
             }}
             placeholder="AI 智能速记：输入任务、日程、笔记、会议纪要或灵感想法，按 Enter 识别..."
-            className="block w-full h-10 pl-9 pr-20 text-xs rounded-full bg-white border border-slate-200/90 shadow-2xs focus:border-[#1677FF]/60 focus:ring-2 focus:ring-[#1677FF]/10 placeholder-slate-400 text-slate-800 focus:outline-none transition-all font-medium leading-normal"
+            className="block w-full h-10 pl-9 pr-20 text-[14px] rounded-full bg-white border border-slate-200/90 shadow-2xs focus:border-[#1677FF]/60 focus:ring-2 focus:ring-[#1677FF]/10 placeholder-[#86909C] text-[#1D2129] focus:outline-none transition-all font-medium leading-normal"
           />
           <div className="absolute inset-y-0 right-0 pr-1.5 flex items-center">
             <button
@@ -890,10 +890,10 @@ export const MainDashboard: FC<MainDashboardProps> = ({
             </div>
           </div>
           <div className="flex flex-col">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-800 select-none">
+            <h2 className="text-[26px] font-semibold leading-[1.3] tracking-tight text-[#1D2129] select-none">
               {greetingInfo.greeting}，{displayName}
             </h2>
-            <p className="text-xs font-normal text-slate-500 mt-1">
+            <p className="text-[15px] font-normal text-[#4E5969] mt-1 leading-[24px]">
               {greetingInfo.subtitle || '记得按时吃午餐，为下午储备能量 ☕'}
             </p>
           </div>
@@ -901,7 +901,7 @@ export const MainDashboard: FC<MainDashboardProps> = ({
 
         {/* Right Quote & Realistic Snow Mountain */}
         <div className="relative z-10 flex items-center h-full flex-shrink-0">
-          <div className="text-right text-xs text-slate-500 font-normal leading-relaxed mr-2 select-none">
+          <div className="text-right text-[13px] text-[#4E5969] font-normal leading-relaxed mr-2 select-none">
             <div>「 好的计划，</div>
             <div className="pl-4">是成功的一半 」</div>
           </div>
@@ -934,7 +934,7 @@ export const MainDashboard: FC<MainDashboardProps> = ({
               <div className="flex items-center justify-between mb-3.5">
                 <div className="flex items-center gap-2">
                   <CheckSquare size={17} className="text-[#1677FF]" />
-                  <h3 className="text-sm font-bold text-slate-800">今日待办</h3>
+                  <h3 className="text-[18px] font-semibold text-[#1D2129]">今日待办</h3>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
@@ -949,7 +949,7 @@ export const MainDashboard: FC<MainDashboardProps> = ({
                     <Plus size={12} strokeWidth={2.5} />
                     <span>快速添加</span>
                   </button>
-                  <span className="bg-slate-100 text-slate-500 text-xs px-2.5 py-0.5 rounded-full font-medium">
+                  <span className="bg-slate-100 text-[#4E5969] text-[13px] px-2.5 py-0.5 rounded-full font-medium">
                     全部 {displayTasks.length || 5}
                   </span>
                 </div>
@@ -957,11 +957,11 @@ export const MainDashboard: FC<MainDashboardProps> = ({
 
               {/* Progress Bar & Percentage */}
               <div className="mb-4">
-                <div className="flex justify-between items-center mb-1.5 text-xs">
-                  <span className="text-slate-400 font-normal">
+                <div className="flex justify-between items-center mb-1.5 text-[13px]">
+                  <span className="text-[#4E5969] font-normal" style={{ fontVariantNumeric: 'tabular-nums' }}>
                     {completedNum} / {totalNum} 已完成
                   </span>
-                  <span className="bg-blue-50 text-[#1677FF] text-xs px-2 py-0.5 rounded-full font-semibold">
+                  <span className="bg-blue-50 text-[#1677FF] text-[13px] px-2 py-0.5 rounded-full font-medium" style={{ fontVariantNumeric: 'tabular-nums' }}>
                     {progressPercent}%
                   </span>
                 </div>
@@ -978,7 +978,7 @@ export const MainDashboard: FC<MainDashboardProps> = ({
                 {displayTasks.map((t) => (
                   <div 
                     key={t.id}
-                    className="flex items-center justify-between gap-3 text-xs group py-0.5 transition-all"
+                    className="flex items-center justify-between gap-3 text-[15px] group py-1 transition-all"
                   >
                     <div className="flex items-center gap-2.5 flex-1 min-w-0">
                       <button
@@ -1003,13 +1003,13 @@ export const MainDashboard: FC<MainDashboardProps> = ({
                             setIsTodoModalOpen(true);
                           }
                         }}
-                        className={`truncate text-xs cursor-pointer hover:text-[#1677FF] transition-colors ${t.completed ? 'text-slate-400 line-through' : 'text-slate-800 font-medium'}`}
+                        className={`truncate text-[15px] leading-[24px] cursor-pointer hover:text-[#1677FF] transition-colors ${t.completed ? 'text-[#4E5969] line-through' : 'text-[#1D2129] font-medium'}`}
                         title="点击编辑待办"
                       >
                         {t.title}
                       </span>
                       {t.tag && (
-                        <span className={`text-[10px] px-2 py-0.5 rounded-full flex-shrink-0 font-medium ${
+                        <span className={`text-[13px] px-2 py-0.5 rounded-full flex-shrink-0 font-medium ${
                           t.tag === '会议' ? 'bg-purple-50 text-purple-600' :
                           t.tag === '客户' ? 'bg-emerald-50 text-emerald-600' :
                           t.tag === '学习' ? 'bg-slate-100 text-slate-600' :
@@ -1020,7 +1020,7 @@ export const MainDashboard: FC<MainDashboardProps> = ({
                       )}
                     </div>
                     <div className="flex items-center gap-1.5 flex-shrink-0">
-                      <span className="text-xs text-slate-400 font-mono">{t.time}</span>
+                      <span className="text-[13px] text-[#4E5969] font-mono" style={{ fontVariantNumeric: 'tabular-nums' }}>{t.time}</span>
                       <button
                         type="button"
                         onClick={() => handleDeleteTaskItem(t.id)}
@@ -1067,7 +1067,7 @@ export const MainDashboard: FC<MainDashboardProps> = ({
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <Wrench size={17} className="text-[#1677FF]" />
-                  <h3 className="text-sm font-bold text-slate-800">常用工具</h3>
+                  <h3 className="text-[18px] font-semibold text-[#1D2129]">常用工具</h3>
                 </div>
                 <button 
                   type="button"
@@ -1134,7 +1134,7 @@ export const MainDashboard: FC<MainDashboardProps> = ({
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <Edit3 size={17} className="text-[#1677FF]" />
-                  <h3 className="text-sm font-bold text-slate-800">快速记录</h3>
+                  <h3 className="text-[18px] font-semibold text-[#1D2129]">快速记录</h3>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1 text-xs bg-slate-100/70 p-0.5 rounded-lg">
@@ -1198,7 +1198,7 @@ export const MainDashboard: FC<MainDashboardProps> = ({
                   value={quickNote}
                   onChange={(e) => setQuickNote(e.target.value)}
                   onKeyDown={handleQuickNoteKeyDown}
-                  className="flex-1 bg-transparent text-xs text-slate-800 placeholder-slate-400 focus:outline-none"
+                  className="flex-1 bg-transparent text-[15px] text-[#1D2129] placeholder-[#86909C] focus:outline-none leading-[24px]"
                 />
                 <div className="flex items-center gap-1.5 flex-shrink-0">
                   <button
@@ -1224,7 +1224,7 @@ export const MainDashboard: FC<MainDashboardProps> = ({
               </div>
 
               {/* Section Label */}
-              <div className="text-xs text-slate-400 font-medium mb-2.5">最近记录</div>
+              <div className="text-[13px] text-[#4E5969] font-medium mb-2.5">最近记录</div>
 
               {/* Note Items */}
               <div className="flex flex-col gap-2.5">
@@ -1296,7 +1296,7 @@ export const MainDashboard: FC<MainDashboardProps> = ({
               <div className="flex items-center justify-between mb-3.5">
                 <div className="flex items-center gap-2">
                   <FileText size={17} className="text-[#1677FF]" />
-                  <h3 className="text-sm font-bold text-slate-800">最近文件</h3>
+                  <h3 className="text-[18px] font-semibold text-[#1D2129]">最近文件</h3>
                 </div>
                 <button 
                   type="button"
@@ -1373,7 +1373,7 @@ export const MainDashboard: FC<MainDashboardProps> = ({
               <div className="flex items-center justify-between mb-3.5 flex-shrink-0">
                 <div className="flex items-center gap-2">
                   <CalendarIcon size={17} className="text-[#1677FF]" />
-                  <h3 className="text-sm font-bold text-slate-800">日程安排</h3>
+                  <h3 className="text-[18px] font-semibold text-[#1D2129]">日程安排</h3>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-slate-500 font-medium flex items-center gap-0.5 cursor-pointer">
