@@ -235,14 +235,14 @@ export const LinkFileModal: React.FC<LinkFileModalProps> = ({
         {/* Modal Header */}
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#0071E3] flex items-center justify-center border border-blue-100/60 shadow-2xs">
+            <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#1677FF] flex items-center justify-center border border-blue-100/60 shadow-2xs">
               <Link size={16} strokeWidth={2.2} />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-[#1D1D1F]">
+              <h3 className="text-[18px] font-semibold text-[#1D2129]">
                 {fileToEdit ? '编辑文件' : '添加文件'}
               </h3>
-              <p className="text-[11px] text-[#86868B]">
+              <p className="text-[13px] text-[#4E5969]">
                 可上传文件或输入文件路径
               </p>
             </div>
@@ -250,7 +250,7 @@ export const LinkFileModal: React.FC<LinkFileModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all cursor-pointer"
+            className="p-1.5 rounded-full text-[#4E5969] hover:text-[#1D2129] hover:bg-slate-100 transition-all cursor-pointer"
           >
             <X size={16} />
           </button>
@@ -266,22 +266,22 @@ export const LinkFileModal: React.FC<LinkFileModalProps> = ({
               onDrop={handleDrop}
               className={`p-5 rounded-2xl border-2 border-dashed transition-all flex flex-col items-center justify-center text-center cursor-pointer ${
                 isDragOver
-                  ? 'border-[#0071E3] bg-blue-50/60'
+                  ? 'border-[#1677FF] bg-blue-50/60'
                   : 'border-slate-200 hover:border-blue-300 bg-slate-50/50 hover:bg-blue-50/30'
               }`}
               onClick={() => fileInputRef.current?.click()}
             >
-              <div className="w-11 h-11 rounded-2xl bg-blue-100/70 text-[#0071E3] flex items-center justify-center mb-2 shadow-2xs">
+              <div className="w-11 h-11 rounded-2xl bg-blue-100/70 text-[#1677FF] flex items-center justify-center mb-2 shadow-2xs">
                 {isUploading ? (
                   <UploadCloud size={22} className="animate-bounce" />
                 ) : (
                   <FileUp size={22} />
                 )}
               </div>
-              <div className="text-xs font-bold text-[#1D1D1F]">
+              <div className="text-[15px] font-semibold text-[#1D2129]">
                 {isUploading ? '上传中...' : '点击或拖拽文件上传'}
               </div>
-              <div className="text-[11px] text-[#86868B] mt-0.5">
+              <div className="text-[13px] text-[#4E5969] mt-0.5">
                 支持各类文档、图片、表格（最大 100MB）
               </div>
             </div>
@@ -289,21 +289,21 @@ export const LinkFileModal: React.FC<LinkFileModalProps> = ({
 
           <div className="flex items-center gap-2 my-0.5">
             <div className="h-[1px] flex-1 bg-slate-100" />
-            <span className="text-[10px] text-[#86868B] font-medium">或直接输入文件路径</span>
+            <span className="text-[12px] text-[#86909C] font-medium">或直接输入文件路径</span>
             <div className="h-[1px] flex-1 bg-slate-100" />
           </div>
 
           {/* Windows Local Native Picker Option */}
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/70 flex items-center justify-between gap-3">
-            <div className="text-[11px] text-[#6E6E73] flex items-center gap-1.5">
-              <FolderOpen size={14} className="text-[#0071E3]" />
+            <div className="text-[13px] text-[#4E5969] flex items-center gap-1.5 font-medium">
+              <FolderOpen size={15} className="text-[#1677FF]" />
               <span>本地电脑：直接打开文件选择窗口</span>
             </div>
             <button
               type="button"
               onClick={handlePickFile}
               disabled={isPicking}
-              className="px-3 py-1.5 text-[11px] font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg shadow-2xs transition-all cursor-pointer whitespace-nowrap disabled:opacity-60"
+              className="px-3 py-1.5 text-[13px] font-medium text-[#1D2129] bg-white hover:bg-slate-100 border border-slate-200 rounded-lg shadow-2xs transition-all cursor-pointer whitespace-nowrap disabled:opacity-60"
             >
               {isPicking ? '选择中...' : '浏览文件'}
             </button>
@@ -312,15 +312,15 @@ export const LinkFileModal: React.FC<LinkFileModalProps> = ({
           {/* File Path Input */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-bold text-[#1D1D1F]">
+              <label className="text-[14px] font-medium text-[#1D2129]">
                 文件路径 <span className="text-rose-500">*</span>
               </label>
               <button
                 type="button"
                 onClick={handlePasteClipboard}
-                className="text-[11px] font-medium text-[#0071E3] hover:underline flex items-center gap-1 cursor-pointer"
+                className="text-[12px] font-medium text-[#1677FF] hover:underline flex items-center gap-1 cursor-pointer"
               >
-                <ClipboardCopy size={12} />
+                <ClipboardCopy size={13} />
                 <span>粘贴路径</span>
               </button>
             </div>
@@ -329,14 +329,14 @@ export const LinkFileModal: React.FC<LinkFileModalProps> = ({
               value={filePath}
               onChange={(e) => handlePathChange(e.target.value)}
               placeholder="例如: D:\文档\销售表.xlsx"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-[#1D1D1F] focus:bg-white focus:border-[#0071E3] focus:ring-2 focus:ring-[#0071E3]/20 transition-all outline-none font-mono"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[14px] text-[#1D2129] focus:bg-white focus:border-[#1677FF] focus:ring-2 focus:ring-[#1677FF]/20 transition-all outline-none font-mono tabular-nums"
             />
           </div>
 
           {/* File Name & Category */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold text-[#1D1D1F] mb-1.5">
+              <label className="block text-[14px] font-medium text-[#1D2129] mb-1.5">
                 名称
               </label>
               <input
@@ -344,18 +344,18 @@ export const LinkFileModal: React.FC<LinkFileModalProps> = ({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="例如: 销售表"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-[#1D1D1F] focus:bg-white focus:border-[#0071E3] focus:ring-2 focus:ring-[#0071E3]/20 transition-all outline-none"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[14px] text-[#1D2129] focus:bg-white focus:border-[#1677FF] focus:ring-2 focus:ring-[#1677FF]/20 transition-all outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-[#1D1D1F] mb-1.5">
+              <label className="block text-[14px] font-medium text-[#1D2129] mb-1.5">
                 分类
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-[#1D1D1F] focus:bg-white focus:border-[#0071E3] focus:ring-2 focus:ring-[#0071E3]/20 transition-all outline-none cursor-pointer"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[14px] text-[#1D2129] focus:bg-white focus:border-[#1677FF] focus:ring-2 focus:ring-[#1677FF]/20 transition-all outline-none cursor-pointer"
               >
                 {CATEGORY_OPTIONS.map((cat) => (
                   <option key={cat} value={cat}>
@@ -368,7 +368,7 @@ export const LinkFileModal: React.FC<LinkFileModalProps> = ({
 
           {/* Notes */}
           <div>
-            <label className="block text-xs font-bold text-[#1D1D1F] mb-1.5">
+            <label className="block text-[14px] font-medium text-[#1D2129] mb-1.5">
               备注 (可选)
             </label>
             <input
@@ -376,7 +376,7 @@ export const LinkFileModal: React.FC<LinkFileModalProps> = ({
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="例如: 每天下班核对"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-[#1D1D1F] focus:bg-white focus:border-[#0071E3] focus:ring-2 focus:ring-[#0071E3]/20 transition-all outline-none"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-[14px] text-[#1D2129] focus:bg-white focus:border-[#1677FF] focus:ring-2 focus:ring-[#1677FF]/20 transition-all outline-none"
             />
           </div>
 
@@ -387,9 +387,9 @@ export const LinkFileModal: React.FC<LinkFileModalProps> = ({
               id="isPinned"
               checked={isPinned}
               onChange={(e) => setIsPinned(e.target.checked)}
-              className="w-4 h-4 rounded text-[#0071E3] focus:ring-[#0071E3] cursor-pointer"
+              className="w-4 h-4 rounded text-[#1677FF] focus:ring-[#1677FF] cursor-pointer accent-[#1677FF]"
             />
-            <label htmlFor="isPinned" className="text-xs text-[#1D1D1F] font-medium cursor-pointer">
+            <label htmlFor="isPinned" className="text-[14px] text-[#1D2129] font-medium cursor-pointer">
               置顶显示
             </label>
           </div>
@@ -399,16 +399,16 @@ export const LinkFileModal: React.FC<LinkFileModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-[#6E6E73] hover:text-[#1D1D1F] hover:bg-slate-100 rounded-xl transition-all cursor-pointer"
+              className="px-4 py-2 text-[14px] font-medium text-[#4E5969] hover:text-[#1D2129] hover:bg-slate-100 rounded-xl transition-all cursor-pointer"
             >
               取消
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center gap-1.5 px-5 py-2 text-xs font-semibold text-white bg-[#0071E3] hover:bg-[#0077ED] active:scale-98 rounded-xl shadow-xs transition-all cursor-pointer disabled:opacity-50"
+              className="flex items-center gap-1.5 px-5 py-2 text-[14px] font-medium text-white bg-[#1677FF] hover:bg-blue-600 active:scale-98 rounded-xl shadow-xs transition-all cursor-pointer disabled:opacity-50"
             >
-              <Check size={14} strokeWidth={2.5} />
+              <Check size={15} strokeWidth={2.5} />
               <span>保存</span>
             </button>
           </div>

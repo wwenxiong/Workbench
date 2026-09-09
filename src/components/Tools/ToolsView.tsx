@@ -847,26 +847,26 @@ export const ToolsView: React.FC = () => {
             <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shadow-md flex-shrink-0 ${
               isOledTheme
                 ? 'bg-[#00E5FF]/15 text-[#00E5FF] border border-[#00E5FF]/30 shadow-[#00E5FF]/10'
-                : 'bg-gradient-to-tr from-[#0071E3] to-[#409CFF] text-white shadow-blue-500/20'
+                : 'bg-[#1677FF] text-white shadow-blue-500/20'
             }`}>
               <Wrench size={22} strokeWidth={2.2} />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className={`text-xl font-bold tracking-tight ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>工具管理</h1>
-                <span className={`px-2 py-0.5 text-[11px] font-semibold rounded-full border ${
+                <h1 className={`text-[26px] font-semibold leading-[1.3] tracking-tight ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>工具管理</h1>
+                <span className={`px-2.5 py-0.5 text-[13px] font-medium font-mono rounded-full border ${
                   isOledTheme
                     ? 'bg-[#00E5FF]/10 text-[#00E5FF] border-[#00E5FF]/20'
-                    : 'bg-blue-50 text-[#0071E3] border-blue-200/60'
-                }`}>
+                    : 'bg-blue-50 text-[#1677FF] border-blue-200/60'
+                }`} style={{ fontVariantNumeric: 'tabular-nums' }}>
                   {TOOL_ITEMS.length} 个工具
                 </span>
                 {isRunning && (
-                  <span className={`flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold rounded-full border ${
+                  <span className={`flex items-center gap-1 px-2.5 py-0.5 text-[12px] font-medium rounded-full border ${
                     isOledTheme
                       ? 'bg-[#B7FF3C]/10 text-[#B7FF3C] border-[#B7FF3C]/30'
                       : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                  }`}>
+                  }`} style={{ fontVariantNumeric: 'tabular-nums' }}>
                     <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${isOledTheme ? 'bg-[#B7FF3C]' : 'bg-emerald-500'}`}></span>
                     <span>倒计时运行中 · {countFormatted}</span>
                   </span>
@@ -888,14 +888,14 @@ export const ToolsView: React.FC = () => {
                 viewMode === 'grid'
                   ? isOledTheme
                     ? 'bg-[#00E5FF]/15 text-[#00E5FF] font-bold border border-[#00E5FF]/30'
-                    : 'bg-white text-[#0071E3] shadow-2xs font-bold'
+                    : 'bg-white text-[#1677FF] shadow-2xs font-semibold'
                   : isOledTheme
                     ? 'text-[#7D858A] hover:text-[#F2F5F5]'
                     : 'text-slate-400 hover:text-slate-700'
               }`}
               title="网格视图"
             >
-              <LayoutGrid size={15} />
+              <LayoutGrid size={16} />
             </button>
             <button
               type="button"
@@ -904,14 +904,14 @@ export const ToolsView: React.FC = () => {
                 viewMode === 'list'
                   ? isOledTheme
                     ? 'bg-[#00E5FF]/15 text-[#00E5FF] font-bold border border-[#00E5FF]/30'
-                    : 'bg-white text-[#0071E3] shadow-2xs font-bold'
+                    : 'bg-white text-[#1677FF] shadow-2xs font-semibold'
                   : isOledTheme
                     ? 'text-[#7D858A] hover:text-[#F2F5F5]'
                     : 'text-slate-400 hover:text-slate-700'
               }`}
               title="列表视图"
             >
-              <ListIcon size={15} />
+              <ListIcon size={16} />
             </button>
           </div>
         </div>
@@ -926,14 +926,14 @@ export const ToolsView: React.FC = () => {
               key={cat}
               type="button"
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl text-[14px] font-medium transition-all whitespace-nowrap cursor-pointer ${
                 selectedCategory === cat
                   ? isOledTheme
                     ? 'bg-[#00E5FF] text-[#050607] font-bold shadow-xs'
-                    : 'bg-[#1D1D1F] text-white shadow-xs font-semibold'
+                    : 'bg-[#1D2129] text-white shadow-xs font-semibold'
                   : isOledTheme
                     ? 'bg-[#0C0F11] text-[#7D858A] hover:text-[#F2F5F5] border border-white/10 hover:border-white/20'
-                    : 'bg-white/70 hover:bg-white text-[#6E6E73] hover:text-[#1D1D1F] border border-slate-200/70'
+                    : 'bg-white/70 hover:bg-white text-[#4E5969] hover:text-[#1D2129] border border-slate-200/70'
               }`}
             >
               {cat}
@@ -943,16 +943,16 @@ export const ToolsView: React.FC = () => {
 
         {/* Search Bar */}
         <div className="relative w-full sm:w-72">
-          <Search size={14} className={`absolute left-3.5 top-1/2 -translate-y-1/2 ${isOledTheme ? 'text-[#7D858A]' : 'text-slate-400'}`} />
+          <Search size={15} className={`absolute left-3.5 top-1/2 -translate-y-1/2 ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86909C]'}`} />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="搜索工具名称或标签..."
-            className={`w-full pl-9 pr-3.5 py-2 text-xs rounded-xl border transition-all outline-none shadow-2xs ${
+            className={`w-full pl-9 pr-3.5 py-2 text-[14px] rounded-xl border transition-all outline-none shadow-2xs ${
               isOledTheme
                 ? 'bg-[#080A0C] border-white/10 text-[#F2F5F5] placeholder:text-[#7D858A] focus:border-[#00E5FF] focus:ring-2 focus:ring-[#00E5FF]/20'
-                : 'bg-white/80 border-slate-200/80 focus:bg-white focus:border-[#0071E3] focus:ring-2 focus:ring-[#0071E3]/20 text-[#1D1D1F]'
+                : 'bg-white/80 border-slate-200/80 focus:bg-white focus:border-[#1677FF] focus:ring-2 focus:ring-[#1677FF]/20 text-[#1D2129] placeholder-[#86909C]'
             }`}
           />
         </div>
@@ -978,7 +978,7 @@ export const ToolsView: React.FC = () => {
                 {/* Top Badge & Category */}
                 <div>
                   <div className="flex items-center justify-between gap-1.5 mb-3">
-                    <span className={`text-[10px] font-bold tracking-wider px-2 py-0.5 rounded-md shadow-2xs ${
+                    <span className={`text-[12px] font-medium tracking-wider px-2 py-0.5 rounded-md shadow-2xs ${
                       isOledTheme
                         ? 'bg-[#00E5FF] text-[#050607]'
                         : `text-white ${tool.badgeBg}`
@@ -988,17 +988,17 @@ export const ToolsView: React.FC = () => {
 
                     <div className="flex items-center gap-1.5">
                       {isToolRunning && (
-                        <span className={`flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold animate-pulse border ${
+                        <span className={`flex items-center gap-1 px-2 py-0.5 rounded-md text-[12px] font-medium animate-pulse border ${
                           isOledTheme
                             ? 'bg-[#B7FF3C]/10 border-[#B7FF3C]/30 text-[#B7FF3C]'
                             : 'bg-emerald-50 border-emerald-200 text-emerald-600'
-                        }`}>
+                        }`} style={{ fontVariantNumeric: 'tabular-nums' }}>
                           <span className={`w-1.5 h-1.5 rounded-full ${isOledTheme ? 'bg-[#B7FF3C]' : 'bg-emerald-500'}`}></span>
                           <span>{countFormatted}</span>
                         </span>
                       )}
-                      <span className={`text-[10px] font-medium px-2 py-0.5 rounded-md ${
-                        isOledTheme ? 'bg-[#111417] text-[#7D858A] border border-white/10' : 'bg-slate-100/80 text-[#86868B]'
+                      <span className={`text-[12px] font-medium px-2 py-0.5 rounded-md ${
+                        isOledTheme ? 'bg-[#111417] text-[#7D858A] border border-white/10' : 'bg-slate-100/80 text-[#4E5969]'
                       }`}>
                         {tool.category}
                       </span>
@@ -1018,14 +1018,14 @@ export const ToolsView: React.FC = () => {
                     </div>
 
                     <div className="min-w-0 flex-1">
-                      <h3 className={`text-base font-bold transition-colors truncate ${
+                      <h3 className={`text-[18px] font-semibold transition-colors truncate ${
                         isOledTheme
                           ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]'
-                          : 'text-[#1D1D1F] group-hover:text-[#0071E3]'
+                          : 'text-[#1D2129] group-hover:text-[#1677FF]'
                       }`}>
                         {tool.name}
                       </h3>
-                      <p className={`text-xs mt-0.5 truncate ${isOledTheme ? 'text-[#7D858A]' : 'text-slate-400'}`}>
+                      <p className={`text-[14px] leading-[22px] mt-0.5 truncate ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>
                         {tool.description}
                       </p>
                     </div>
@@ -1036,8 +1036,8 @@ export const ToolsView: React.FC = () => {
                 <div className={`mt-4 pt-3 border-t flex items-center justify-between gap-2 ${
                   isOledTheme ? 'border-white/10' : 'border-slate-100'
                 }`}>
-                  <span className={`text-[11px] font-medium flex items-center gap-1.5 ${
-                    isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'
+                  <span className={`text-[13px] font-medium flex items-center gap-1.5 ${
+                    isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'
                   }`}>
                     <span className={`w-1.5 h-1.5 rounded-full ${
                       isToolRunning
@@ -1050,14 +1050,14 @@ export const ToolsView: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setActiveToolId(tool.id)}
-                    className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer shadow-2xs border ${
+                    className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-[13px] font-medium whitespace-nowrap transition-all duration-200 cursor-pointer shadow-2xs border ${
                       isOledTheme
                         ? 'bg-[#00E5FF]/10 hover:bg-[#00E5FF] text-[#00E5FF] hover:text-[#050607] border-[#00E5FF]/25'
-                        : 'bg-[#0071E3]/10 group-hover:bg-[#0071E3] text-[#0071E3] group-hover:text-white border-transparent'
+                        : 'bg-[#1677FF]/10 group-hover:bg-[#1677FF] text-[#1677FF] group-hover:text-white border-transparent'
                     }`}
                   >
                     <span>{isToolRunning ? '查看计时' : '打开工具'}</span>
-                    <ArrowRight size={13} />
+                    <ArrowRight size={14} />
                   </button>
                 </div>
               </div>
@@ -1076,10 +1076,10 @@ export const ToolsView: React.FC = () => {
           <div className="overflow-x-auto custom-scrollbar">
             <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
-                <tr className={`border-b text-[11px] uppercase tracking-wider ${
+                <tr className={`border-b text-[13px] uppercase tracking-wider ${
                   isOledTheme
                     ? 'border-white/10 bg-[#111417] text-[#7D858A]'
-                    : 'border-slate-200/70 bg-slate-50/70 text-slate-500'
+                    : 'border-slate-200/70 bg-slate-50/70 text-[#4E5969]'
                 }`}>
                   <th className="py-3 px-4 font-medium">工具名称</th>
                   <th className="py-3 px-4 font-medium w-32">所属分类</th>
@@ -1088,7 +1088,7 @@ export const ToolsView: React.FC = () => {
                   <th className="py-3 px-4 font-medium text-right w-36">操作</th>
                 </tr>
               </thead>
-              <tbody className={`divide-y text-xs ${
+              <tbody className={`divide-y text-[15px] ${
                 isOledTheme ? 'divide-white/5' : 'divide-slate-100'
               }`}>
                 {filteredTools.map((tool) => {
@@ -1114,14 +1114,14 @@ export const ToolsView: React.FC = () => {
                             <IconComponent size={18} strokeWidth={2} />
                           </div>
                           <div>
-                            <div className={`font-bold transition-colors ${
+                            <div className={`font-semibold transition-colors ${
                               isOledTheme
                                 ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]'
-                                : 'text-[#1D1D1F] group-hover:text-[#0071E3]'
+                                : 'text-[#1D2129] group-hover:text-[#1677FF]'
                             }`}>
                               {tool.name}
                             </div>
-                            <div className={`text-[10px] mt-0.5 ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'}`}>
+                            <div className={`text-[13px] mt-0.5 ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>
                               {tool.tag}
                             </div>
                           </div>
@@ -1130,10 +1130,10 @@ export const ToolsView: React.FC = () => {
 
                       {/* Category */}
                       <td className="py-3.5 px-4">
-                        <span className={`px-2 py-0.5 rounded-md text-[11px] font-medium ${
+                        <span className={`px-2 py-0.5 rounded-md text-[13px] font-medium ${
                           isOledTheme
                             ? 'bg-[#111417] text-[#7D858A] border border-white/10'
-                            : 'bg-slate-100 text-slate-600'
+                            : 'bg-slate-100 text-[#4E5969]'
                         }`}>
                           {tool.category}
                         </span>
@@ -1141,7 +1141,7 @@ export const ToolsView: React.FC = () => {
 
                       {/* Tag Badge */}
                       <td className="py-3.5 px-4">
-                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
+                        <span className={`text-[12px] font-medium px-2 py-0.5 rounded ${
                           isOledTheme
                             ? 'bg-[#00E5FF] text-[#050607]'
                             : `text-white ${tool.badgeBg}`
@@ -1153,16 +1153,16 @@ export const ToolsView: React.FC = () => {
                       {/* Status */}
                       <td className="py-3.5 px-4">
                         {isToolRunning ? (
-                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-bold text-[10px] animate-pulse border ${
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-medium text-[12px] animate-pulse border ${
                             isOledTheme
                               ? 'bg-[#B7FF3C]/10 border-[#B7FF3C]/30 text-[#B7FF3C]'
                               : 'bg-emerald-50 border-emerald-200 text-emerald-600'
-                          }`}>
+                          }`} style={{ fontVariantNumeric: 'tabular-nums' }}>
                             <span className={`w-1.5 h-1.5 rounded-full ${isOledTheme ? 'bg-[#B7FF3C]' : 'bg-emerald-500'}`}></span>
                             <span>运行中 · {countFormatted}</span>
                           </span>
                         ) : (
-                          <span className={`text-[11px] font-medium ${isOledTheme ? 'text-[#7D858A]' : 'text-slate-400'}`}>就绪</span>
+                          <span className={`text-[13px] font-medium ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>就绪</span>
                         )}
                       </td>
 
@@ -1171,10 +1171,10 @@ export const ToolsView: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => setActiveToolId(tool.id)}
-                          className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap active:scale-95 transition-all cursor-pointer shadow-2xs border ${
+                          className={`px-3 py-1.5 rounded-xl text-[13px] font-medium whitespace-nowrap active:scale-95 transition-all cursor-pointer shadow-2xs border ${
                             isOledTheme
                               ? 'bg-[#00E5FF]/10 hover:bg-[#00E5FF] text-[#00E5FF] hover:text-[#050607] border-[#00E5FF]/25'
-                              : 'bg-[#0071E3]/10 hover:bg-[#0071E3] text-[#0071E3] hover:text-white border-transparent'
+                              : 'bg-[#1677FF]/10 hover:bg-[#1677FF] text-[#1677FF] hover:text-white border-transparent'
                           }`}
                         >
                           {isToolRunning ? '查看' : '打开'}

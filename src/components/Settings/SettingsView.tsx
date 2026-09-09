@@ -278,7 +278,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             {/* Top Page Header */}
             <div className="flex items-center justify-between">
               <div>
-                <h1 className={`text-2xl font-bold tracking-tight ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D1D1F]'}`}>
+                <h1 className={`text-[26px] font-semibold leading-[1.3] tracking-tight ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D2129]'}`}>
                   设置
                 </h1>
               </div>
@@ -289,9 +289,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   isOledTheme 
                     ? 'bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30' 
                     : 'bg-rose-50 hover:bg-rose-100/80 text-rose-600 border border-rose-200/60'
-                } text-xs font-semibold flex items-center gap-2 shadow-2xs transition-all active:scale-95 cursor-pointer`}
+                } text-[14px] font-medium flex items-center gap-2 shadow-2xs transition-all active:scale-95 cursor-pointer`}
               >
-                <LogOut size={15} />
+                <LogOut size={16} />
                 <span>退出登录</span>
               </button>
             </div>
@@ -318,18 +318,18 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className={`text-lg font-bold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D1D1F]'}`}>
+                    <h2 className={`text-[18px] font-semibold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D2129]'}`}>
                       {currentUser?.username || '未登录'}
                     </h2>
                     <span className={`px-2.5 py-0.5 rounded-full ${
                       isOledTheme 
                         ? 'bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30 font-mono' 
-                        : 'bg-blue-50 text-[#0071E3] border border-blue-200/60'
-                    } text-[10px] font-bold`}>
+                        : 'bg-blue-50 text-[#1677FF] border border-blue-200/60'
+                    } text-[12px] font-medium`}>
                       个人版
                     </span>
                   </div>
-                  <p className={`text-xs ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#86868B]'} mt-0.5`}>
+                  <p className={`text-[13px] ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#4E5969]'} mt-0.5`}>
                     创建于 {currentUser?.created_at ? new Date(currentUser.created_at).toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '.') : '2026.09.03'}
                   </p>
                 </div>
@@ -341,10 +341,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 className={`flex items-center gap-1.5 px-4 py-2 rounded-xl ${
                   isOledTheme 
                     ? 'bg-[#00E5FF] hover:bg-[#33EAFF] text-[#050607] font-mono' 
-                    : 'bg-[#0071E3] hover:opacity-90 text-white'
-                } text-xs font-semibold shadow-xs transition-all active:scale-95 cursor-pointer`}
+                    : 'bg-[#1677FF] hover:bg-blue-600 text-white'
+                } text-[14px] font-medium shadow-xs transition-all active:scale-95 cursor-pointer`}
               >
-                <User size={14} />
+                <User size={15} />
                 <span>编辑资料</span>
               </button>
             </div>
@@ -368,19 +368,19 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       } flex items-center justify-center shadow-2xs`}>
                         <Sparkles size={20} />
                       </div>
-                      <h3 className={`text-sm font-bold ${isOledTheme ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]' : 'text-[#1D1D1F] group-hover:text-[#0071E3]'} transition-colors`}>
+                      <h3 className={`text-[18px] font-semibold ${isOledTheme ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]' : 'text-[#1D2129] group-hover:text-[#1677FF]'} transition-colors`}>
                         个人资料
                       </h3>
                     </div>
-                    <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold ${
-                      isOledTheme ? 'bg-white/[0.06] text-[#AEB7BA] font-mono' : 'bg-slate-100 text-slate-700'
+                    <span className={`text-[12px] px-2.5 py-0.5 rounded-full font-medium ${
+                      isOledTheme ? 'bg-white/[0.06] text-[#AEB7BA] font-mono' : 'bg-slate-100 text-[#4E5969]'
                     }`}>
                       {currentUser?.avatar_url ? '已同步' : '默认预设'}
                     </span>
                   </div>
                 </div>
                 <div className={`pt-3 border-t ${isOledTheme ? 'border-white/[0.08]' : 'border-slate-100'} flex items-center justify-between`}>
-                  <span className={`text-[11px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'} font-medium`}>
+                  <span className={`text-[13px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'} font-medium`}>
                     8 款预设 · 本地导入
                   </span>
                   <button
@@ -389,8 +389,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       e.stopPropagation();
                       setActiveSection('profile');
                     }}
-                    className={`flex items-center gap-1 text-xs font-semibold ${
-                      isOledTheme ? 'text-[#00E5FF] font-mono' : 'text-[#0071E3]'
+                    className={`flex items-center gap-1 text-[13px] font-medium ${
+                      isOledTheme ? 'text-[#00E5FF] font-mono' : 'text-[#1677FF]'
                     } group-hover:translate-x-0.5 transition-transform`}
                   >
                     <span>进入设置</span>
@@ -418,21 +418,21 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       } flex items-center justify-center shadow-2xs`}>
                         <Bot size={20} />
                       </div>
-                      <h3 className={`text-sm font-bold ${isOledTheme ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]' : 'text-[#1D1D1F] group-hover:text-[#0071E3]'} transition-colors`}>
+                      <h3 className={`text-[18px] font-semibold ${isOledTheme ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]' : 'text-[#1D2129] group-hover:text-[#1677FF]'} transition-colors`}>
                         模型服务
                       </h3>
                     </div>
-                    <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold ${
+                    <span className={`text-[12px] px-2.5 py-0.5 rounded-full font-medium ${
                       hasAiKey 
                         ? (isOledTheme ? 'bg-[#B7FF3C]/10 text-[#B7FF3C] border border-[#B7FF3C]/30 font-mono' : 'bg-emerald-50 text-emerald-700 border border-emerald-200/80') 
-                        : (isOledTheme ? 'bg-white/[0.06] text-[#7D858A]' : 'bg-slate-100 text-slate-500')
+                        : (isOledTheme ? 'bg-white/[0.06] text-[#7D858A]' : 'bg-slate-100 text-[#4E5969]')
                     }`}>
                       {hasAiKey ? (aiModel || '已连接') : '未连接'}
                     </span>
                   </div>
                 </div>
                 <div className={`pt-3 border-t ${isOledTheme ? 'border-white/[0.08]' : 'border-slate-100'} flex items-center justify-between`}>
-                  <span className={`text-[11px] ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#86868B]'} font-medium`}>
+                  <span className={`text-[13px] ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#4E5969]'} font-medium`}>
                     模型：{aiModel || '未配置'} · 语义解析
                   </span>
                   <button
@@ -441,8 +441,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       e.stopPropagation();
                       setActiveSection('ai');
                     }}
-                    className={`flex items-center gap-1 text-xs font-semibold ${
-                      isOledTheme ? 'text-[#00E5FF] font-mono' : 'text-[#0071E3]'
+                    className={`flex items-center gap-1 text-[13px] font-medium ${
+                      isOledTheme ? 'text-[#00E5FF] font-mono' : 'text-[#1677FF]'
                     } group-hover:translate-x-0.5 transition-transform`}
                   >
                     <span>进入设置</span>
@@ -470,11 +470,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       } flex items-center justify-center shadow-2xs`}>
                         <ShieldCheck size={20} />
                       </div>
-                      <h3 className={`text-sm font-bold ${isOledTheme ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]' : 'text-[#1D1D1F] group-hover:text-[#0071E3]'} transition-colors`}>
+                      <h3 className={`text-[18px] font-semibold ${isOledTheme ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]' : 'text-[#1D2129] group-hover:text-[#1677FF]'} transition-colors`}>
                         账号与安全
                       </h3>
                     </div>
-                    <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold ${
+                    <span className={`text-[12px] px-2.5 py-0.5 rounded-full font-medium ${
                       isOledTheme 
                         ? 'bg-[#B7FF3C]/10 text-[#B7FF3C] border border-[#B7FF3C]/30 font-mono' 
                         : 'bg-emerald-50 text-emerald-700 border border-emerald-200/60'
@@ -484,7 +484,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   </div>
                 </div>
                 <div className={`pt-3 border-t ${isOledTheme ? 'border-white/[0.08]' : 'border-slate-100'} flex items-center justify-between`}>
-                  <span className={`text-[11px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'} font-medium`}>
+                  <span className={`text-[13px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'} font-medium`}>
                     会话锁屏 · 本地加密
                   </span>
                   <button
@@ -493,8 +493,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       e.stopPropagation();
                       setActiveSection('security');
                     }}
-                    className={`flex items-center gap-1 text-xs font-semibold ${
-                      isOledTheme ? 'text-[#00E5FF] font-mono' : 'text-[#0071E3]'
+                    className={`flex items-center gap-1 text-[13px] font-medium ${
+                      isOledTheme ? 'text-[#00E5FF] font-mono' : 'text-[#1677FF]'
                     } group-hover:translate-x-0.5 transition-transform`}
                   >
                     <span>进入设置</span>
@@ -520,19 +520,19 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       } flex items-center justify-center shadow-2xs`}>
                         <Info size={20} />
                       </div>
-                      <h3 className={`text-sm font-bold ${isOledTheme ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]' : 'text-[#1D1D1F] group-hover:text-[#0071E3]'} transition-colors`}>
+                      <h3 className={`text-[18px] font-semibold ${isOledTheme ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]' : 'text-[#1D2129] group-hover:text-[#1677FF]'} transition-colors`}>
                         关于与存储
                       </h3>
                     </div>
-                    <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold ${
-                      isOledTheme ? 'bg-white/[0.06] text-[#AEB7BA] font-mono' : 'bg-slate-100 text-slate-700'
+                    <span className={`text-[12px] px-2.5 py-0.5 rounded-full font-medium ${
+                      isOledTheme ? 'bg-white/[0.06] text-[#AEB7BA] font-mono' : 'bg-slate-100 text-[#4E5969]'
                     }`}>
                       v2.0
                     </span>
                   </div>
                 </div>
                 <div className={`pt-3 border-t ${isOledTheme ? 'border-white/[0.08]' : 'border-slate-100'} flex items-center justify-between`}>
-                  <span className={`text-[11px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'} font-medium`}>
+                  <span className={`text-[13px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'} font-medium`}>
                     数据存储 · 缓存清理
                   </span>
                   <button
@@ -541,8 +541,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       e.stopPropagation();
                       setActiveSection('about');
                     }}
-                    className={`flex items-center gap-1 text-xs font-semibold ${
-                      isOledTheme ? 'text-[#00E5FF] font-mono' : 'text-[#0071E3]'
+                    className={`flex items-center gap-1 text-[13px] font-medium ${
+                      isOledTheme ? 'text-[#00E5FF] font-mono' : 'text-[#1677FF]'
                     } group-hover:translate-x-0.5 transition-transform`}
                   >
                     <span>查看详情</span>
@@ -563,20 +563,20 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   className={`p-2 rounded-xl ${
                     isOledTheme 
                       ? 'bg-[#111417] hover:bg-[#161B1E] border border-white/[0.08] text-[#F2F5F5]' 
-                      : 'bg-white/80 hover:bg-white border border-slate-200/80 text-[#1D1D1F]'
-                  } shadow-2xs transition-all active:scale-95 cursor-pointer flex items-center gap-1.5 text-xs font-semibold`}
+                      : 'bg-white/80 hover:bg-white border border-slate-200/80 text-[#1D2129]'
+                  } shadow-2xs transition-all active:scale-95 cursor-pointer flex items-center gap-1.5 text-[14px] font-medium`}
                   title="返回设置列表"
                 >
                   <ArrowLeft size={16} />
                   <span>返回</span>
                 </button>
                 <div className={`h-4 w-px ${isOledTheme ? 'bg-white/[0.1]' : 'bg-slate-200'}`} />
-                <div className={`flex items-center gap-1.5 text-xs ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'}`}>
-                  <span className={`${isOledTheme ? 'hover:text-[#00E5FF]' : 'hover:text-[#1D1D1F]'} cursor-pointer`} onClick={() => setActiveSection(null)}>
+                <div className={`flex items-center gap-1.5 text-[14px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>
+                  <span className={`${isOledTheme ? 'hover:text-[#00E5FF]' : 'hover:text-[#1677FF]'} cursor-pointer`} onClick={() => setActiveSection(null)}>
                     设置
                   </span>
                   <span>/</span>
-                  <span className={`font-semibold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>
+                  <span className={`font-semibold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>
                     {activeSection === 'profile' && '个人资料'}
                     {activeSection === 'ai' && '模型服务'}
                     {activeSection === 'security' && '账号与安全'}
@@ -597,10 +597,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     key={tab.id}
                     type="button"
                     onClick={() => setActiveSection(tab.id as SettingSection)}
-                    className={`px-3 py-1 text-xs rounded-lg font-medium transition-all cursor-pointer ${
+                    className={`px-3 py-1 text-[13px] rounded-lg font-medium transition-all cursor-pointer ${
                       activeSection === tab.id
-                        ? (isOledTheme ? 'bg-[#00E5FF] text-[#050607] font-bold shadow-xs' : 'bg-white text-[#1D1D1F] shadow-2xs font-bold')
-                        : (isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#86868B] hover:text-[#1D1D1F]')
+                        ? (isOledTheme ? 'bg-[#00E5FF] text-[#050607] font-bold shadow-xs' : 'bg-white text-[#1677FF] shadow-2xs font-semibold')
+                        : (isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#4E5969] hover:text-[#1D2129]')
                     }`}
                   >
                     {tab.label}
@@ -620,8 +620,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 } rounded-3xl p-6 space-y-4`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Sparkles size={18} className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#0071E3]'} />
-                      <h3 className={`text-sm font-bold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D1D1F]'}`}>
+                      <Sparkles size={18} className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]'} />
+                      <h3 className={`text-[18px] font-semibold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D2129]'}`}>
                         用户头像
                       </h3>
                     </div>
@@ -693,10 +693,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       className={`px-4 py-2 rounded-xl ${
                         isOledTheme 
                           ? 'bg-[#111417] hover:bg-[#161B1E] text-[#F2F5F5] border border-white/[0.08]' 
-                          : 'bg-slate-100 hover:bg-slate-200/80 text-[#1D1D1F] border border-slate-200/80'
-                      } active:scale-98 text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer disabled:opacity-60`}
+                          : 'bg-slate-100 hover:bg-slate-200/80 text-[#1D2129] border border-slate-200/80'
+                      } active:scale-98 text-[14px] font-medium flex items-center gap-2 transition-all cursor-pointer disabled:opacity-60`}
                     >
-                      <Upload size={14} />
+                      <Upload size={15} />
                       <span>{isUploadingAvatar ? '上传中...' : '上传图片'}</span>
                     </button>
                   </div>
@@ -709,21 +709,21 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     : 'liquid-glass bg-white/80 border border-white/80 shadow-sm'
                 } rounded-3xl p-6 space-y-4`}>
                   <div className="flex items-center gap-2">
-                    <User size={18} className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#0071E3]'} />
-                    <h3 className={`text-sm font-bold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D1D1F]'}`}>
+                    <User size={18} className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]'} />
+                    <h3 className={`text-[18px] font-semibold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D2129]'}`}>
                       修改昵称
                     </h3>
                   </div>
 
                   {usernameMsg && (
                     <div
-                      className={`p-3 rounded-2xl text-xs flex items-center gap-2 animate-fade-in ${
+                      className={`p-3 rounded-2xl text-[13px] flex items-center gap-2 animate-fade-in ${
                         usernameMsg.type === 'success'
                           ? (isOledTheme ? 'bg-[#B7FF3C]/10 text-[#B7FF3C] border border-[#B7FF3C]/30 font-mono' : 'bg-emerald-50 text-emerald-700 border border-emerald-200/80')
                           : 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
                       }`}
                     >
-                      {usernameMsg.type === 'success' ? <CheckCircle2 size={15} /> : <AlertCircle size={15} />}
+                      {usernameMsg.type === 'success' ? <CheckCircle2 size={16} /> : <AlertCircle size={16} />}
                       <span>{usernameMsg.text}</span>
                     </div>
                   )}
@@ -735,10 +735,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                         value={newUsername}
                         onChange={(e) => setNewUsername(e.target.value)}
                         placeholder="输入新昵称 (2-16 位)"
-                        className={`w-full px-4 py-2.5 text-xs rounded-xl ${
+                        className={`w-full px-4 py-2.5 text-[15px] leading-[24px] rounded-xl ${
                           isOledTheme 
                             ? 'bg-[#111417] border-white/[0.08] text-[#F2F5F5] placeholder-[#52595E] focus:border-[#00E5FF] focus:ring-2 focus:ring-[#00E5FF]/20' 
-                            : 'bg-slate-100/80 border-slate-200/80 text-[#1D1D1F] focus:bg-white focus:border-[#0071E3] focus:ring-3 focus:ring-[#0071E3]/15'
+                            : 'bg-slate-100/80 border-slate-200/80 text-[#1D2129] placeholder-[#86909C] focus:bg-white focus:border-[#1677FF] focus:ring-3 focus:ring-[#1677FF]/15'
                         } border outline-none transition-all`}
                       />
                     </div>
@@ -748,10 +748,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       className={`px-5 py-2.5 rounded-xl ${
                         isOledTheme 
                           ? 'bg-[#00E5FF] hover:bg-[#33EAFF] text-[#050607] font-mono' 
-                          : 'bg-[#0071E3] hover:opacity-90 text-white'
-                      } text-xs font-semibold shadow-xs transition-all active:scale-98 cursor-pointer disabled:opacity-60 flex-shrink-0 flex items-center justify-center gap-1.5`}
+                          : 'bg-[#1677FF] hover:bg-blue-600 text-white'
+                      } text-[14px] font-medium shadow-xs transition-all active:scale-98 cursor-pointer disabled:opacity-60 flex-shrink-0 flex items-center justify-center gap-1.5`}
                     >
-                      <Check size={14} />
+                      <Check size={15} />
                       <span>{isUpdatingUsername ? '保存中...' : '保存'}</span>
                     </button>
                   </form>
@@ -775,14 +775,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     } flex items-center justify-center shadow-2xs`}>
                       <Bot size={18} />
                     </div>
-                    <h3 className={`text-sm font-bold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D1D1F]'} flex items-center gap-2`}>
+                    <h3 className={`text-[18px] font-semibold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D2129]'} flex items-center gap-2`}>
                       <span>模型服务</span>
                       {hasAiKey && (
-                        <span className={`px-2 py-0.5 rounded-full ${
+                        <span className={`px-2.5 py-0.5 rounded-full ${
                           isOledTheme 
                             ? 'bg-[#B7FF3C]/10 border border-[#B7FF3C]/30 text-[#B7FF3C] font-mono' 
                             : 'bg-emerald-50 border border-emerald-200/80 text-emerald-600'
-                        } text-[10px] font-semibold`}>
+                        } text-[12px] font-medium`}>
                           已连接
                         </span>
                       )}
@@ -792,7 +792,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
                 {/* Quick Presets */}
                 <div>
-                  <label className={`block text-[11px] font-semibold ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#6E6E73]'} mb-2 tracking-wider`}>
+                  <label className={`block text-[14px] font-medium ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#1D2129]'} mb-2 tracking-wider`}>
                     常用预设
                   </label>
                   <div className="flex flex-wrap gap-2">
@@ -801,10 +801,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                         key={p.name}
                         type="button"
                         onClick={() => handleSelectAiPreset(p)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all cursor-pointer ${
+                        className={`px-3 py-1.5 rounded-xl text-[13px] font-medium border transition-all cursor-pointer ${
                           aiBaseUrl === p.url
-                            ? (isOledTheme ? 'bg-[#00E5FF]/15 border-[#00E5FF]/40 text-[#00E5FF] font-mono shadow-xs' : 'bg-blue-50 border-blue-200 text-[#0071E3] shadow-2xs')
-                            : (isOledTheme ? 'bg-[#111417] border-white/[0.08] text-[#AEB7BA] hover:border-white/[0.2]' : 'bg-white/80 border-slate-200/80 text-slate-600 hover:bg-slate-100')
+                            ? (isOledTheme ? 'bg-[#00E5FF]/15 border-[#00E5FF]/40 text-[#00E5FF] font-mono shadow-xs' : 'bg-blue-50 border-blue-200 text-[#1677FF] shadow-2xs')
+                            : (isOledTheme ? 'bg-[#111417] border-white/[0.08] text-[#AEB7BA] hover:border-white/[0.2]' : 'bg-white/80 border-slate-200/80 text-[#4E5969] hover:bg-slate-100')
                         }`}
                       >
                         {p.name}
@@ -817,7 +817,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 <form onSubmit={handleSaveAiConfig} className="space-y-4">
                   {/* API Base URL */}
                   <div>
-                    <label className={`block text-[11px] font-semibold ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#6E6E73]'} mb-1.5`}>
+                    <label className={`block text-[14px] font-medium ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#1D2129]'} mb-1.5`}>
                       接口地址 (Base URL)
                     </label>
                     <input
@@ -825,17 +825,17 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       value={aiBaseUrl}
                       onChange={(e) => setAiBaseUrl(e.target.value)}
                       placeholder="https://api.openai.com/v1"
-                      className={`w-full px-4 py-2.5 text-xs font-mono rounded-xl ${
+                      className={`w-full px-4 py-2.5 text-[15px] leading-[24px] font-mono rounded-xl ${
                         isOledTheme 
                           ? 'bg-[#111417] border-white/[0.08] text-[#F2F5F5] placeholder-[#52595E] focus:border-[#00E5FF] focus:ring-2 focus:ring-[#00E5FF]/20' 
-                          : 'bg-slate-100/80 border-slate-200/80 text-[#1D1D1F] focus:bg-white focus:border-[#0071E3] focus:ring-3 focus:ring-[#0071E3]/15'
+                          : 'bg-slate-100/80 border-slate-200/80 text-[#1D2129] placeholder-[#86909C] focus:bg-white focus:border-[#1677FF] focus:ring-3 focus:ring-[#1677FF]/15'
                       } border outline-none transition-all`}
                     />
                   </div>
 
                   {/* API Key */}
                   <div>
-                    <label className={`block text-[11px] font-semibold ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#6E6E73]'} mb-1.5`}>
+                    <label className={`block text-[14px] font-medium ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#1D2129]'} mb-1.5`}>
                       API 密钥 (API Key)
                     </label>
                     <div className="relative">
@@ -844,10 +844,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                         value={aiApiKey}
                         onChange={(e) => setAiApiKey(e.target.value)}
                         placeholder="sk-..."
-                        className={`w-full pl-4 pr-11 py-2.5 text-xs font-mono rounded-xl ${
+                        className={`w-full pl-4 pr-11 py-2.5 text-[15px] leading-[24px] font-mono rounded-xl ${
                           isOledTheme 
                             ? 'bg-[#111417] border-white/[0.08] text-[#F2F5F5] placeholder-[#52595E] focus:border-[#00E5FF] focus:ring-2 focus:ring-[#00E5FF]/20' 
-                            : 'bg-slate-100/80 border-slate-200/80 text-[#1D1D1F] focus:bg-white focus:border-[#0071E3] focus:ring-3 focus:ring-[#0071E3]/15'
+                            : 'bg-slate-100/80 border-slate-200/80 text-[#1D2129] placeholder-[#86909C] focus:bg-white focus:border-[#1677FF] focus:ring-3 focus:ring-[#1677FF]/15'
                         } border outline-none transition-all`}
                       />
                       <button
@@ -856,14 +856,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                         className={`absolute right-3 top-1/2 -translate-y-1/2 ${isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-slate-400 hover:text-slate-600'} transition-colors p-1 cursor-pointer`}
                         title={showAiKey ? '隐藏密钥' : '显示密钥'}
                       >
-                        {showAiKey ? <EyeOff size={15} /> : <Eye size={15} />}
+                        {showAiKey ? <EyeOff size={16} /> : <Eye size={16} />}
                       </button>
                     </div>
                   </div>
 
                   {/* Model Name */}
                   <div>
-                    <label className={`block text-[11px] font-semibold ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#6E6E73]'} mb-1.5`}>
+                    <label className={`block text-[14px] font-medium ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#1D2129]'} mb-1.5`}>
                       模型标识 (Model)
                     </label>
                     <input
@@ -871,21 +871,21 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       value={aiModel}
                       onChange={(e) => setAiModel(e.target.value)}
                       placeholder="例如 gpt-4o-mini 或 deepseek-chat"
-                      className={`w-full px-4 py-2.5 text-xs font-mono rounded-xl ${
+                      className={`w-full px-4 py-2.5 text-[15px] leading-[24px] font-mono rounded-xl ${
                         isOledTheme 
                           ? 'bg-[#111417] border-white/[0.08] text-[#F2F5F5] placeholder-[#52595E] focus:border-[#00E5FF] focus:ring-2 focus:ring-[#00E5FF]/20' 
-                          : 'bg-slate-100/80 border-slate-200/80 text-[#1D1D1F] focus:bg-white focus:border-[#0071E3] focus:ring-3 focus:ring-[#0071E3]/15'
+                          : 'bg-slate-100/80 border-slate-200/80 text-[#1D2129] placeholder-[#86909C] focus:bg-white focus:border-[#1677FF] focus:ring-3 focus:ring-[#1677FF]/15'
                       } border outline-none transition-all`}
                     />
                     <div className="flex items-center gap-1.5 mt-1.5">
-                      <span className={`text-[10px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'}`}>推荐模型:</span>
+                      <span className={`text-[12px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>推荐模型:</span>
                       {['gpt-4o-mini', 'gpt-4o', 'deepseek-chat', 'moonshot-v1-8k', 'qwen-turbo'].map((m) => (
                         <button
                           key={m}
                           type="button"
                           onClick={() => setAiModel(m)}
-                          className={`text-[10px] font-mono ${
-                            isOledTheme ? 'text-[#00E5FF] bg-[#00E5FF]/10 border border-[#00E5FF]/30' : 'text-[#0071E3] bg-blue-50/80'
+                          className={`text-[12px] font-mono ${
+                            isOledTheme ? 'text-[#00E5FF] bg-[#00E5FF]/10 border border-[#00E5FF]/30' : 'text-[#1677FF] bg-blue-50/80'
                           } hover:underline px-1.5 py-0.5 rounded cursor-pointer`}
                         >
                           {m}
@@ -897,7 +897,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   {/* Test Feedback */}
                   {testResult && (
                     <div
-                      className={`p-3 rounded-2xl text-xs flex items-center gap-2 animate-fade-in ${
+                      className={`p-3 rounded-2xl text-[13px] flex items-center gap-2 animate-fade-in ${
                         testResult.success
                           ? (isOledTheme ? 'bg-[#B7FF3C]/10 text-[#B7FF3C] border border-[#B7FF3C]/30 font-mono' : 'bg-emerald-50 text-emerald-700 border border-emerald-200/80')
                           : 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
@@ -917,17 +917,17 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       className={`px-4 py-2.5 rounded-xl ${
                         isOledTheme 
                           ? 'bg-[#111417] hover:bg-[#161B1E] text-[#F2F5F5] border border-white/[0.08]' 
-                          : 'bg-slate-100 hover:bg-slate-200/80 text-[#1D1D1F] border border-slate-200/80'
-                      } text-xs font-semibold transition-all active:scale-98 cursor-pointer disabled:opacity-50 flex items-center gap-1.5`}
+                          : 'bg-slate-100 hover:bg-slate-200/80 text-[#1D2129] border border-slate-200/80'
+                      } text-[14px] font-medium transition-all active:scale-98 cursor-pointer disabled:opacity-50 flex items-center gap-1.5`}
                     >
                       {isTestingAi ? (
                         <>
-                          <RefreshCw size={13} className={`animate-spin ${isOledTheme ? 'text-[#00E5FF]' : 'text-[#0071E3]'}`} />
+                          <RefreshCw size={14} className={`animate-spin ${isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]'}`} />
                           <span>测试中...</span>
                         </>
                       ) : (
                         <>
-                          <Activity size={13} className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#0071E3]'} />
+                          <Activity size={14} className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]'} />
                           <span>测试连接</span>
                         </>
                       )}
@@ -939,10 +939,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       className={`px-5 py-2.5 rounded-xl ${
                         isOledTheme 
                           ? 'bg-[#00E5FF] hover:bg-[#33EAFF] text-[#050607] font-mono' 
-                          : 'bg-[#0071E3] hover:opacity-90 text-white'
-                      } text-xs font-semibold shadow-xs transition-all active:scale-98 cursor-pointer disabled:opacity-60 flex items-center gap-1.5`}
+                          : 'bg-[#1677FF] hover:bg-blue-600 text-white'
+                      } text-[14px] font-medium shadow-xs transition-all active:scale-98 cursor-pointer disabled:opacity-60 flex items-center gap-1.5`}
                     >
-                      <Check size={14} />
+                      <Check size={15} />
                       <span>{isSavingAi ? '保存中...' : '保存配置'}</span>
                     </button>
                   </div>
@@ -963,27 +963,27 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   } flex items-center justify-center shadow-2xs`}>
                     <KeyRound size={18} />
                   </div>
-                  <h3 className={`text-sm font-bold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D1D1F]'}`}>
+                  <h3 className={`text-[18px] font-semibold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D2129]'}`}>
                     修改密码
                   </h3>
                 </div>
 
                 {passwordMsg && (
                   <div
-                    className={`p-3 rounded-2xl text-xs flex items-center gap-2 animate-fade-in ${
+                    className={`p-3 rounded-2xl text-[13px] flex items-center gap-2 animate-fade-in ${
                       passwordMsg.type === 'success'
                         ? (isOledTheme ? 'bg-[#B7FF3C]/10 text-[#B7FF3C] border border-[#B7FF3C]/30 font-mono' : 'bg-emerald-50 text-emerald-700 border border-emerald-200/80')
                         : 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
                     }`}
                   >
-                    {passwordMsg.type === 'success' ? <CheckCircle2 size={15} /> : <AlertCircle size={15} />}
+                    {passwordMsg.type === 'success' ? <CheckCircle2 size={16} /> : <AlertCircle size={16} />}
                     <span>{passwordMsg.text}</span>
                   </div>
                 )}
 
                 <form onSubmit={handleSavePassword} className="space-y-3 max-w-lg">
                   <div>
-                    <label className={`block text-[11px] font-semibold ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#6E6E73]'} mb-1`}>
+                    <label className={`block text-[14px] font-medium ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#1D2129]'} mb-1`}>
                       原密码
                     </label>
                     <input
@@ -991,17 +991,17 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                       value={oldPassword}
                       onChange={(e) => setOldPassword(e.target.value)}
                       placeholder="输入当前原密码"
-                      className={`w-full px-4 py-2.5 text-xs rounded-xl ${
+                      className={`w-full px-4 py-2.5 text-[15px] leading-[24px] rounded-xl ${
                         isOledTheme 
                           ? 'bg-[#111417] border-white/[0.08] text-[#F2F5F5] placeholder-[#52595E] focus:border-[#00E5FF] focus:ring-2 focus:ring-[#00E5FF]/20' 
-                          : 'bg-slate-100/80 border-slate-200/80 text-[#1D1D1F] focus:bg-white focus:border-[#0071E3] focus:ring-3 focus:ring-[#0071E3]/15'
+                          : 'bg-slate-100/80 border-slate-200/80 text-[#1D2129] placeholder-[#86909C] focus:bg-white focus:border-[#1677FF] focus:ring-3 focus:ring-[#1677FF]/15'
                       } border outline-none transition-all`}
                     />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className={`block text-[11px] font-semibold ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#6E6E73]'} mb-1`}>
+                      <label className={`block text-[14px] font-medium ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#1D2129]'} mb-1`}>
                         新密码（至少 6 位）
                       </label>
                       <input
@@ -1009,15 +1009,15 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         placeholder="输入新密码"
-                        className={`w-full px-4 py-2.5 text-xs rounded-xl ${
+                        className={`w-full px-4 py-2.5 text-[15px] leading-[24px] rounded-xl ${
                           isOledTheme 
                             ? 'bg-[#111417] border-white/[0.08] text-[#F2F5F5] placeholder-[#52595E] focus:border-[#00E5FF] focus:ring-2 focus:ring-[#00E5FF]/20' 
-                            : 'bg-slate-100/80 border-slate-200/80 text-[#1D1D1F] focus:bg-white focus:border-[#0071E3] focus:ring-3 focus:ring-[#0071E3]/15'
+                            : 'bg-slate-100/80 border-slate-200/80 text-[#1D2129] placeholder-[#86909C] focus:bg-white focus:border-[#1677FF] focus:ring-3 focus:ring-[#1677FF]/15'
                         } border outline-none transition-all`}
                       />
                     </div>
                     <div>
-                      <label className={`block text-[11px] font-semibold ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#6E6E73]'} mb-1`}>
+                      <label className={`block text-[14px] font-medium ${isOledTheme ? 'text-[#7D858A] font-mono' : 'text-[#1D2129]'} mb-1`}>
                         确认新密码
                       </label>
                       <input
@@ -1025,10 +1025,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                         value={confirmNewPassword}
                         onChange={(e) => setConfirmNewPassword(e.target.value)}
                         placeholder="再次输入新密码"
-                        className={`w-full px-4 py-2.5 text-xs rounded-xl ${
+                        className={`w-full px-4 py-2.5 text-[15px] leading-[24px] rounded-xl ${
                           isOledTheme 
                             ? 'bg-[#111417] border-white/[0.08] text-[#F2F5F5] placeholder-[#52595E] focus:border-[#00E5FF] focus:ring-2 focus:ring-[#00E5FF]/20' 
-                            : 'bg-slate-100/80 border-slate-200/80 text-[#1D1D1F] focus:bg-white focus:border-[#0071E3] focus:ring-3 focus:ring-[#0071E3]/15'
+                            : 'bg-slate-100/80 border-slate-200/80 text-[#1D2129] placeholder-[#86909C] focus:bg-white focus:border-[#1677FF] focus:ring-3 focus:ring-[#1677FF]/15'
                         } border outline-none transition-all`}
                       />
                     </div>
@@ -1040,10 +1040,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     className={`mt-2 px-5 py-2.5 rounded-xl ${
                       isOledTheme 
                         ? 'bg-[#00E5FF] hover:bg-[#33EAFF] text-[#050607] font-mono' 
-                        : 'bg-[#0071E3] hover:opacity-90 text-white'
-                    } text-xs font-semibold shadow-xs transition-all active:scale-98 cursor-pointer disabled:opacity-60 flex items-center gap-1.5`}
+                        : 'bg-[#1677FF] hover:bg-blue-600 text-white'
+                    } text-[14px] font-medium shadow-xs transition-all active:scale-98 cursor-pointer disabled:opacity-60 flex items-center gap-1.5`}
                   >
-                    <ShieldCheck size={14} />
+                    <ShieldCheck size={15} />
                     <span>{isUpdatingPassword ? '保存中...' : '更新密码'}</span>
                   </button>
                 </form>
@@ -1063,48 +1063,48 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   } flex items-center justify-center shadow-2xs`}>
                     <Database size={18} />
                   </div>
-                  <h3 className={`text-sm font-bold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D1D1F]'}`}>
+                  <h3 className={`text-[18px] font-semibold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D2129]'}`}>
                     系统与存储
                   </h3>
                 </div>
 
-                <div className="space-y-3 text-xs">
+                <div className="space-y-3 text-[14px]">
                   <div className={`p-3.5 rounded-2xl ${
                     isOledTheme ? 'bg-[#111417] border border-white/[0.08] text-[#F2F5F5]' : 'bg-white/70 border border-slate-200/60 text-slate-700'
                   } flex items-center justify-between`}>
-                    <span className={isOledTheme ? 'text-[#7D858A]' : 'text-slate-500 font-medium'}>应用版本</span>
-                    <span className={`font-mono font-bold ${isOledTheme ? 'text-[#00E5FF]' : 'text-slate-800'}`}>Workbench v2.5.0</span>
+                    <span className={isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969] font-medium'}>应用版本</span>
+                    <span className={`font-mono font-semibold tabular-nums ${isOledTheme ? 'text-[#00E5FF]' : 'text-[#1D2129]'}`}>Workbench v2.5.0</span>
                   </div>
 
                   <div className={`p-3.5 rounded-2xl ${
                     isOledTheme ? 'bg-[#111417] border border-white/[0.08] text-[#F2F5F5]' : 'bg-white/70 border border-slate-200/60 text-slate-700'
                   } flex items-center justify-between`}>
-                    <span className={isOledTheme ? 'text-[#7D858A]' : 'text-slate-500 font-medium'}>存储引擎</span>
-                    <span className={`font-mono font-bold ${isOledTheme ? 'text-[#B7FF3C]' : 'text-slate-800'}`}>SQLite 3 (WAL 模式)</span>
+                    <span className={isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969] font-medium'}>存储引擎</span>
+                    <span className={`font-mono font-semibold tabular-nums ${isOledTheme ? 'text-[#B7FF3C]' : 'text-[#1D2129]'}`}>SQLite 3 (WAL 模式)</span>
                   </div>
 
                   <div className={`p-3.5 rounded-2xl ${
                     isOledTheme ? 'bg-[#111417] border border-white/[0.08] text-[#F2F5F5]' : 'bg-white/70 border border-slate-200/60 text-slate-700'
                   } flex items-center justify-between`}>
-                    <span className={isOledTheme ? 'text-[#7D858A]' : 'text-slate-500 font-medium'}>数据库路径</span>
-                    <span className={`font-mono text-[11px] ${isOledTheme ? 'text-[#AEB7BA]' : 'text-slate-600'}`}>server/data/workbench.db</span>
+                    <span className={isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969] font-medium'}>数据库路径</span>
+                    <span className={`font-mono text-[13px] ${isOledTheme ? 'text-[#AEB7BA]' : 'text-[#4E5969]'}`}>server/data/workbench.db</span>
                   </div>
 
                   <div className={`p-3.5 rounded-2xl ${
                     isOledTheme ? 'bg-[#111417] border border-white/[0.08] text-[#F2F5F5]' : 'bg-white/70 border border-slate-200/60 text-slate-700'
                   } flex items-center justify-between`}>
-                    <span className={isOledTheme ? 'text-[#7D858A]' : 'text-slate-500 font-medium'}>前端架构</span>
-                    <span className={`font-mono ${isOledTheme ? 'text-[#F2F5F5]' : 'text-slate-800'}`}>React 19 · Tailwind · Vite</span>
+                    <span className={isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969] font-medium'}>前端架构</span>
+                    <span className={`font-mono ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>React 19 · Tailwind · Vite</span>
                   </div>
 
                   <div className={`p-3.5 rounded-2xl ${
                     isOledTheme 
                       ? 'bg-[#00E5FF]/10 border border-[#00E5FF]/30 text-[#00E5FF]' 
-                      : 'bg-blue-50/70 border border-blue-200/60 text-[#0071E3]'
-                  } flex items-center gap-2 text-[11px]`}>
+                      : 'bg-blue-50/70 border border-blue-200/60 text-[#1677FF]'
+                  } flex items-center gap-2 text-[13px]`}>
                     <Info size={15} className="shrink-0" />
                     <span>
-                      本地 SQLite 离线保护 · 备份目录 <code className={`font-mono px-1 py-0.5 ${isOledTheme ? 'bg-[#050607] text-[#00E5FF]' : 'bg-white/90 text-slate-800'} rounded`}>server/data/workbench.db</code>
+                      本地 SQLite 离线保护 · 备份目录 <code className={`font-mono px-1 py-0.5 ${isOledTheme ? 'bg-[#050607] text-[#00E5FF]' : 'bg-white/90 text-[#1D2129]'} rounded`}>server/data/workbench.db</code>
                     </span>
                   </div>
 
@@ -1114,20 +1114,20 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   } flex flex-col sm:flex-row sm:items-center justify-between gap-3`}>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className={`font-bold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-slate-800'}`}>
+                        <span className={`text-[15px] font-semibold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>
                           桌面/手机应用 (PWA)
                         </span>
                         {isStandalone ? (
-                          <span className="text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200/60 px-2 py-0.5 rounded-full font-semibold">
+                          <span className="text-[12px] bg-emerald-50 text-emerald-600 border border-emerald-200/60 px-2.5 py-0.5 rounded-full font-medium">
                             已安装独立运行
                           </span>
                         ) : (
-                          <span className="text-[10px] bg-blue-50 text-[#0071E3] border border-blue-200/60 px-2 py-0.5 rounded-full font-semibold">
+                          <span className="text-[12px] bg-blue-50 text-[#1677FF] border border-blue-200/60 px-2.5 py-0.5 rounded-full font-medium">
                             可免安装直装
                           </span>
                         )}
                       </div>
-                      <p className={`text-xs ${isOledTheme ? 'text-[#7D858A]' : 'text-slate-500'} mt-1 leading-relaxed`}>
+                      <p className={`text-[13px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'} mt-1 leading-relaxed`}>
                         脱离浏览器标签页以独立原生窗口运行，拥有专属图标、桌面快捷方式与启动加速
                       </p>
                     </div>
@@ -1139,10 +1139,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                         className={`px-4 py-2 rounded-xl ${
                           isOledTheme 
                             ? 'bg-[#00E5FF] hover:bg-[#33EAFF] text-[#050607] font-mono' 
-                            : 'bg-[#0071E3] hover:opacity-90 text-white'
-                        } text-xs font-semibold shadow-xs flex items-center justify-center gap-1.5 transition-all shrink-0 cursor-pointer active:scale-95`}
+                            : 'bg-[#1677FF] hover:bg-blue-600 text-white'
+                        } text-[14px] font-medium shadow-xs flex items-center justify-center gap-1.5 transition-all shrink-0 cursor-pointer active:scale-95`}
                       >
-                        <Download size={14} />
+                        <Download size={15} />
                         <span>安装为桌面端</span>
                       </button>
                     )}

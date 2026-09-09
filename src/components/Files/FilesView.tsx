@@ -272,20 +272,20 @@ export const FilesView: React.FC = () => {
             <div className={`w-11 h-11 flex items-center justify-center shadow-md ${
               isOledTheme
                 ? 'rounded-2xl bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 shadow-[0_0_15px_rgba(0,229,255,0.2)]'
-                : 'rounded-2xl bg-gradient-to-tr from-[#0071E3] to-[#409CFF] text-white shadow-blue-500/20'
+                : 'rounded-2xl bg-[#1677FF] text-white shadow-blue-500/20'
             }`}>
               <FolderOpen size={22} strokeWidth={2.2} />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className={`text-xl font-bold tracking-tight ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D1D1F]'}`}>
+                <h1 className={`text-[26px] font-semibold leading-[1.3] tracking-tight ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D2129]'}`}>
                   文件管理
                 </h1>
-                <span className={`px-2.5 py-0.5 text-[11px] font-semibold font-mono rounded-full ${
+                <span className={`px-2.5 py-0.5 text-[13px] font-medium font-mono rounded-full ${
                   isOledTheme
                     ? 'text-[#00E5FF] bg-[#00E5FF]/10 border border-[#00E5FF]/30'
-                    : 'text-[#0071E3] bg-blue-50 border border-blue-200/60'
-                }`}>
+                    : 'text-[#1677FF] bg-blue-50 border border-blue-200/60'
+                }`} style={{ fontVariantNumeric: 'tabular-nums' }}>
                   {files.length} 个文件
                 </span>
               </div>
@@ -303,24 +303,24 @@ export const FilesView: React.FC = () => {
               onClick={() => setViewMode('grid')}
               className={`p-1.5 transition-all cursor-pointer rounded-lg ${
                 viewMode === 'grid'
-                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] shadow-xs font-bold' : 'bg-white text-[#0071E3] shadow-2xs font-bold'
+                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] shadow-xs font-bold' : 'bg-white text-[#1677FF] shadow-2xs font-semibold'
                   : isOledTheme ? 'text-white/40 hover:text-white' : 'text-slate-400 hover:text-slate-700'
               }`}
               title="网格视图"
             >
-              <LayoutGrid size={15} />
+              <LayoutGrid size={16} />
             </button>
             <button
               type="button"
               onClick={() => setViewMode('list')}
               className={`p-1.5 transition-all cursor-pointer rounded-lg ${
                 viewMode === 'list'
-                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] shadow-xs font-bold' : 'bg-white text-[#0071E3] shadow-2xs font-bold'
+                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] shadow-xs font-bold' : 'bg-white text-[#1677FF] shadow-2xs font-semibold'
                   : isOledTheme ? 'text-white/40 hover:text-white' : 'text-slate-400 hover:text-slate-700'
               }`}
               title="列表视图"
             >
-              <ListIcon size={15} />
+              <ListIcon size={16} />
             </button>
           </div>
 
@@ -330,7 +330,7 @@ export const FilesView: React.FC = () => {
             className={`p-2.5 border rounded-xl transition-all cursor-pointer shadow-2xs active:scale-95 ${
               isOledTheme
                 ? 'bg-[#111417] border-white/[0.08] text-[#7D858A] hover:text-[#00E5FF]'
-                : 'border-slate-200/80 bg-white/80 hover:bg-white text-slate-500 hover:text-[#1D1D1F]'
+                : 'border-slate-200/80 bg-white/80 hover:bg-white text-[#4E5969] hover:text-[#1D2129]'
             }`}
             title="刷新文件列表"
           >
@@ -343,10 +343,10 @@ export const FilesView: React.FC = () => {
               setFileToEdit(null);
               setIsModalOpen(true);
             }}
-            className={`flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold rounded-xl active:scale-98 transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-4 py-2.5 text-[14px] font-medium rounded-xl active:scale-98 transition-all cursor-pointer ${
               isOledTheme
                 ? 'bg-[#00E5FF] hover:bg-[#00cce6] text-[#050607] font-bold shadow-sm shadow-[#00E5FF]/20'
-                : 'bg-[#0071E3] hover:bg-[#0077ED] text-white shadow-sm shadow-blue-500/25'
+                : 'bg-[#1677FF] hover:bg-blue-600 text-white shadow-sm shadow-blue-500/25'
             }`}
           >
             <Plus size={15} strokeWidth={2.5} />
@@ -363,14 +363,14 @@ export const FilesView: React.FC = () => {
               key={cat}
               type="button"
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 text-xs font-medium rounded-xl transition-all whitespace-nowrap cursor-pointer ${
+              className={`px-3.5 py-1.5 text-[14px] font-medium rounded-xl transition-all whitespace-nowrap cursor-pointer ${
                 selectedCategory === cat
                   ? isOledTheme
                     ? 'bg-[#00E5FF] text-[#050607] font-bold shadow-xs'
-                    : 'bg-[#1D1D1F] text-white shadow-xs font-semibold'
+                    : 'bg-[#1D2129] text-white shadow-xs font-semibold'
                   : isOledTheme
                     ? 'bg-[#0C0F11] hover:bg-[#111417] text-[#7D858A] hover:text-[#F2F5F5] border border-white/[0.06]'
-                    : 'bg-white/70 hover:bg-white text-[#6E6E73] hover:text-[#1D1D1F] border border-slate-200/70'
+                    : 'bg-white/70 hover:bg-white text-[#4E5969] hover:text-[#1D2129] border border-slate-200/70'
               }`}
             >
               {cat}
@@ -379,16 +379,16 @@ export const FilesView: React.FC = () => {
         </div>
 
         <div className="relative w-full sm:w-72">
-          <Search size={14} className={`absolute left-3.5 top-1/2 -translate-y-1/2 ${isOledTheme ? 'text-[#7D858A]' : 'text-slate-400'}`} />
+          <Search size={15} className={`absolute left-3.5 top-1/2 -translate-y-1/2 ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86909C]'}`} />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="搜索文件名称、备注或路径..."
-            className={`w-full pl-9 pr-3.5 py-2 text-xs border rounded-xl transition-all outline-none shadow-2xs ${
+            className={`w-full pl-9 pr-3.5 py-2 text-[14px] border rounded-xl transition-all outline-none shadow-2xs ${
               isOledTheme
                 ? 'bg-[#0C0F11] border-white/[0.08] text-[#F2F5F5] placeholder-[#7D858A] focus:border-[#00E5FF] focus:ring-2 focus:ring-[#00E5FF]/20'
-                : 'bg-white/80 border-slate-200/80 text-[#1D1D1F] focus:bg-white focus:border-[#0071E3] focus:ring-2 focus:ring-[#0071E3]/20'
+                : 'bg-white/80 border-slate-200/80 text-[#1D2129] placeholder-[#86909C] focus:bg-white focus:border-[#1677FF] focus:ring-2 focus:ring-[#1677FF]/20'
             }`}
           />
         </div>
@@ -456,7 +456,7 @@ export const FilesView: React.FC = () => {
               >
                 {/* Top Badge & Category */}
                 <div className="flex items-center justify-between gap-1.5 mb-2.5">
-                  <span className={`text-[10px] font-bold tracking-wider px-2 py-0.5 rounded-md ${
+                  <span className={`text-[12px] font-medium tracking-wider px-2 py-0.5 rounded-md ${
                     isOledTheme ? 'text-[#050607] bg-[#00E5FF]' : `text-white shadow-2xs ${typeConfig.badgeBg}`
                   }`}>
                     {typeConfig.label}
@@ -466,7 +466,7 @@ export const FilesView: React.FC = () => {
                     {file.isPinned && (
                       <span
                         title="已置顶"
-                        className={`flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[10px] font-semibold shrink-0 ${
+                        className={`flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-[12px] font-medium shrink-0 ${
                           isOledTheme ? 'bg-[#B7FF3C]/10 border border-[#B7FF3C]/30 text-[#B7FF3C]' : 'bg-amber-50 border border-amber-200/80 text-amber-600'
                         }`}
                       >
@@ -475,8 +475,8 @@ export const FilesView: React.FC = () => {
                       </span>
                     )}
                     <span
-                      className={`text-[10px] font-medium px-1.5 py-0.5 rounded truncate max-w-[80px] ${
-                        isOledTheme ? 'bg-white/5 text-[#7D858A]' : 'bg-slate-100/80 text-[#86868B]'
+                      className={`text-[12px] font-medium px-1.5 py-0.5 rounded truncate max-w-[80px] ${
+                        isOledTheme ? 'bg-white/5 text-[#7D858A]' : 'bg-slate-100/80 text-[#4E5969]'
                       }`}
                       title={file.category || '未分类'}
                     >
@@ -499,14 +499,14 @@ export const FilesView: React.FC = () => {
                 {/* File Title & Size Info */}
                 <div className="text-center w-full px-0.5">
                   <div
-                    className={`text-xs font-bold line-clamp-2 h-9 flex items-center justify-center leading-snug break-all transition-colors ${
-                      isOledTheme ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]' : 'text-[#1D1D1F] group-hover:text-[#0071E3]'
+                    className={`text-[15px] font-medium line-clamp-2 h-11 flex items-center justify-center leading-[22px] break-all transition-colors ${
+                      isOledTheme ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]' : 'text-[#1D2129] group-hover:text-[#1677FF]'
                     }`}
                     title={file.name}
                   >
                     {file.name}
                   </div>
-                  <div className={`text-[10px] font-mono mt-1 truncate ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'}`} title={file.filePath}>
+                  <div className={`text-[13px] font-mono mt-1 truncate ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`} style={{ fontVariantNumeric: 'tabular-nums' }} title={file.filePath}>
                     {formatBytes(file.size)}
                   </div>
                 </div>
@@ -523,10 +523,10 @@ export const FilesView: React.FC = () => {
                     type="button"
                     onClick={() => handleOpenFile(file)}
                     disabled={isOpening}
-                    className={`flex-1 min-w-0 h-8 flex items-center justify-center gap-1.5 px-2.5 text-xs font-semibold whitespace-nowrap active:scale-95 transition-all duration-200 cursor-pointer disabled:opacity-60 rounded-xl ${
+                    className={`flex-1 min-w-0 h-8 flex items-center justify-center gap-1.5 px-2.5 text-[13px] font-medium whitespace-nowrap active:scale-95 transition-all duration-200 cursor-pointer disabled:opacity-60 rounded-xl ${
                       isOledTheme
                         ? 'bg-[#00E5FF]/10 hover:bg-[#00E5FF] text-[#00E5FF] hover:text-[#050607] font-bold border border-[#00E5FF]/30'
-                        : 'bg-[#0071E3]/10 hover:bg-[#0071E3] text-[#0071E3] hover:text-white shadow-2xs'
+                        : 'bg-[#1677FF]/10 hover:bg-[#1677FF] text-[#1677FF] hover:text-white shadow-2xs'
                     }`}
                     title="立即打开文件"
                   >
@@ -664,8 +664,8 @@ export const FilesView: React.FC = () => {
           <div className="overflow-x-auto custom-scrollbar">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className={`border-b text-[11px] font-semibold ${
-                  isOledTheme ? 'border-white/[0.06] text-[#7D858A] bg-[#0C0F11]' : 'border-slate-100 text-slate-400 bg-slate-50/50'
+                <tr className={`border-b text-[13px] font-medium ${
+                  isOledTheme ? 'border-white/[0.06] text-[#7D858A] bg-[#0C0F11]' : 'border-slate-100 text-[#4E5969] bg-slate-50/50'
                 }`}>
                   <th className="py-3 px-4 font-medium">文件名称</th>
                   <th className="py-3 px-4 font-medium w-28">分类</th>
@@ -675,7 +675,7 @@ export const FilesView: React.FC = () => {
                   <th className="py-3 px-4 font-medium text-right w-48">操作</th>
                 </tr>
               </thead>
-              <tbody className={`divide-y text-xs ${
+              <tbody className={`divide-y text-[15px] ${
                 isOledTheme ? 'divide-white/[0.04]' : 'divide-slate-100'
               }`}>
                 {filteredFiles.map((file) => {
@@ -692,26 +692,26 @@ export const FilesView: React.FC = () => {
                       onClick={() => handleOpenFile(file)}
                     >
                       {/* Name & Icon */}
-                      <td className="py-3 px-4">
+                      <td className="py-3.5 px-4">
                         <div className="flex items-center gap-3">
-                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border ${
+                          <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 border ${
                             isOledTheme ? 'bg-[#111417] border-white/[0.08] text-[#00E5FF]' : typeConfig.iconBoxBg
                           }`}>
-                            <IconComponent size={16} strokeWidth={2} />
+                            <IconComponent size={18} strokeWidth={2} />
                           </div>
                           <div className="min-w-0">
-                            <div className={`font-bold transition-colors flex items-center gap-1.5 ${
-                              isOledTheme ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]' : 'text-[#1D1D1F] group-hover:text-[#0071E3]'
+                            <div className={`font-medium transition-colors flex items-center gap-1.5 ${
+                              isOledTheme ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]' : 'text-[#1D2129] group-hover:text-[#1677FF]'
                             }`}>
                               <span className="truncate" title={file.name}>{file.name}</span>
                               {file.isPinned && (
                                 <span title="置顶" className={`shrink-0 ${isOledTheme ? 'text-[#B7FF3C]' : 'text-amber-500'}`}>
-                                  <Pin size={12} className={isOledTheme ? 'fill-[#B7FF3C]' : 'fill-amber-500'} />
+                                  <Pin size={13} className={isOledTheme ? 'fill-[#B7FF3C]' : 'fill-amber-500'} />
                                 </span>
                               )}
                             </div>
                             {file.notes && (
-                              <div className={`text-[10px] truncate max-w-sm ${isOledTheme ? 'text-[#7D858A]' : 'text-slate-400'}`}>
+                              <div className={`text-[13px] truncate max-w-sm ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>
                                 {file.notes}
                               </div>
                             )}
@@ -720,17 +720,17 @@ export const FilesView: React.FC = () => {
                       </td>
 
                       {/* Category */}
-                      <td className="py-3 px-4">
-                        <span className={`px-2 py-0.5 rounded-md text-[11px] font-medium ${
-                          isOledTheme ? 'bg-white/5 text-[#7D858A]' : 'bg-slate-100 text-slate-600'
+                      <td className="py-3.5 px-4">
+                        <span className={`px-2 py-0.5 rounded-md text-[13px] font-medium ${
+                          isOledTheme ? 'bg-white/5 text-[#7D858A]' : 'bg-slate-100 text-[#4E5969]'
                         }`}>
                           {file.category || '未分类'}
                         </span>
                       </td>
 
                       {/* Type Badge */}
-                      <td className="py-3 px-4">
-                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
+                      <td className="py-3.5 px-4">
+                        <span className={`text-[11px] font-medium px-2 py-0.5 rounded ${
                           isOledTheme ? 'bg-[#00E5FF] text-[#050607]' : `text-white ${typeConfig.badgeBg}`
                         }`}>
                           {typeConfig.label}
@@ -738,28 +738,28 @@ export const FilesView: React.FC = () => {
                       </td>
 
                       {/* Size */}
-                      <td className={`py-3 px-4 font-mono text-[11px] ${isOledTheme ? 'text-[#7D858A]' : 'text-slate-500'}`}>
+                      <td className={`py-3.5 px-4 font-mono text-[13px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`} style={{ fontVariantNumeric: 'tabular-nums' }}>
                         {formatBytes(file.size)}
                       </td>
 
                       {/* Path */}
-                      <td className={`py-3 px-4 font-mono text-[11px] max-w-xs truncate ${isOledTheme ? 'text-white/40' : 'text-slate-400'}`} title={file.filePath}>
+                      <td className={`py-3.5 px-4 font-mono text-[13px] max-w-xs truncate ${isOledTheme ? 'text-white/40' : 'text-[#4E5969]'}`} title={file.filePath}>
                         {file.filePath}
                       </td>
 
                       {/* Actions */}
-                      <td className="py-3 px-4 text-right" onClick={(e) => e.stopPropagation()}>
+                      <td className="py-3.5 px-4 text-right" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center justify-end gap-1">
                           <button
                             type="button"
                             onClick={() => handleOpenFile(file)}
                             disabled={isOpening}
-                            className={`flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
-                              isOledTheme ? 'text-[#00E5FF] hover:bg-[#00E5FF]/10' : 'text-[#0071E3] hover:bg-blue-50'
+                            className={`flex items-center gap-1 px-2.5 py-1 text-[13px] font-medium rounded-lg transition-colors cursor-pointer ${
+                              isOledTheme ? 'text-[#00E5FF] hover:bg-[#00E5FF]/10' : 'text-[#1677FF] hover:bg-blue-50'
                             }`}
                             title="打开"
                           >
-                            {isOpening ? <Loader2 size={12} className="animate-spin" /> : <ExternalLink size={12} />}
+                            {isOpening ? <Loader2 size={13} className="animate-spin" /> : <ExternalLink size={13} />}
                             <span>打开</span>
                           </button>
 

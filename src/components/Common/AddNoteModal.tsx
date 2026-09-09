@@ -207,14 +207,14 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-xs">
+            <div className="w-10 h-10 rounded-2xl bg-blue-50 text-[#1677FF] flex items-center justify-center shadow-xs">
               <Feather size={20} />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-800">
+              <h3 className="text-[18px] font-semibold text-[#1D2129]">
                 {noteToEdit ? '查看与修改记录' : '添加记录'}
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-[13px] text-[#4E5969] mt-0.5">
                 {noteToEdit ? '放大查看完整记录，支持直接编辑修改并保存' : '记录随手想法、会议或工作总结'}
               </p>
             </div>
@@ -222,7 +222,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
           <button 
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-400 hover:text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-[#4E5969] hover:text-[#1D2129] flex items-center justify-center transition-colors cursor-pointer"
           >
             <X size={16} />
           </button>
@@ -231,7 +231,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
         {/* Type Selection Tabs */}
         {typeKeys.length > 1 && (
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">类型</label>
+            <label className="block text-[14px] font-medium text-[#1D2129] mb-1.5">类型</label>
             <div className={`grid gap-2 ${typeKeys.length === 4 ? 'grid-cols-4' : 'grid-cols-5'}`}>
               {typeKeys.map((tKey) => {
                 const cfg = TYPE_CONFIGS[tKey];
@@ -251,10 +251,10 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
                         setSelectedTag('会议');
                       }
                     }}
-                    className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                    className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl text-[13px] font-medium transition-all cursor-pointer ${
                       isSelected
                         ? `${cfg.activeColor} shadow-sm`
-                        : `bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/60`
+                        : `bg-slate-50 text-[#4E5969] hover:bg-slate-100 border border-slate-200/60`
                     }`}
                   >
                     <IconComponent size={14} />
@@ -269,16 +269,16 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
         {/* Date & Time Row */}
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <label className="text-xs font-bold text-slate-700 flex items-center gap-1">
-              <CalendarIcon size={14} className="text-blue-600" />
+            <label className="text-[14px] font-medium text-[#1D2129] flex items-center gap-1.5">
+              <CalendarIcon size={14} className="text-[#1677FF]" />
               <span>日期与时间</span>
             </label>
             <div className="flex items-center gap-1">
               <button
                 type="button"
                 onClick={() => setDate(todayStr)}
-                className={`px-2 py-0.5 text-[10px] rounded-md transition-colors cursor-pointer ${
-                  date === todayStr ? 'bg-blue-600 text-white font-medium' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                className={`px-2 py-0.5 text-[11px] rounded-md transition-colors cursor-pointer ${
+                  date === todayStr ? 'bg-[#1677FF] text-white font-medium' : 'bg-slate-100 text-[#4E5969] hover:bg-slate-200'
                 }`}
               >
                 今天
@@ -286,8 +286,8 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
               <button
                 type="button"
                 onClick={() => setDate(yesterdayStr)}
-                className={`px-2 py-0.5 text-[10px] rounded-md transition-colors cursor-pointer ${
-                  date === yesterdayStr ? 'bg-blue-600 text-white font-medium' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                className={`px-2 py-0.5 text-[11px] rounded-md transition-colors cursor-pointer ${
+                  date === yesterdayStr ? 'bg-[#1677FF] text-white font-medium' : 'bg-slate-100 text-[#4E5969] hover:bg-slate-200'
                 }`}
               >
                 昨天
@@ -300,28 +300,28 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 focus:outline-none focus:border-blue-500 cursor-pointer shadow-2xs"
+              className="w-full px-3 py-2 text-[14px] font-mono tabular-nums bg-slate-50 border border-slate-200 rounded-xl text-[#1D2129] focus:outline-none focus:border-[#1677FF] cursor-pointer shadow-2xs"
             />
             <input
               type="time"
               value={time}
               onChange={(e) => setTime(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 focus:outline-none focus:border-blue-500 cursor-pointer shadow-2xs"
+              className="w-full px-3 py-2 text-[14px] font-mono tabular-nums bg-slate-50 border border-slate-200 rounded-xl text-[#1D2129] focus:outline-none focus:border-[#1677FF] cursor-pointer shadow-2xs"
             />
           </div>
         </div>
 
         {/* Title Input */}
         <div>
-          <label className="block text-xs font-bold text-slate-700 mb-1.5">
-            标题 <span className="text-slate-400 font-normal">(可选)</span>
+          <label className="block text-[14px] font-medium text-[#1D2129] mb-1.5">
+            标题 <span className="text-[#86909C] font-normal">(可选)</span>
           </label>
           <input
             type="text"
             placeholder={type === 'daily_report' ? `${date} 工作日报` : '例如: 讨论要点...'}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 placeholder-slate-400 shadow-2xs"
+            className="w-full px-3.5 py-2 text-[14px] bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1677FF]/20 focus:border-[#1677FF] text-[#1D2129] placeholder-[#86909C] shadow-2xs"
           />
         </div>
 
@@ -329,8 +329,8 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
         {type === 'daily_report' ? (
           <div className="space-y-3 p-3.5 rounded-2xl bg-emerald-50/50 border border-emerald-100">
             {/* Auto Import Trigger Banner */}
-            <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-1.5 text-emerald-800 font-bold">
+            <div className="flex items-center justify-between text-[13px]">
+              <div className="flex items-center gap-1.5 text-emerald-800 font-semibold">
                 <CheckCircle2 size={15} className="text-emerald-600" />
                 <span>已关联日历</span>
               </div>
@@ -338,7 +338,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
                 type="button"
                 onClick={handleAutoImportDaily}
                 disabled={isLoadingAuto}
-                className="flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 bg-white border border-emerald-200 hover:border-emerald-300 rounded-lg shadow-2xs transition-all cursor-pointer"
+                className="flex items-center gap-1 px-2.5 py-1 text-[12px] font-medium text-emerald-700 hover:text-emerald-800 bg-white border border-emerald-200 hover:border-emerald-300 rounded-lg shadow-2xs transition-all cursor-pointer"
               >
                 <Zap size={12} className="text-amber-500" />
                 <span>{isLoadingAuto ? '汇总中...' : '同步今天待办'}</span>
@@ -348,17 +348,17 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
             {/* Deliverables */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-bold text-slate-700">
+                <label className="block text-[14px] font-medium text-slate-700">
                   今日工作
                 </label>
-                <span className="text-[10px] text-slate-400">分行记录</span>
+                <span className="text-[12px] text-[#86909C]">分行记录</span>
               </div>
               <textarea
                 rows={8}
                 placeholder="1. XXXXX&#10;2. XXXXX"
                 value={deliverables}
                 onChange={(e) => setDeliverables(e.target.value)}
-                className="w-full px-3.5 py-2.5 text-xs leading-relaxed bg-white border border-emerald-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-800 placeholder-slate-400 min-h-[180px] resize-y shadow-2xs"
+                className="w-full px-3.5 py-2.5 text-[15px] leading-[24px] bg-white border border-emerald-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-[#1D2129] placeholder-[#86909C] min-h-[180px] resize-y shadow-2xs"
               />
             </div>
 
@@ -366,7 +366,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-xs font-bold text-slate-700">
+                  <label className="block text-[14px] font-medium text-slate-700">
                     明日计划:
                   </label>
                   <button
@@ -381,7 +381,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
                         console.error(e);
                       }
                     }}
-                    className="flex items-center gap-0.5 text-[10px] text-emerald-700 hover:underline font-medium cursor-pointer"
+                    className="flex items-center gap-0.5 text-[12px] text-emerald-700 hover:underline font-medium cursor-pointer"
                     title="导入明日计划"
                   >
                     <Repeat size={11} strokeWidth={2} />
@@ -393,11 +393,11 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
                   placeholder="1. xxx&#10;2. xxx"
                   value={tomorrowPlan}
                   onChange={(e) => setTomorrowPlan(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-xs leading-relaxed bg-white border border-emerald-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-800 placeholder-slate-400 min-h-[100px] resize-y shadow-2xs"
+                  className="w-full px-3.5 py-2.5 text-[15px] leading-[24px] bg-white border border-emerald-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-[#1D2129] placeholder-[#86909C] min-h-[100px] resize-y shadow-2xs"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                <label className="block text-[14px] font-medium text-slate-700 mb-1.5">
                   遇到问题 (可选)
                 </label>
                 <textarea
@@ -405,7 +405,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
                   placeholder="无..."
                   value={blockers}
                   onChange={(e) => setBlockers(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-xs leading-relaxed bg-white border border-emerald-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-800 placeholder-slate-400 min-h-[100px] resize-y shadow-2xs"
+                  className="w-full px-3.5 py-2.5 text-[15px] leading-[24px] bg-white border border-emerald-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-[#1D2129] placeholder-[#86909C] min-h-[100px] resize-y shadow-2xs"
                 />
               </div>
             </div>
@@ -413,11 +413,11 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
         ) : (
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-bold text-slate-700">
+              <label className="block text-[14px] font-medium text-[#1D2129]">
                 内容 <span className="text-rose-500">*</span>
               </label>
               {content.length > 0 && (
-                <span className="text-[11px] text-slate-400 font-mono">
+                <span className="text-[12px] text-[#86909C] font-mono tabular-nums">
                   {content.length} 字
                 </span>
               )}
@@ -433,7 +433,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
               }
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="w-full px-3.5 py-2.5 text-xs leading-relaxed bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 placeholder-slate-400 shadow-2xs min-h-[200px] resize-y"
+              className="w-full px-3.5 py-2.5 text-[15px] leading-[24px] bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#1677FF]/20 focus:border-[#1677FF] text-[#1D2129] placeholder-[#86909C] shadow-2xs min-h-[200px] resize-y"
             />
           </div>
         )}
@@ -442,14 +442,14 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
         <div className="flex items-center justify-between gap-3 pt-1">
           {/* Tags */}
           <div className="flex items-center gap-1.5 flex-wrap">
-            <Tag size={13} className="text-slate-400" />
+            <Tag size={14} className="text-[#86909C]" />
             {['工作', '日常', '会议', '灵感', '复盘', '学习'].map((tg) => (
               <button
                 key={tg}
                 type="button"
                 onClick={() => setSelectedTag(tg)}
-                className={`px-2 py-0.5 text-[10px] rounded-lg transition-colors cursor-pointer ${
-                  selectedTag === tg ? 'bg-blue-600 text-white font-medium' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                className={`px-2.5 py-1 text-[12px] rounded-lg transition-colors cursor-pointer ${
+                  selectedTag === tg ? 'bg-[#1677FF] text-white font-medium' : 'bg-slate-100 text-[#4E5969] hover:bg-slate-200'
                 }`}
               >
                 {tg}
@@ -461,10 +461,10 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
           <button
             type="button"
             onClick={() => setIsPinned(!isPinned)}
-            className={`flex items-center gap-1 px-2.5 py-1 text-xs rounded-xl border transition-all cursor-pointer ${
+            className={`flex items-center gap-1 px-2.5 py-1 text-[13px] rounded-xl border transition-all cursor-pointer ${
               isPinned
                 ? 'bg-amber-50 text-amber-700 border-amber-300 font-semibold'
-                : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50'
+                : 'bg-white text-[#4E5969] border-slate-200 hover:bg-slate-50'
             }`}
           >
             <Bookmark size={13} className={isPinned ? 'fill-amber-600' : ''} />
@@ -477,7 +477,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-xs font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
+            className="px-4 py-2 text-[14px] font-medium text-[#4E5969] hover:text-[#1D2129] hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
           >
             取消
           </button>
@@ -485,12 +485,12 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
             type="button"
             onClick={handleConfirm}
             disabled={(!content.trim() && !deliverables.trim()) || isSubmitting}
-            className="flex items-center gap-1.5 px-5 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-xl shadow-md shadow-blue-500/20 transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-5 py-2 text-[14px] font-medium text-white bg-[#1677FF] hover:bg-blue-600 disabled:opacity-50 rounded-xl shadow-md shadow-blue-500/20 transition-all cursor-pointer"
           >
             {noteToEdit ? (
-              <CheckCircle2 size={14} strokeWidth={2} />
+              <CheckCircle2 size={15} strokeWidth={2} />
             ) : (
-              <Plus size={14} strokeWidth={2} />
+              <Plus size={15} strokeWidth={2} />
             )}
             <span>
               {isSubmitting

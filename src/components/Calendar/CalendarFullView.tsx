@@ -251,12 +251,12 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
           <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shadow-xs ${
             isOledTheme
               ? 'bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 shadow-[0_0_15px_rgba(0,229,255,0.2)]'
-              : 'bg-gradient-to-tr from-[#0071E3] to-[#42A5F5] text-white shadow-blue-500/20'
+              : 'bg-[#1677FF] text-white shadow-blue-500/20'
           }`}>
-            <CalendarIcon size={18} strokeWidth={1.75} />
+            <CalendarIcon size={20} strokeWidth={2} />
           </div>
           <div>
-            <h1 className={`text-lg font-extrabold tracking-tight ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D1D1F]'}`}>
+            <h1 className={`text-[26px] font-semibold leading-[1.3] tracking-tight ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D2129]'}`}>
               日程管理
             </h1>
           </div>
@@ -264,17 +264,17 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
 
         <div className="flex items-center gap-3">
           {/* Legend */}
-          <div className={`hidden md:flex items-center gap-3.5 px-3.5 py-1.5 rounded-2xl text-[11px] shadow-2xs border ${
+          <div className={`hidden md:flex items-center gap-3.5 px-3.5 py-1.5 rounded-2xl text-[13px] shadow-2xs border ${
             isOledTheme
               ? 'bg-[#111417] border-white/[0.08] text-[#7D858A]'
-              : 'bg-white/75 backdrop-blur-md border-white/90 text-[#48484A]'
+              : 'bg-white/75 backdrop-blur-md border-white/90 text-[#4E5969]'
           }`}>
             <div className="flex items-center gap-1.5">
-              <span className="px-1 py-0.2 text-[9px] font-bold rounded bg-rose-500 text-white leading-none">休</span>
+              <span className="px-1.5 py-0.2 text-[10px] font-bold rounded bg-rose-500 text-white leading-none">休</span>
               <span>法定节假日</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="px-1 py-0.2 text-[9px] font-bold rounded bg-amber-500 text-white leading-none">班</span>
+              <span className="px-1.5 py-0.2 text-[10px] font-bold rounded bg-amber-500 text-white leading-none">班</span>
               <span>调休补班</span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -291,20 +291,20 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
               type="button"
               onClick={() => changeMonth(-1)}
               className={`p-1.5 rounded-xl transition-colors cursor-pointer ${
-                isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5] hover:bg-white/5' : 'text-[#86868B] hover:text-[#1D1D1F] hover:bg-slate-100'
+                isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5] hover:bg-white/5' : 'text-[#4E5969] hover:text-[#1D2129] hover:bg-slate-100'
               }`}
               title="上一月"
             >
               <ChevronLeft size={16} strokeWidth={1.75} />
             </button>
-            <span className={`px-3 text-xs font-bold font-mono ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>
+            <span className={`px-3 text-[14px] font-semibold font-mono ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`} style={{ fontVariantNumeric: 'tabular-nums' }}>
               {year}年 {month + 1}月
             </span>
             <button
               type="button"
               onClick={() => changeMonth(1)}
               className={`p-1.5 rounded-xl transition-colors cursor-pointer ${
-                isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5] hover:bg-white/5' : 'text-[#86868B] hover:text-[#1D1D1F] hover:bg-slate-100'
+                isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5] hover:bg-white/5' : 'text-[#4E5969] hover:text-[#1D2129] hover:bg-slate-100'
               }`}
               title="下一月"
             >
@@ -319,10 +319,10 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
               setCurrentDate(new Date());
               setActiveDate(todayStr);
             }}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-2xl transition-colors cursor-pointer border ${
+            className={`px-3 py-1.5 text-[14px] font-medium rounded-2xl transition-colors cursor-pointer border ${
               isOledTheme
                 ? 'text-[#00E5FF] bg-[#00E5FF]/10 hover:bg-[#00E5FF]/20 border-[#00E5FF]/30'
-                : 'text-[#0071E3] bg-blue-50/80 hover:bg-blue-100/80 border-blue-200/50'
+                : 'text-[#1677FF] bg-blue-50/80 hover:bg-blue-100/80 border-blue-200/50'
             }`}
           >
             返回今天
@@ -337,16 +337,16 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
           isOledTheme ? 'bg-[#080A0C] border-white/[0.08]' : ''
         }`}>
           {/* Weekday headers */}
-          <div className={`grid grid-cols-7 mb-2 text-center text-xs font-semibold ${
-            isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'
+          <div className={`grid grid-cols-7 mb-2 text-center text-[14px] font-medium ${
+            isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'
           }`}>
             <div>周一</div>
             <div>周二</div>
             <div>周三</div>
             <div>周四</div>
             <div>周五</div>
-            <div className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#0071E3]'}>周六</div>
-            <div className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#0071E3]'}>周日</div>
+            <div className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]'}>周六</div>
+            <div className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]'}>周日</div>
           </div>
 
           {/* Day Cells */}
@@ -377,7 +377,7 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                     isSelected
                       ? isOledTheme
                         ? 'border-[#00E5FF] bg-[#00E5FF]/15 ring-2 ring-[#00E5FF]/30 shadow-xs'
-                        : 'border-[#0071E3] bg-[#0071E3]/10 ring-2 ring-[#0071E3]/20 shadow-xs'
+                        : 'border-[#1677FF] bg-[#1677FF]/10 ring-2 ring-[#1677FF]/20 shadow-xs'
                       : isToday
                       ? isOledTheme
                         ? 'border-[#00E5FF]/40 bg-[#111417] ring-1 ring-[#00E5FF]/20 shadow-2xs'
@@ -394,16 +394,17 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                   {/* Top Row: Day Number & Badges */}
                   <div className="flex items-center justify-between">
                     <span
-                      className={`text-xs font-bold font-mono ${
+                      style={{ fontVariantNumeric: 'tabular-nums' }}
+                      className={`text-[14px] font-medium font-mono ${
                         isToday
                           ? isOledTheme
-                            ? 'w-5 h-5 rounded-full bg-[#00E5FF] text-[#050607] flex items-center justify-center font-bold shadow-xs'
-                            : 'w-5 h-5 rounded-full bg-[#0071E3] text-white flex items-center justify-center shadow-xs'
+                            ? 'w-6 h-6 rounded-full bg-[#00E5FF] text-[#050607] flex items-center justify-center font-bold shadow-xs'
+                            : 'w-6 h-6 rounded-full bg-[#1677FF] text-white flex items-center justify-center shadow-xs'
                           : isSelected
-                          ? isOledTheme ? 'text-[#00E5FF]' : 'text-[#0071E3]'
+                          ? isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]'
                           : item.isCurrentMonth
-                          ? isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'
-                          : isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'
+                          ? isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'
+                          : isOledTheme ? 'text-[#7D858A]' : 'text-[#86909C]'
                       }`}
                     >
                       {item.dayNum}
@@ -412,18 +413,18 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                     {/* Holiday badge / Status dot */}
                     <div className="flex items-center gap-1">
                       {lunar.holidayStatus === 'rest' && (
-                        <span className="px-1 py-0.2 text-[9px] font-extrabold rounded bg-rose-500 text-white leading-none shadow-2xs">
+                        <span className="px-1.5 py-0.2 text-[10px] font-extrabold rounded bg-rose-500 text-white leading-none shadow-2xs">
                           休
                         </span>
                       )}
                       {lunar.holidayStatus === 'work' && (
-                        <span className="px-1 py-0.2 text-[9px] font-extrabold rounded bg-amber-500 text-white leading-none shadow-2xs">
+                        <span className="px-1.5 py-0.2 text-[10px] font-extrabold rounded bg-amber-500 text-white leading-none shadow-2xs">
                           班
                         </span>
                       )}
                       {hasReport && (
                         <span title="该日已有关联工作日报">
-                          <FileText size={10} strokeWidth={2} className="text-emerald-600" />
+                          <FileText size={11} strokeWidth={2} className="text-emerald-600" />
                         </span>
                       )}
                       {status && (
@@ -445,13 +446,13 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                   {/* Middle: Lunar Day / Festival / Solar Term */}
                   <div className="my-0.5">
                     <span
-                      className={`text-[10px] leading-tight truncate block ${
+                      className={`text-[11px] leading-tight truncate block ${
                         lunar.isFestival
                           ? 'text-rose-600 font-bold'
                           : lunar.term
-                          ? 'text-[#0071E3] font-semibold'
+                          ? 'text-[#1677FF] font-medium'
                           : item.isCurrentMonth
-                          ? 'text-[#86868B]'
+                          ? 'text-[#86909C]'
                           : 'text-[#AEAEB2]'
                       }`}
                       title={lunar.fullLunarString}
@@ -463,13 +464,13 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                   {/* Bottom: Memo Count or Task Count */}
                   <div className="mt-auto">
                     {dayMemosCount > 0 ? (
-                      <div className="text-[9px] text-[#0071E3] font-medium leading-tight truncate flex items-center gap-1">
-                        <span className="w-1 h-1 rounded-full bg-[#0071E3]" />
+                      <div className="text-[11px] text-[#1677FF] font-medium leading-tight truncate flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#1677FF]" />
                         <span>{dayMemosCount} 备忘</span>
                       </div>
                     ) : taskCount > 0 ? (
-                      <div className="text-[9px] text-[#86868B] font-mono leading-tight truncate flex items-center gap-1">
-                        <span className="w-1 h-1 rounded-full bg-slate-400" />
+                      <div className="text-[11px] text-[#4E5969] font-mono leading-tight truncate flex items-center gap-1" style={{ fontVariantNumeric: 'tabular-nums' }}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
                         <span>{taskCount} 待办</span>
                       </div>
                     ) : (
@@ -490,15 +491,15 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
           <div className={`pb-3 border-b mb-3.5 ${isOledTheme ? 'border-white/[0.06]' : 'border-slate-100'}`}>
             <div className="flex items-center justify-between">
               <div>
-                <h2 className={`text-base font-bold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D1D1F]'}`}>
+                <h2 className={`text-[18px] font-semibold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D2129]'}`}>
                   {formatChineseDate(activeDate)}
                 </h2>
                 <div className="flex flex-wrap items-center gap-1.5 mt-1">
-                  <span className={`text-xs font-medium ${isOledTheme ? 'text-[#7D858A]' : 'text-[#48484A]'}`}>
+                  <span className={`text-[13px] font-normal ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>
                     农历 {activeLunar.fullLunarString}
                   </span>
                   {activeLunar.holidayName && (
-                    <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                    <span className={`px-2 py-0.5 rounded text-[12px] font-medium ${
                       activeLunar.holidayStatus === 'rest' 
                         ? isOledTheme ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-rose-50 text-rose-600 border border-rose-200' 
                         : isOledTheme ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-amber-50 text-amber-700 border border-amber-200'
@@ -507,8 +508,8 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                     </span>
                   )}
                   {activeLunar.term && (
-                    <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium border ${
-                      isOledTheme ? 'bg-[#00E5FF]/20 text-[#00E5FF] border-[#00E5FF]/40' : 'bg-blue-50 text-[#0071E3] border border-blue-200'
+                    <span className={`px-2 py-0.5 rounded text-[12px] font-medium border ${
+                      isOledTheme ? 'bg-[#00E5FF]/20 text-[#00E5FF] border-[#00E5FF]/40' : 'bg-blue-50 text-[#1677FF] border border-blue-200'
                     }`}>
                       节气 · {activeLunar.term}
                     </span>
@@ -519,12 +520,12 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
               <button
                 type="button"
                 onClick={() => onSelectDateForDashboard(activeDate)}
-                className={`flex items-center gap-1 text-xs hover:underline font-semibold cursor-pointer shrink-0 ${
-                  isOledTheme ? 'text-[#00E5FF]' : 'text-[#0071E3]'
+                className={`flex items-center gap-1 text-[14px] hover:underline font-medium cursor-pointer shrink-0 ${
+                  isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]'
                 }`}
               >
                 <span>工作台</span>
-                <ArrowRight size={13} strokeWidth={2} />
+                <ArrowRight size={14} strokeWidth={2} />
               </button>
             </div>
           </div>
@@ -537,14 +538,14 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
             <button
               type="button"
               onClick={() => setActiveTab('memos')}
-              className={`flex-1 flex items-center justify-center gap-1 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 text-[14px] font-medium rounded-lg transition-all cursor-pointer ${
                 activeTab === 'memos'
-                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] shadow-xs font-bold' : 'bg-white text-[#0071E3] shadow-xs font-bold'
-                  : isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#86868B] hover:text-[#1D1D1F]'
+                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] shadow-xs font-semibold' : 'bg-white text-[#1677FF] shadow-xs font-semibold'
+                  : isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#4E5969] hover:text-[#1D2129]'
               }`}
               title="个人备忘、日程提醒与随手记录（不计入工作日报成果）"
             >
-              <Bookmark size={13} strokeWidth={2} />
+              <Bookmark size={14} strokeWidth={2} />
               <span>日程备忘 ({activeDayMemos.length})</span>
             </button>
 
@@ -552,14 +553,14 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
             <button
               type="button"
               onClick={() => setActiveTab('report')}
-              className={`flex-1 flex items-center justify-center gap-1 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 text-[14px] font-medium rounded-lg transition-all cursor-pointer ${
                 activeTab === 'report'
-                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] shadow-xs font-bold' : 'bg-white text-[#0071E3] shadow-xs font-bold'
-                  : isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#86868B] hover:text-[#1D1D1F]'
+                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] shadow-xs font-semibold' : 'bg-white text-[#1677FF] shadow-xs font-semibold'
+                  : isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#4E5969] hover:text-[#1D2129]'
               }`}
               title="工作日报、已交付成果与明日推进计划"
             >
-              <FileText size={13} strokeWidth={2} />
+              <FileText size={14} strokeWidth={2} />
               <span>工作日报</span>
               {hasActiveReport && <span className="w-1.5 h-1.5 rounded-full bg-[#B7FF3C] ml-0.5" />}
             </button>
@@ -568,14 +569,14 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
             <button
               type="button"
               onClick={() => setActiveTab('tasks')}
-              className={`flex-1 flex items-center justify-center gap-1 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 text-[14px] font-medium rounded-lg transition-all cursor-pointer ${
                 activeTab === 'tasks'
-                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] shadow-xs font-bold' : 'bg-white text-[#0071E3] shadow-xs font-bold'
-                  : isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#86868B] hover:text-[#1D1D1F]'
+                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] shadow-xs font-semibold' : 'bg-white text-[#1677FF] shadow-xs font-semibold'
+                  : isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#4E5969] hover:text-[#1D2129]'
               }`}
               title="待办事项"
             >
-              <Briefcase size={13} strokeWidth={2} />
+              <Briefcase size={14} strokeWidth={2} />
               <span>待办 ({activeDayTasks.length})</span>
             </button>
           </div>
@@ -585,11 +586,11 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
             <div className="flex-1 flex flex-col gap-3 min-h-0">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className={`text-xs font-bold flex items-center gap-1.5 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>
-                    <Bookmark size={14} strokeWidth={2} className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#0071E3]'} />
-                    <span>备忘 ({completedMemosCount}/{activeDayMemos.length})</span>
+                  <h3 className={`text-[16px] font-semibold flex items-center gap-1.5 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>
+                    <Bookmark size={15} strokeWidth={2} className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]'} />
+                    <span>备忘 (<span style={{ fontVariantNumeric: 'tabular-nums' }}>{completedMemosCount}/{activeDayMemos.length}</span>)</span>
                   </h3>
-                  <p className={`text-[10px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'} mt-0.5`}>
+                  <p className={`text-[13px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'} mt-0.5`}>
                     记录个人提醒与备忘
                   </p>
                 </div>
@@ -604,16 +605,17 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                   placeholder="添加一条备忘..."
                   value={newMemoContent}
                   onChange={(e) => setNewMemoContent(e.target.value)}
-                  className={`flex-1 px-2.5 py-1.5 text-xs bg-transparent focus:outline-none ${
-                    isOledTheme ? 'text-[#F2F5F5] placeholder-[#7D858A]' : 'text-[#1D1D1F] placeholder-slate-400'
+                  className={`flex-1 px-2.5 py-1.5 text-[15px] leading-[24px] bg-transparent focus:outline-none ${
+                    isOledTheme ? 'text-[#F2F5F5] placeholder-[#7D858A]' : 'text-[#1D2129] placeholder-[#86909C]'
                   }`}
                 />
                 <select
                   value={newMemoTime}
                   onChange={(e) => setNewMemoTime(e.target.value)}
-                  className={`text-[11px] font-mono px-2 py-1.5 rounded-xl border focus:outline-none cursor-pointer ${
-                    isOledTheme ? 'bg-[#0C0F11] border-white/[0.1] text-[#F2F5F5]' : 'bg-slate-100 border-slate-200 text-[#48484A]'
+                  className={`text-[13px] font-mono px-2 py-1.5 rounded-xl border focus:outline-none cursor-pointer ${
+                    isOledTheme ? 'bg-[#0C0F11] border-white/[0.1] text-[#F2F5F5]' : 'bg-slate-100 border-slate-200 text-[#4E5969]'
                   }`}
+                  style={{ fontVariantNumeric: 'tabular-nums' }}
                 >
                   <option value="全天">全天</option>
                   <option value="09:00">09:00</option>
@@ -629,10 +631,10 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                 <button
                   type="submit"
                   disabled={isAddingMemo || !newMemoContent.trim()}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-xl shadow-xs transition-all cursor-pointer shrink-0 ${
+                  className={`px-3.5 py-1.5 text-[14px] font-medium rounded-xl shadow-xs transition-all cursor-pointer shrink-0 ${
                     isOledTheme
                       ? 'text-[#050607] bg-[#00E5FF] hover:bg-[#00cce6]'
-                      : 'text-white bg-[#0071E3] hover:bg-blue-600'
+                      : 'text-white bg-[#1677FF] hover:bg-blue-600'
                   }`}
                 >
                   添加
@@ -655,8 +657,8 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                         <button
                           type="button"
                           onClick={() => handleToggleMemo(m)}
-                          className={`mt-0.5 transition-colors cursor-pointer ${
-                            isOledTheme ? 'text-[#7D858A] hover:text-[#00E5FF]' : 'text-[#86868B] hover:text-[#0071E3]'
+                          className={`mt-1 transition-colors cursor-pointer ${
+                            isOledTheme ? 'text-[#7D858A] hover:text-[#00E5FF]' : 'text-[#4E5969] hover:text-[#1677FF]'
                           }`}
                           title={m.completed ? '标记为未完成' : '标记为已完成'}
                         >
@@ -668,21 +670,21 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                         </button>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-1.5 mb-0.5">
-                            <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded ${
-                              isOledTheme ? 'bg-[#00E5FF]/10 text-[#00E5FF]' : 'bg-blue-50 text-[#0071E3]'
-                            }`}>
+                            <span className={`text-[13px] font-mono px-1.5 py-0.2 rounded ${
+                              isOledTheme ? 'bg-[#00E5FF]/10 text-[#00E5FF]' : 'bg-blue-50 text-[#1677FF]'
+                            }`} style={{ fontVariantNumeric: 'tabular-nums' }}>
                               {m.time || '全天'}
                             </span>
-                            <span className={`text-[9px] font-medium px-1.5 py-0.2 rounded ${
-                              isOledTheme ? 'bg-white/5 text-[#7D858A]' : 'bg-slate-100 text-[#86868B]'
+                            <span className={`text-[12px] font-medium px-1.5 py-0.2 rounded ${
+                              isOledTheme ? 'bg-white/5 text-[#7D858A]' : 'bg-slate-100 text-[#4E5969]'
                             }`}>
                               备忘
                             </span>
                           </div>
-                          <p className={`text-xs leading-relaxed whitespace-pre-wrap ${
+                          <p className={`text-[15px] leading-[24px] whitespace-pre-wrap ${
                             m.completed 
-                              ? isOledTheme ? 'line-through text-[#52595E]' : 'line-through text-[#86868B]'
-                              : isOledTheme ? 'text-[#F2F5F5] font-medium' : 'text-[#1D1D1F] font-medium'
+                              ? isOledTheme ? 'line-through text-[#52595E]' : 'line-through text-[#4E5969]'
+                              : isOledTheme ? 'text-[#F2F5F5] font-normal' : 'text-[#1D2129] font-normal'
                           }`}>
                             {m.content}
                           </p>
@@ -697,7 +699,7 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                         }`}
                         title="删除该备忘"
                       >
-                        <Trash2 size={13} strokeWidth={1.75} />
+                        <Trash2 size={14} strokeWidth={1.75} />
                       </button>
                     </div>
                   ))}
@@ -707,12 +709,12 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                   isOledTheme ? 'border-white/[0.08] bg-[#0C0F11]/30' : 'border-slate-200'
                 }`}>
                   <div className={`w-10 h-10 rounded-2xl flex items-center justify-center mb-2 ${
-                    isOledTheme ? 'bg-[#00E5FF]/10 text-[#00E5FF]' : 'bg-blue-50 text-[#0071E3]'
+                    isOledTheme ? 'bg-[#00E5FF]/10 text-[#00E5FF]' : 'bg-blue-50 text-[#1677FF]'
                   }`}>
                     <Bookmark size={18} strokeWidth={1.75} />
                   </div>
-                  <p className={`text-xs mb-1 ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'}`}>暂无备忘</p>
-                  <p className={`text-[11px] ${isOledTheme ? 'text-white/30' : 'text-[#AEAEB2]'}`}>在上方输入后回车保存</p>
+                  <p className={`text-[14px] mb-1 ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>暂无备忘</p>
+                  <p className={`text-[13px] ${isOledTheme ? 'text-white/30' : 'text-[#86909C]'}`}>在上方输入后回车保存</p>
                 </div>
               )}
             </div>
@@ -723,11 +725,11 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
             <div className="flex-1 flex flex-col gap-3 min-h-0">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className={`text-xs font-bold flex items-center gap-1.5 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>
-                    <FileText size={14} strokeWidth={2} className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#0071E3]'} />
+                  <h3 className={`text-[16px] font-semibold flex items-center gap-1.5 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>
+                    <FileText size={15} strokeWidth={2} className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]'} />
                     <span>工作日报</span>
                   </h3>
-                  <p className={`text-[10px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'} mt-0.5`}>
+                  <p className={`text-[13px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'} mt-0.5`}>
                     当天完成的工作与用时
                   </p>
                 </div>
@@ -735,13 +737,13 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsReportModalOpen(true)}
-                    className={`flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-xl font-semibold transition-colors cursor-pointer border ${
+                    className={`flex items-center gap-1 text-[13px] px-2.5 py-1 rounded-xl font-medium transition-colors cursor-pointer border ${
                       isOledTheme
                         ? 'text-[#00E5FF] bg-[#00E5FF]/10 hover:bg-[#00E5FF]/20 border-[#00E5FF]/30'
-                        : 'text-[#0071E3] hover:text-blue-700 bg-blue-50/80 border-blue-200/50'
+                        : 'text-[#1677FF] hover:text-blue-700 bg-blue-50/80 border-blue-200/50'
                     }`}
                   >
-                    {hasActiveReport ? <Edit3 size={12} strokeWidth={2} /> : <Plus size={12} strokeWidth={2} />}
+                    {hasActiveReport ? <Edit3 size={13} strokeWidth={2} /> : <Plus size={13} strokeWidth={2} />}
                     <span>{hasActiveReport ? '编辑' : '新建日报'}</span>
                   </button>
                   {hasActiveReport && (
@@ -753,48 +755,48 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                       }`}
                       title="删除该日工作日报"
                     >
-                      <Trash2 size={13} strokeWidth={1.75} />
+                      <Trash2 size={14} strokeWidth={1.75} />
                     </button>
                   )}
                 </div>
               </div>
 
               {isLoadingReport ? (
-                <div className={`flex-1 flex items-center justify-center py-10 text-xs ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'}`}>
+                <div className={`flex-1 flex items-center justify-center py-10 text-[14px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>
                   加载中...
                 </div>
               ) : hasActiveReport ? (
-                <div className={`flex flex-col gap-3 p-4 rounded-2xl border text-xs overflow-y-auto custom-scrollbar flex-1 ${
+                <div className={`flex flex-col gap-3 p-4 rounded-2xl border overflow-y-auto custom-scrollbar flex-1 ${
                   isOledTheme ? 'bg-[#0C0F11] border-white/[0.08]' : 'bg-white/80 border-slate-100'
                 }`}>
                   {dayReport?.deliverables && (
                     <div>
-                      <span className={`font-semibold block mb-1 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>今日工作：</span>
-                      <p className={`whitespace-pre-line leading-relaxed pl-2 border-l-2 border-[#B7FF3C] ${isOledTheme ? 'text-[#AEB7BA]' : 'text-[#48484A]'}`}>
+                      <span className={`text-[15px] font-semibold block mb-1 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>今日工作：</span>
+                      <p className={`text-[15px] leading-[24px] whitespace-pre-line pl-2 border-l-2 border-[#B7FF3C] ${isOledTheme ? 'text-[#AEB7BA]' : 'text-[#1D2129]'}`}>
                         {dayReport.deliverables}
                       </p>
                     </div>
                   )}
                   {dayReport?.blockers && dayReport.blockers !== '无' && (
                     <div>
-                      <span className="font-semibold text-rose-400 block mb-1">遇到问题：</span>
-                      <p className={`whitespace-pre-line leading-relaxed pl-2 border-l-2 border-rose-500/60 ${isOledTheme ? 'text-[#AEB7BA]' : 'text-[#48484A]'}`}>
+                      <span className="text-[15px] font-semibold text-rose-500 block mb-1">遇到问题：</span>
+                      <p className={`text-[15px] leading-[24px] whitespace-pre-line pl-2 border-l-2 border-rose-500/60 ${isOledTheme ? 'text-[#AEB7BA]' : 'text-[#1D2129]'}`}>
                         {dayReport.blockers}
                       </p>
                     </div>
                   )}
                   {dayReport?.tomorrowPlan && (
                     <div>
-                      <span className={`font-semibold block mb-1 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>明日计划：</span>
-                      <p className={`whitespace-pre-line leading-relaxed pl-2 border-l-2 ${isOledTheme ? 'border-[#00E5FF] text-[#AEB7BA]' : 'border-[#0071E3] text-[#48484A]'}`}>
+                      <span className={`text-[15px] font-semibold block mb-1 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>明日计划：</span>
+                      <p className={`text-[15px] leading-[24px] whitespace-pre-line pl-2 border-l-2 ${isOledTheme ? 'border-[#00E5FF] text-[#AEB7BA]' : 'border-[#1677FF] text-[#1D2129]'}`}>
                         {dayReport.tomorrowPlan}
                       </p>
                     </div>
                   )}
                   {dayReport?.customNotes && (
                     <div>
-                      <span className={`font-semibold block mb-1 ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'}`}>备注：</span>
-                      <p className={`whitespace-pre-line leading-relaxed ${isOledTheme ? 'text-[#AEB7BA]' : 'text-[#48484A]'}`}>
+                      <span className={`text-[15px] font-semibold block mb-1 ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>备注：</span>
+                      <p className={`text-[15px] leading-[24px] whitespace-pre-line ${isOledTheme ? 'text-[#AEB7BA]' : 'text-[#4E5969]'}`}>
                         {dayReport.customNotes}
                       </p>
                     </div>
@@ -805,16 +807,16 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                   isOledTheme ? 'border-white/[0.08] bg-[#0C0F11]/30' : 'border-slate-200'
                 }`}>
                   <div className={`w-10 h-10 rounded-2xl flex items-center justify-center mb-2 ${
-                    isOledTheme ? 'bg-white/5 text-[#7D858A]' : 'bg-slate-100 text-[#86868B]'
+                    isOledTheme ? 'bg-white/5 text-[#7D858A]' : 'bg-slate-100 text-[#4E5969]'
                   }`}>
                     <FileText size={18} strokeWidth={1.75} />
                   </div>
-                  <p className={`text-xs mb-2 ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'}`}>暂无日报</p>
+                  <p className={`text-[14px] mb-2 ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>暂无日报</p>
                   <button
                     type="button"
                     onClick={() => setIsReportModalOpen(true)}
-                    className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl shadow-xs transition-all cursor-pointer ${
-                      isOledTheme ? 'text-[#050607] bg-[#00E5FF] hover:bg-[#00cce6]' : 'text-white bg-[#0071E3] hover:bg-blue-600'
+                    className={`px-3.5 py-1.5 text-[14px] font-medium rounded-xl shadow-xs transition-all cursor-pointer ${
+                      isOledTheme ? 'text-[#050607] bg-[#00E5FF] hover:bg-[#00cce6]' : 'text-white bg-[#1677FF] hover:bg-blue-600'
                     }`}
                   >
                     写日报
@@ -829,22 +831,22 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
             <div className="flex-1 flex flex-col gap-3 min-h-0">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className={`text-xs font-bold flex items-center gap-1.5 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>
-                    <Briefcase size={14} strokeWidth={2} className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#0071E3]'} />
-                    <span>待办事项 ({completedTasksCount}/{activeDayTasks.length})</span>
+                  <h3 className={`text-[16px] font-semibold flex items-center gap-1.5 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>
+                    <Briefcase size={15} strokeWidth={2} className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]'} />
+                    <span>待办事项 (<span style={{ fontVariantNumeric: 'tabular-nums' }}>{completedTasksCount}/{activeDayTasks.length}</span>)</span>
                   </h3>
-                  <p className={`text-[10px] mt-0.5 ${isOledTheme ? 'text-[#B7FF3C]' : 'text-emerald-700'}`}>
+                  <p className={`text-[13px] mt-0.5 ${isOledTheme ? 'text-[#B7FF3C]' : 'text-emerald-600'}`}>
                     完成的任务会自动记入日报
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setIsTodoModalOpen(true)}
-                  className={`flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-xl font-semibold transition-all cursor-pointer border ${
-                    isOledTheme ? 'text-[#00E5FF] bg-[#00E5FF]/10 border-[#00E5FF]/30' : 'text-[#0071E3] bg-blue-50 hover:bg-blue-100 border-blue-200/60'
+                  className={`flex items-center gap-1 text-[13px] px-2.5 py-1 rounded-xl font-medium transition-all cursor-pointer border ${
+                    isOledTheme ? 'text-[#00E5FF] bg-[#00E5FF]/10 border-[#00E5FF]/30' : 'text-[#1677FF] bg-blue-50 hover:bg-blue-100 border-blue-200/60'
                   }`}
                 >
-                  <Plus size={12} strokeWidth={2} />
+                  <Plus size={13} strokeWidth={2} />
                   <span>新建待办</span>
                 </button>
               </div>
@@ -869,7 +871,7 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                           <button
                             type="button"
                             onClick={() => onToggleTask && onToggleTask(t.id, !t.completed)}
-                            className="mt-0.5 text-[#86868B] hover:text-[#0071E3] transition-colors cursor-pointer"
+                            className="mt-1 text-[#4E5969] hover:text-[#1677FF] transition-colors cursor-pointer"
                           >
                             {t.completed ? (
                               <CheckCircle2 size={16} strokeWidth={2} className="text-emerald-500" />
@@ -879,27 +881,27 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                           </button>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1.5 flex-wrap mb-0.5">
-                              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-100 text-[#86868B]">
+                              <span className="text-[13px] font-mono px-1.5 py-0.2 rounded bg-slate-100 text-[#4E5969]" style={{ fontVariantNumeric: 'tabular-nums' }}>
                                 {timePart}
                               </span>
                               {t.priority && (
-                                <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
+                                <span className={`text-[11px] font-bold px-1.5 py-0.2 rounded ${
                                   t.priority === 'p1' ? 'bg-rose-50 text-rose-600' :
                                   t.priority === 'p2' ? 'bg-amber-50 text-amber-600' :
-                                  t.priority === 'p3' ? 'bg-blue-50 text-[#0071E3]' :
-                                  'bg-slate-100 text-slate-600'
+                                  t.priority === 'p3' ? 'bg-blue-50 text-[#1677FF]' :
+                                  'bg-slate-100 text-[#4E5969]'
                                 }`}>
                                   {t.priority.toUpperCase()}
                                 </span>
                               )}
                               {t.tags && t.tags[0] && (
-                                <span className="text-[9px] font-medium px-1.5 py-0.2 rounded bg-blue-50 text-[#0071E3]">
+                                <span className="text-[12px] font-medium px-1.5 py-0.2 rounded bg-blue-50 text-[#1677FF]">
                                   {t.tags[0]}
                                 </span>
                               )}
                             </div>
-                            <p className={`text-xs leading-relaxed whitespace-pre-wrap ${
-                              t.completed ? 'line-through text-[#86868B]' : 'text-[#1D1D1F] font-medium'
+                            <p className={`text-[15px] leading-[24px] whitespace-pre-wrap ${
+                              t.completed ? 'line-through text-[#4E5969]' : 'text-[#1D2129] font-normal'
                             }`}>
                               {displayTitle}
                             </p>
@@ -913,7 +915,7 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                             className="text-slate-300 hover:text-rose-500 p-1 rounded-lg transition-colors cursor-pointer"
                             title="删除该工作待办"
                           >
-                            <Trash2 size={13} strokeWidth={1.75} />
+                            <Trash2 size={14} strokeWidth={1.75} />
                           </button>
                         )}
                       </div>
@@ -922,14 +924,14 @@ export const CalendarFullView: React.FC<CalendarFullViewProps> = ({
                 </div>
               ) : (
                 <div className="flex-1 border border-dashed border-slate-200 rounded-2xl p-6 flex flex-col items-center justify-center text-center">
-                  <div className="w-10 h-10 rounded-2xl bg-slate-100 text-[#86868B] flex items-center justify-center mb-2">
+                  <div className="w-10 h-10 rounded-2xl bg-slate-100 text-[#4E5969] flex items-center justify-center mb-2">
                     <Briefcase size={18} strokeWidth={1.75} />
                   </div>
-                  <p className="text-xs text-[#86868B] mb-2">该日暂未排定工作台待办任务</p>
+                  <p className="text-[14px] text-[#4E5969] mb-2">该日暂未排定工作台待办任务</p>
                   <button
                     type="button"
                     onClick={() => setIsTodoModalOpen(true)}
-                    className="px-3.5 py-1.5 text-xs font-semibold text-white bg-[#0071E3] hover:bg-blue-600 rounded-xl shadow-xs transition-all cursor-pointer"
+                    className="px-3.5 py-1.5 text-[14px] font-medium text-white bg-[#1677FF] hover:bg-blue-600 rounded-xl shadow-xs transition-all cursor-pointer"
                   >
                     + 新建工作待办
                   </button>

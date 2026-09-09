@@ -75,12 +75,12 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
       <div>
         {/* Brand Logo & Title */}
         <div className="flex items-center gap-3 px-1.5 py-1.5 mb-5">
-          <div className="w-9 h-9 rounded-xl bg-[#1677FF] flex items-center justify-center text-white font-bold text-sm shadow-xs flex-shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[#1677FF] flex items-center justify-center text-white font-bold text-[16px] shadow-xs flex-shrink-0">
             Ai
           </div>
           <div className="min-w-0">
-            <div className="text-sm font-bold tracking-tight text-slate-800 truncate">个人工作台</div>
-            <div className="text-[11px] text-slate-400 font-normal mt-0.5 truncate">专注 · 高效 · 成长</div>
+            <div className="text-[16px] font-semibold tracking-tight text-[#1D2129] truncate">个人工作台</div>
+            <div className="text-[13px] text-[#4E5969] font-normal mt-0.5 truncate">专注 · 高效 · 成长</div>
           </div>
         </div>
 
@@ -95,25 +95,28 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
                 key={item.id}
                 type="button"
                 onClick={() => setActiveView(item.id)}
-                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs cursor-pointer transition-all duration-150 ${
+                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[14px] leading-normal cursor-pointer transition-all duration-150 ${
                   isActive
                     ? 'bg-[#EBF4FF] text-[#1677FF] font-semibold'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 font-medium'
+                    : 'text-[#1D2129] hover:text-blue-600 hover:bg-slate-100/70 font-medium'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <Icon 
-                    size={16} 
+                    size={17} 
                     strokeWidth={isActive ? 2.2 : 1.8} 
-                    className={isActive ? 'text-[#1677FF]' : 'text-slate-500'}
+                    className={isActive ? 'text-[#1677FF]' : 'text-[#4E5969]'}
                   />
                   <span>{item.label}</span>
                 </div>
 
                 {item.badge && (
-                  <span className={`text-xs font-mono px-1.5 py-0.2 rounded-full ${
-                    isActive ? 'text-[#1677FF] font-semibold' : 'text-slate-400'
-                  }`}>
+                  <span 
+                    className={`text-[13px] font-mono px-2 py-0.5 rounded-full ${
+                      isActive ? 'bg-blue-100/60 text-[#1677FF] font-semibold' : 'bg-slate-100 text-[#4E5969]'
+                    }`}
+                    style={{ fontVariantNumeric: 'tabular-nums' }}
+                  >
                     {item.badge}
                   </span>
                 )}
@@ -149,10 +152,10 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
           {/* User Info Section */}
           <div 
             onClick={() => setShowUserMenu(!showUserMenu)}
-            className="flex items-center gap-2 min-w-0 flex-1 cursor-pointer group select-none"
+            className="flex items-center gap-2.5 min-w-0 flex-1 cursor-pointer group select-none"
             title="个人选项"
           >
-            <div className="w-7 h-7 rounded-full bg-[#1677FF] flex items-center justify-center text-white text-xs font-semibold ring-1.5 ring-white shadow-xs overflow-hidden flex-shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#1677FF] flex items-center justify-center text-white text-[13px] font-semibold ring-1.5 ring-white shadow-xs overflow-hidden flex-shrink-0">
               {currentUser?.avatar_url ? (
                 <img 
                   src={currentUser.avatar_url} 
@@ -164,28 +167,28 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
               )}
             </div>
             <div className="min-w-0 flex-1">
-              <div className="text-xs font-bold text-slate-800 group-hover:text-[#1677FF] transition-colors truncate">
+              <div className="text-[14px] font-semibold text-[#1D2129] group-hover:text-[#1677FF] transition-colors truncate">
                 {currentUser?.username || '邬文雄'}
               </div>
             </div>
             <ChevronDown 
-              size={12} 
-              className={`text-slate-400 group-hover:text-slate-600 transition-transform duration-200 flex-shrink-0 ${showUserMenu ? 'rotate-180' : ''}`} 
+              size={13} 
+              className={`text-[#4E5969] group-hover:text-slate-800 transition-transform duration-200 flex-shrink-0 ${showUserMenu ? 'rotate-180' : ''}`} 
             />
           </div>
 
           {/* Vertical Divider "|" */}
-          <div className="h-3.5 w-px bg-slate-300 flex-shrink-0" />
+          <div className="h-4 w-px bg-slate-200 flex-shrink-0" />
 
           {/* Quick Lock Button */}
           {onLock && (
             <button
               type="button"
               onClick={onLock}
-              className="flex items-center gap-1 py-1 px-1.5 rounded-lg hover:bg-slate-200/60 text-slate-500 hover:text-slate-800 text-xs font-medium transition-colors cursor-pointer flex-shrink-0"
+              className="flex items-center gap-1 py-1 px-2 rounded-lg hover:bg-slate-200/60 text-[#4E5969] hover:text-[#1D2129] text-[13px] font-medium transition-colors cursor-pointer flex-shrink-0"
               title="锁定工作台"
             >
-              <Lock size={12} className="text-slate-400 flex-shrink-0" />
+              <Lock size={13} className="text-[#4E5969] flex-shrink-0" />
               <span>锁定</span>
             </button>
           )}
@@ -193,12 +196,12 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
 
         {/* Upward Dropdown Menu */}
         {showUserMenu && (
-          <div className="absolute left-0 bottom-full mb-2 w-full bg-white border border-slate-200/90 rounded-2xl shadow-xl py-1.5 z-50 animate-fade-in">
+          <div className="absolute left-0 bottom-full mb-2 w-full bg-white border border-slate-200/90 rounded-2xl shadow-xl py-2 z-50 animate-fade-in">
             <div className="px-3.5 py-2 border-b border-slate-100 mb-1">
-              <div className="text-xs font-bold text-slate-800 truncate">
+              <div className="text-[14px] font-semibold text-[#1D2129] truncate">
                 {currentUser?.username || '未登录'}
               </div>
-              <div className="text-[10px] text-slate-400">个人空间</div>
+              <div className="text-[12px] text-[#4E5969]">个人空间</div>
             </div>
             {!isStandalone && (
               <button
@@ -207,9 +210,9 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
                   setShowUserMenu(false);
                   installApp();
                 }}
-                className="w-full px-3.5 py-2 text-xs text-left text-[#1677FF] hover:bg-blue-50 flex items-center gap-2.5 transition-colors cursor-pointer font-medium"
+                className="w-full px-3.5 py-2 text-[14px] text-left text-[#1677FF] hover:bg-blue-50 flex items-center gap-2.5 transition-colors cursor-pointer font-medium"
               >
-                <Download size={14} />
+                <Download size={15} />
                 <span>安装为独立应用</span>
               </button>
             )}
@@ -220,9 +223,9 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
                   setShowUserMenu(false);
                   onOpenSettings();
                 }}
-                className="w-full px-3.5 py-2 text-xs text-left text-slate-700 hover:bg-blue-50 hover:text-[#1677FF] flex items-center gap-2.5 transition-colors cursor-pointer"
+                className="w-full px-3.5 py-2 text-[14px] text-left text-[#1D2129] hover:bg-blue-50 hover:text-[#1677FF] flex items-center gap-2.5 transition-colors cursor-pointer"
               >
-                <Settings size={14} />
+                <Settings size={15} />
                 <span>个人设置</span>
               </button>
             )}
@@ -233,9 +236,9 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
                   setShowUserMenu(false);
                   onLogout();
                 }}
-                className="w-full px-3.5 py-2 text-xs text-left text-rose-600 hover:bg-rose-50 flex items-center gap-2.5 transition-colors cursor-pointer"
+                className="w-full px-3.5 py-2 text-[14px] text-left text-rose-600 hover:bg-rose-50 flex items-center gap-2.5 transition-colors cursor-pointer"
               >
-                <LogOut size={14} />
+                <LogOut size={15} />
                 <span>退出登录</span>
               </button>
             )}

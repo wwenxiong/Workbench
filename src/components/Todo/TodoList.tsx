@@ -346,12 +346,15 @@ export const TodoList: React.FC<TodoListProps> = ({
           isOledTheme ? 'border-white/[0.06]' : 'border-slate-200/60'
         }`}>
           <div>
-            <h3 className={`font-bold text-sm ${isOledTheme ? 'text-[#F2F5F5]' : cfg.color}`}>{cfg.label}</h3>
-            <p className={`text-[10px] ${isOledTheme ? 'text-[#7D858A]' : 'text-slate-500'} font-medium`}>{cfg.desc}</p>
+            <h3 className={`font-semibold text-[18px] ${isOledTheme ? 'text-[#F2F5F5]' : cfg.color}`}>{cfg.label}</h3>
+            <p className={`text-[13px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'} font-normal mt-0.5`}>{cfg.desc}</p>
           </div>
-          <span className={`text-xs font-bold font-mono px-2 py-0.5 rounded-full ${
-            isOledTheme ? 'bg-[#111417] border border-white/[0.08] text-[#00E5FF]' : 'bg-white/80 border border-slate-200 text-slate-600'
-          }`}>
+          <span 
+            className={`text-[13px] font-medium font-mono px-2.5 py-0.5 rounded-full ${
+              isOledTheme ? 'bg-[#111417] border border-white/[0.08] text-[#00E5FF]' : 'bg-white/80 border border-slate-200 text-[#4E5969]'
+            }`}
+            style={{ fontVariantNumeric: 'tabular-nums' }}
+          >
             {quadrantTasks.length} 项
           </span>
         </div>
@@ -364,13 +367,13 @@ export const TodoList: React.FC<TodoListProps> = ({
             return (
               <div
                 key={task.id}
-                className={`p-2.5 rounded-lg border shadow-2xs flex items-center justify-between gap-2 group transition-all ${
+                className={`p-3 rounded-xl border shadow-2xs flex items-center justify-between gap-2.5 group transition-all ${
                   isOledTheme
                     ? `bg-[#111417] border-white/[0.06] hover:border-[#00E5FF]/40 ${task.completed ? 'opacity-50' : ''}`
                     : `bg-white border-slate-200/80 hover:border-slate-300 ${task.completed ? 'opacity-50' : ''}`
                 }`}
               >
-                <div className="flex items-center gap-2 flex-1 min-w-0">
+                <div className="flex items-center gap-2.5 flex-1 min-w-0">
                   <button
                     type="button"
                     onClick={(e) => {
@@ -381,28 +384,28 @@ export const TodoList: React.FC<TodoListProps> = ({
                     className="text-slate-400 hover:text-[#00E5FF] transition-transform active:scale-90 shrink-0 cursor-pointer"
                   >
                     {task.completed ? (
-                      <div className={`w-4 h-4 rounded-full ${isOledTheme ? 'bg-[#B7FF3C] text-[#050607]' : 'bg-[#0071E3] text-white'} flex items-center justify-center transition-all duration-200`}>
+                      <div className={`w-4.5 h-4.5 rounded-full ${isOledTheme ? 'bg-[#B7FF3C] text-[#050607]' : 'bg-[#0071E3] text-white'} flex items-center justify-center transition-all duration-200`}>
                         <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                           <polyline points="20 6 9 17 4 12" />
                         </svg>
                       </div>
                     ) : (
-                      <div className={`w-4 h-4 rounded-full border ${isOledTheme ? 'border-white/20 hover:border-[#00E5FF]' : 'border-slate-300 hover:border-[#0071E3]'} transition-all hover:scale-105`} />
+                      <div className={`w-4.5 h-4.5 rounded-full border ${isOledTheme ? 'border-white/20 hover:border-[#00E5FF]' : 'border-slate-300 hover:border-[#0071E3]'} transition-all hover:scale-105`} />
                     )}
                   </button>
                   <div className="flex-1 min-w-0">
                     <span
-                      className={`block text-xs truncate ${
+                      className={`block text-[15px] leading-[24px] truncate ${
                         task.completed
-                          ? (isOledTheme ? 'line-through text-[#52595E]' : 'line-through text-slate-400')
-                          : (isOledTheme ? 'text-[#F2F5F5] font-medium' : 'text-slate-800 font-medium')
+                          ? (isOledTheme ? 'line-through text-[#52595E]' : 'line-through text-[#4E5969]')
+                          : (isOledTheme ? 'text-[#F2F5F5] font-normal' : 'text-[#1D2129] font-normal')
                       }`}
                     >
                       {displayTitle}
                     </span>
-                    <div className={`flex items-center gap-2 mt-0.5 text-[10px] ${isOledTheme ? 'text-[#7D858A]' : 'text-slate-400'}`}>
-                      <span className="flex items-center gap-0.5">
-                        <Clock className="w-2.5 h-2.5" />
+                    <div className={`flex items-center gap-2 mt-0.5 text-[13px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>
+                      <span className="flex items-center gap-0.5" style={{ fontVariantNumeric: 'tabular-nums' }}>
+                        <Clock className="w-3 h-3" />
                         <span>
                           {task.actualMinutes}/{task.estimatedMinutes}m
                         </span>
@@ -410,7 +413,7 @@ export const TodoList: React.FC<TodoListProps> = ({
 
                       {task.tags &&
                         task.tags.map((tag) => (
-                          <span key={tag} className={`px-1.5 py-0.2 rounded font-medium ${isOledTheme ? 'bg-white/5 text-[#7D858A]' : 'bg-slate-100 text-slate-600'}`}>
+                          <span key={tag} className={`px-2 py-0.5 rounded-full text-[12px] font-medium ${isOledTheme ? 'bg-white/5 text-[#7D858A]' : 'bg-slate-100 text-[#4E5969]'}`}>
                             #{tag}
                           </span>
                         ))}
@@ -426,16 +429,16 @@ export const TodoList: React.FC<TodoListProps> = ({
                     setTaskToEdit(task);
                     setIsModalOpen(true);
                   }}
-                  className={`opacity-0 group-hover:opacity-100 ${isOledTheme ? 'text-[#7D858A] hover:text-[#00E5FF]' : 'text-slate-400 hover:text-slate-600'} p-1 cursor-pointer`}
+                  className={`opacity-0 group-hover:opacity-100 ${isOledTheme ? 'text-[#7D858A] hover:text-[#00E5FF]' : 'text-[#4E5969] hover:text-[#0071E3]'} p-1.5 cursor-pointer`}
                 >
-                  <Edit3 className="w-3.5 h-3.5" />
+                  <Edit3 className="w-4 h-4" />
                 </button>
               </div>
             );
           })}
 
           {quadrantTasks.length === 0 && (
-            <div className={`flex-1 flex items-center justify-center text-xs ${isOledTheme ? 'text-[#7D858A]' : 'text-slate-400'} py-6`}>
+            <div className={`flex-1 flex items-center justify-center text-[14px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'} py-8`}>
               暂无待办
             </div>
           )}
@@ -489,8 +492,8 @@ export const TodoList: React.FC<TodoListProps> = ({
 
             {/* Title (Always single-line truncated) */}
             <span
-              className={`text-xs font-medium truncate shrink min-w-0 ${
-                task.completed ? (isOledTheme ? 'line-through text-[#52595E]' : 'line-through text-slate-400') : (isOledTheme ? 'text-[#F2F5F5]' : 'text-slate-800')
+              className={`text-[15px] leading-[24px] font-normal truncate shrink min-w-0 ${
+                task.completed ? (isOledTheme ? 'line-through text-[#52595E]' : 'line-through text-[#4E5969]') : (isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]')
               }`}
               title={cleanTitle}
             >
@@ -506,7 +509,7 @@ export const TodoList: React.FC<TodoListProps> = ({
                   e.stopPropagation();
                   toggleTaskExpand(task.id);
                 }}
-                className={`inline-flex items-center gap-0.5 text-[10px] px-1.5 py-0.5 rounded-md font-medium transition-colors shrink-0 cursor-pointer ${
+                className={`inline-flex items-center gap-0.5 text-[12px] px-2 py-0.5 rounded-md font-medium transition-colors shrink-0 cursor-pointer ${
                   isOledTheme
                     ? 'text-[#00E5FF] bg-[#00E5FF]/10 hover:bg-[#00E5FF]/20'
                     : 'text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100/80'
@@ -515,7 +518,7 @@ export const TodoList: React.FC<TodoListProps> = ({
               >
                 <span>{isExpanded ? '收起' : '展开'}</span>
                 <ChevronDown
-                  size={11}
+                  size={12}
                   className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
                 />
               </button>
@@ -525,19 +528,19 @@ export const TodoList: React.FC<TodoListProps> = ({
             {task.isRecurring && (
               <span
                 title="循环任务"
-                className={`inline-flex items-center gap-0.5 text-[10px] px-1.5 py-0.2 rounded-md font-semibold shrink-0 ${
+                className={`inline-flex items-center gap-1 text-[13px] px-2 py-0.5 rounded-full font-medium shrink-0 ${
                   isOledTheme
                     ? 'text-[#00E5FF] bg-[#00E5FF]/10 border border-[#00E5FF]/30'
                     : 'text-[#0071E3] bg-blue-50/90 border border-blue-200/70'
                 }`}
               >
-                <Repeat size={10} strokeWidth={2} />
+                <Repeat size={11} strokeWidth={2} />
                 <span>循环</span>
               </span>
             )}
 
             {/* Priority pill */}
-            <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold border shrink-0 ${
+            <span className={`px-2 py-0.5 rounded-full text-[13px] font-medium border shrink-0 ${
               isOledTheme ? 'bg-white/5 border-white/10 text-white/70' : pCfg.badge
             }`}>
               {pCfg.label}
@@ -548,8 +551,8 @@ export const TodoList: React.FC<TodoListProps> = ({
               task.tags.map((tag) => (
                 <span
                   key={tag}
-                  className={`px-1.5 py-0.2 rounded text-[10px] font-medium shrink-0 ${
-                    isOledTheme ? 'bg-white/5 text-[#7D858A]' : 'bg-slate-100 text-slate-600'
+                  className={`px-2 py-0.5 rounded-full text-[13px] font-medium shrink-0 ${
+                    isOledTheme ? 'bg-white/5 text-[#7D858A]' : 'bg-slate-100 text-[#4E5969]'
                   }`}
                 >
                   #{tag}
@@ -561,13 +564,19 @@ export const TodoList: React.FC<TodoListProps> = ({
           <div className="flex items-center gap-2 shrink-0">
             {/* Quick time display on single line */}
             {task.timeSpan ? (
-              <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded font-mono hidden md:inline-block ${
-                isOledTheme ? 'text-[#B7FF3C] bg-[#B7FF3C]/10 border border-[#B7FF3C]/20' : 'text-emerald-700 bg-emerald-50 border border-emerald-100'
-              }`}>
+              <span 
+                className={`text-[13px] font-medium px-2 py-0.5 rounded-full font-mono hidden md:inline-block ${
+                  isOledTheme ? 'text-[#B7FF3C] bg-[#B7FF3C]/10 border border-[#B7FF3C]/20' : 'text-emerald-700 bg-emerald-50 border border-emerald-100'
+                }`}
+                style={{ fontVariantNumeric: 'tabular-nums' }}
+              >
                 {task.timeSpan}
               </span>
             ) : task.dueDate ? (
-              <span className={`text-[10px] font-mono hidden md:inline-block ${isOledTheme ? 'text-white/40' : 'text-slate-400'}`}>
+              <span 
+                className={`text-[13px] font-mono hidden md:inline-block ${isOledTheme ? 'text-white/40' : 'text-[#4E5969]'}`}
+                style={{ fontVariantNumeric: 'tabular-nums' }}
+              >
                 {task.dueDate.includes('T') ? task.dueDate.split('T')[1].slice(0, 5) : ''}
               </span>
             ) : null}
@@ -646,35 +655,35 @@ export const TodoList: React.FC<TodoListProps> = ({
 
         {/* Expanded Drawer - 下拉查看全部内容 */}
         {isExpanded && (
-          <div className={`px-3.5 pb-3 pt-2 border-t rounded-b-xl animate-fadeIn ${
+          <div className={`px-4 pb-3.5 pt-2.5 border-t rounded-b-xl animate-fadeIn ${
             isOledTheme ? 'border-white/[0.06] bg-[#080A0C]' : 'border-slate-100/90 bg-slate-50/60'
           }`}>
-            <div className={`text-xs leading-relaxed whitespace-pre-wrap break-words pl-6 font-normal select-text ${
-              isOledTheme ? 'text-[#F2F5F5]' : 'text-slate-800'
+            <div className={`text-[15px] leading-[24px] whitespace-pre-wrap break-words pl-6 font-normal select-text ${
+              isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'
             }`}>
               {displayTitle}
             </div>
 
             {/* Detailed metadata */}
-            <div className={`flex items-center gap-3 text-[11px] mt-2 pl-6 flex-wrap font-mono ${
-              isOledTheme ? 'text-[#7D858A]' : 'text-slate-400'
+            <div className={`flex items-center gap-3 text-[13px] mt-2.5 pl-6 flex-wrap font-mono ${
+              isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'
             }`}>
-              <span>预估: {task.estimatedMinutes}m</span>
+              <span style={{ fontVariantNumeric: 'tabular-nums' }}>预估: {task.estimatedMinutes}m</span>
               {task.actualMinutes > 0 && (
-                <span className={isOledTheme ? 'text-[#00E5FF] font-semibold' : 'text-indigo-600 font-semibold'}>
+                <span className={isOledTheme ? 'text-[#00E5FF] font-semibold' : 'text-indigo-600 font-semibold'} style={{ fontVariantNumeric: 'tabular-nums' }}>
                   实际用时: {task.actualMinutes}m
                 </span>
               )}
               {task.timeSpan && (
-                <span className={isOledTheme ? 'text-[#B7FF3C] font-medium' : 'text-emerald-600 font-medium'}>
+                <span className={isOledTheme ? 'text-[#B7FF3C] font-medium' : 'text-emerald-600 font-medium'} style={{ fontVariantNumeric: 'tabular-nums' }}>
                   打卡时段: {task.timeSpan}
                 </span>
               )}
               {task.dueDate && (
-                <span>排期: {task.dueDate.replace('T', ' ')}</span>
+                <span style={{ fontVariantNumeric: 'tabular-nums' }}>排期: {task.dueDate.replace('T', ' ')}</span>
               )}
               {task.completedAt && (
-                <span className={isOledTheme ? 'text-[#B7FF3C]' : 'text-emerald-600'}>
+                <span className={isOledTheme ? 'text-[#B7FF3C]' : 'text-emerald-600'} style={{ fontVariantNumeric: 'tabular-nums' }}>
                   完成于 {new Date(task.completedAt).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
                 </span>
               )}
@@ -694,13 +703,16 @@ export const TodoList: React.FC<TodoListProps> = ({
         isOledTheme ? 'bg-[#0C0F11] border-white/[0.06]' : 'bg-slate-50/50 border-slate-100'
       } flex items-center justify-between flex-wrap gap-3`}>
         <div>
-          <div className="flex items-center gap-2">
-            <h2 className={`text-base font-extrabold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-slate-900'} tracking-tight`}>
+          <div className="flex items-center gap-3">
+            <h2 className={`text-[26px] font-semibold leading-[1.3] ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D2129]'} tracking-tight`}>
               待办事项
             </h2>
-            <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold font-mono ${
-              isOledTheme ? 'bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30' : 'bg-blue-50 text-blue-700 border border-blue-200'
-            }`}>
+            <span 
+              className={`px-2.5 py-0.5 rounded-full text-[13px] font-medium font-mono ${
+                isOledTheme ? 'bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30' : 'bg-blue-50 text-[#1677FF] border border-blue-200'
+              }`}
+              style={{ fontVariantNumeric: 'tabular-nums' }}
+            >
               已完成 {completedCount}/{totalCount}
             </span>
           </div>
@@ -709,7 +721,7 @@ export const TodoList: React.FC<TodoListProps> = ({
           <div className={`w-48 h-1.5 ${isOledTheme ? 'bg-white/10' : 'bg-slate-200'} rounded-full mt-2 overflow-hidden`}>
             <div
               className={`h-full ${
-                isOledTheme ? 'bg-[#00E5FF] shadow-[0_0_8px_rgba(0,229,255,0.6)]' : 'bg-blue-600'
+                isOledTheme ? 'bg-[#00E5FF] shadow-[0_0_8px_rgba(0,229,255,0.6)]' : 'bg-[#1677FF]'
               } transition-all duration-500 rounded-full`}
               style={{ width: `${totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0}%` }}
             />
@@ -717,33 +729,33 @@ export const TodoList: React.FC<TodoListProps> = ({
         </div>
 
         {/* Action & View Toggles */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           {/* List vs Quadrant toggle */}
           <div className={`flex p-0.5 ${
-            isOledTheme ? 'bg-[#111417] border border-white/[0.08]' : 'bg-slate-200/70'
-          } rounded-lg text-xs font-medium`}>
+            isOledTheme ? 'bg-[#111417] border border-white/[0.08]' : 'bg-slate-100'
+          } rounded-xl text-[14px] font-medium`}>
             <button
               type="button"
               onClick={() => setViewMode('list')}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-md transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                 viewMode === 'list'
-                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] font-bold shadow-xs' : 'bg-white text-slate-900 font-bold shadow-xs'
-                  : isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-slate-600 hover:text-slate-900'
+                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] font-semibold shadow-xs' : 'bg-white text-[#1D2129] font-semibold shadow-xs'
+                  : isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#4E5969] hover:text-[#1D2129]'
               }`}
             >
-              <ListIcon className="w-3.5 h-3.5" />
+              <ListIcon className="w-4 h-4" />
               <span>清单</span>
             </button>
             <button
               type="button"
               onClick={() => setViewMode('quadrant')}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-md transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                 viewMode === 'quadrant'
-                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] font-bold shadow-xs' : 'bg-white text-slate-900 font-bold shadow-xs'
-                  : isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-slate-600 hover:text-slate-900'
+                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] font-semibold shadow-xs' : 'bg-white text-[#1D2129] font-semibold shadow-xs'
+                  : isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#4E5969] hover:text-[#1D2129]'
               }`}
             >
-              <LayoutGrid className="w-3.5 h-3.5" />
+              <LayoutGrid className="w-4 h-4" />
               <span>四象限</span>
             </button>
           </div>
@@ -754,11 +766,11 @@ export const TodoList: React.FC<TodoListProps> = ({
             onClick={() => setIsModalOpen(true)}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-xl ${
               isOledTheme
-                ? 'bg-[#00E5FF] hover:bg-[#00cce6] text-[#050607] shadow-sm shadow-[#00E5FF]/20 font-bold'
-                : 'bg-blue-600 hover:bg-blue-700 shadow-sm shadow-blue-500/20 text-white font-bold'
-            } text-xs transition-all active:scale-95 cursor-pointer`}
+                ? 'bg-[#00E5FF] hover:bg-[#00cce6] text-[#050607] shadow-sm shadow-[#00E5FF]/20 font-semibold'
+                : 'bg-[#1677FF] hover:bg-blue-600 shadow-sm shadow-blue-500/20 text-white font-semibold'
+            } text-[14px] transition-all active:scale-95 cursor-pointer`}
           >
-            <Plus className="w-3.5 h-3.5" />
+            <Plus className="w-4 h-4" />
             <span>添加待办</span>
           </button>
         </div>
@@ -766,8 +778,8 @@ export const TodoList: React.FC<TodoListProps> = ({
 
       {/* 2. Filter Bar (List view only) */}
       {viewMode === 'list' && (
-        <div className={`px-5 py-3 border-b flex items-center justify-between text-xs flex-wrap gap-3 ${
-          isOledTheme ? 'bg-[#0C0F11]/90 border-white/[0.06] text-[#7D858A]' : 'bg-white/70 backdrop-blur-sm border-slate-100 text-slate-500'
+        <div className={`px-5 py-3 border-b flex items-center justify-between text-[13px] flex-wrap gap-3 ${
+          isOledTheme ? 'bg-[#0C0F11]/90 border-white/[0.06] text-[#7D858A]' : 'bg-white/70 backdrop-blur-sm border-slate-100 text-[#4E5969]'
         }`}>
           {/* Primary Date Tabs */}
           <div className={`flex items-center gap-1 ${
@@ -776,19 +788,22 @@ export const TodoList: React.FC<TodoListProps> = ({
             <button
               type="button"
               onClick={() => setDateFilter('today')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-[14px] font-medium transition-all cursor-pointer ${
                 dateFilter === 'today'
-                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] font-bold' : 'bg-white text-[#0071E3] shadow-xs'
-                  : isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5] hover:bg-white/5' : 'text-[#6E6E73] hover:text-[#1D1D1F] hover:bg-white/40'
+                  ? isOledTheme ? 'bg-[#00E5FF] text-[#050607] font-semibold' : 'bg-white text-[#1677FF] font-semibold shadow-xs'
+                  : isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5] hover:bg-white/5' : 'text-[#4E5969] hover:text-[#1D2129] hover:bg-white/40'
               }`}
             >
               <span>当日待办</span>
               {dateCounts.today > 0 && (
-                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold font-mono ${
-                  dateFilter === 'today'
-                    ? (isOledTheme ? 'bg-[#050607]/30 text-[#050607]' : 'bg-blue-50 text-[#0071E3]')
-                    : (isOledTheme ? 'bg-white/10 text-white/70' : 'bg-slate-200/80 text-slate-600')
-                }`}>
+                <span 
+                  className={`px-2 py-0.5 rounded-full text-[12px] font-medium font-mono ${
+                    dateFilter === 'today'
+                      ? (isOledTheme ? 'bg-[#050607]/30 text-[#050607]' : 'bg-blue-50 text-[#1677FF]')
+                      : (isOledTheme ? 'bg-white/10 text-white/70' : 'bg-slate-200/80 text-[#4E5969]')
+                  }`}
+                  style={{ fontVariantNumeric: 'tabular-nums' }}
+                >
                   {dateCounts.today}
                 </span>
               )}
@@ -797,17 +812,20 @@ export const TodoList: React.FC<TodoListProps> = ({
             <button
               type="button"
               onClick={() => setDateFilter('overdue')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-[14px] font-medium transition-all cursor-pointer ${
                 dateFilter === 'overdue'
-                  ? (isOledTheme ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40' : 'bg-white text-rose-600 shadow-xs')
-                  : (isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5] hover:bg-white/5' : 'text-[#6E6E73] hover:text-[#1D1D1F] hover:bg-white/40')
+                  ? (isOledTheme ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40 font-semibold' : 'bg-white text-rose-600 font-semibold shadow-xs')
+                  : (isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5] hover:bg-white/5' : 'text-[#4E5969] hover:text-[#1D2129] hover:bg-white/40')
               }`}
             >
               <span>已到期</span>
               {dateCounts.overdue > 0 && (
-                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold font-mono ${
-                  dateFilter === 'overdue' ? 'bg-rose-500/20 text-rose-400' : (isOledTheme ? 'bg-white/10 text-white/70' : 'bg-slate-200/80 text-slate-600')
-                }`}>
+                <span 
+                  className={`px-2 py-0.5 rounded-full text-[12px] font-medium font-mono ${
+                    dateFilter === 'overdue' ? 'bg-rose-500/20 text-rose-400' : (isOledTheme ? 'bg-white/10 text-white/70' : 'bg-slate-200/80 text-[#4E5969]')
+                  }`}
+                  style={{ fontVariantNumeric: 'tabular-nums' }}
+                >
                   {dateCounts.overdue}
                 </span>
               )}
@@ -816,19 +834,22 @@ export const TodoList: React.FC<TodoListProps> = ({
             <button
               type="button"
               onClick={() => setDateFilter('future')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-[14px] font-medium transition-all cursor-pointer ${
                 dateFilter === 'future'
-                  ? (isOledTheme ? 'bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 font-bold' : 'bg-white text-[#0071E3] shadow-xs')
-                  : (isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5] hover:bg-white/5' : 'text-[#6E6E73] hover:text-[#1D1D1F] hover:bg-white/40')
+                  ? (isOledTheme ? 'bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 font-semibold' : 'bg-white text-[#1677FF] font-semibold shadow-xs')
+                  : (isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5] hover:bg-white/5' : 'text-[#4E5969] hover:text-[#1D2129] hover:bg-white/40')
               }`}
             >
               <span>未来</span>
               {dateCounts.future > 0 && (
-                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold font-mono ${
-                  dateFilter === 'future'
-                    ? (isOledTheme ? 'bg-[#00E5FF]/30 text-[#00E5FF]' : 'bg-blue-50 text-[#0071E3]')
-                    : (isOledTheme ? 'bg-white/10 text-white/70' : 'bg-slate-200/80 text-slate-600')
-                }`}>
+                <span 
+                  className={`px-2 py-0.5 rounded-full text-[12px] font-medium font-mono ${
+                    dateFilter === 'future'
+                      ? (isOledTheme ? 'bg-[#00E5FF]/30 text-[#00E5FF]' : 'bg-blue-50 text-[#1677FF]')
+                      : (isOledTheme ? 'bg-white/10 text-white/70' : 'bg-slate-200/80 text-[#4E5969]')
+                  }`}
+                  style={{ fontVariantNumeric: 'tabular-nums' }}
+                >
                   {dateCounts.future}
                 </span>
               )}
@@ -837,19 +858,22 @@ export const TodoList: React.FC<TodoListProps> = ({
             <button
               type="button"
               onClick={() => setDateFilter('all')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-[14px] font-medium transition-all cursor-pointer ${
                 dateFilter === 'all'
-                  ? (isOledTheme ? 'bg-white/10 text-white font-bold' : 'bg-white text-[#1D1D1F] shadow-xs')
-                  : (isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5] hover:bg-white/5' : 'text-[#6E6E73] hover:text-[#1D1D1F] hover:bg-white/40')
+                  ? (isOledTheme ? 'bg-white/10 text-white font-semibold' : 'bg-white text-[#1D2129] font-semibold shadow-xs')
+                  : (isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5] hover:bg-white/5' : 'text-[#4E5969] hover:text-[#1D2129] hover:bg-white/40')
               }`}
             >
               <span>全部</span>
               {dateCounts.all > 0 && (
-                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold font-mono ${
-                  dateFilter === 'all'
-                    ? (isOledTheme ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-800')
-                    : (isOledTheme ? 'bg-white/10 text-white/70' : 'bg-slate-200/80 text-slate-600')
-                }`}>
+                <span 
+                  className={`px-2 py-0.5 rounded-full text-[12px] font-medium font-mono ${
+                    dateFilter === 'all'
+                      ? (isOledTheme ? 'bg-white/20 text-white' : 'bg-slate-200 text-[#1D2129]')
+                      : (isOledTheme ? 'bg-white/10 text-white/70' : 'bg-slate-200/80 text-[#4E5969]')
+                  }`}
+                  style={{ fontVariantNumeric: 'tabular-nums' }}
+                >
                   {dateCounts.all}
                 </span>
               )}
@@ -861,14 +885,14 @@ export const TodoList: React.FC<TodoListProps> = ({
             {/* Status Segmented Pill */}
             <div className={`flex items-center p-0.5 ${
               isOledTheme ? 'bg-[#111417] border border-white/[0.08]' : 'bg-slate-100'
-            } rounded-xl text-[11px]`}>
+            } rounded-xl text-[13px]`}>
               <button
                 type="button"
                 onClick={() => setStatusFilter('all')}
-                className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
                   statusFilter === 'all'
-                    ? (isOledTheme ? 'bg-white/10 text-white font-bold' : 'bg-white text-[#1D1D1F] font-bold shadow-2xs')
-                    : (isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#6E6E73] hover:text-[#1D1D1F]')
+                    ? (isOledTheme ? 'bg-white/10 text-white font-semibold' : 'bg-white text-[#1D2129] font-semibold shadow-2xs')
+                    : (isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#4E5969] hover:text-[#1D2129]')
                 }`}
               >
                 全部状态
@@ -876,10 +900,10 @@ export const TodoList: React.FC<TodoListProps> = ({
               <button
                 type="button"
                 onClick={() => setStatusFilter('active')}
-                className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
                   statusFilter === 'active'
-                    ? (isOledTheme ? 'bg-[#00E5FF]/20 text-[#00E5FF] font-bold border border-[#00E5FF]/40' : 'bg-white text-[#0071E3] font-bold shadow-2xs')
-                    : (isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#6E6E73] hover:text-[#1D1D1F]')
+                    ? (isOledTheme ? 'bg-[#00E5FF]/20 text-[#00E5FF] font-semibold border border-[#00E5FF]/40' : 'bg-white text-[#1677FF] font-semibold shadow-2xs')
+                    : (isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#4E5969] hover:text-[#1D2129]')
                 }`}
               >
                 进行中
@@ -887,10 +911,10 @@ export const TodoList: React.FC<TodoListProps> = ({
               <button
                 type="button"
                 onClick={() => setStatusFilter('completed')}
-                className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
                   statusFilter === 'completed'
-                    ? (isOledTheme ? 'bg-[#B7FF3C]/20 text-[#B7FF3C] font-bold border border-[#B7FF3C]/40' : 'bg-white text-emerald-600 font-bold shadow-2xs')
-                    : (isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#6E6E73] hover:text-[#1D1D1F]')
+                    ? (isOledTheme ? 'bg-[#B7FF3C]/20 text-[#B7FF3C] font-semibold border border-[#B7FF3C]/40' : 'bg-white text-emerald-600 font-semibold shadow-2xs')
+                    : (isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#4E5969] hover:text-[#1D2129]')
                 }`}
               >
                 已完成
@@ -904,8 +928,8 @@ export const TodoList: React.FC<TodoListProps> = ({
               className={`${
                 isOledTheme
                   ? 'bg-[#111417] border-white/[0.08] text-[#F2F5F5] hover:bg-[#161B20]'
-                  : 'bg-slate-100/90 border-slate-200/80 text-[#48484A] hover:bg-slate-200/60'
-              } border rounded-xl px-2.5 py-1 text-[11px] font-medium outline-none cursor-pointer transition-colors`}
+                  : 'bg-slate-100/90 border-slate-200/80 text-[#1D2129] hover:bg-slate-200/60'
+              } border rounded-xl px-3 py-1 text-[13px] font-medium outline-none cursor-pointer transition-colors`}
             >
               <option value="all">所有优先级</option>
               <option value="p1">P1 重要且紧急</option>
@@ -989,46 +1013,55 @@ export const TodoList: React.FC<TodoListProps> = ({
                   >
                     <div className="flex items-center gap-2.5 flex-wrap">
                       <div className="flex items-center gap-2">
-                        <Calendar size={15} className={isToday ? (isOledTheme ? 'text-[#00E5FF]' : 'text-[#0071E3]') : (isOledTheme ? 'text-[#7D858A]' : 'text-slate-500')} />
-                        <span className={`text-xs font-bold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-slate-800'}`}>
+                        <Calendar size={17} className={isToday ? (isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]') : (isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]')} />
+                        <span className={`text-[18px] font-semibold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>
                           {formattedTitle}
                         </span>
                         {dateTag && (
-                          <span className={`px-2 py-0.2 rounded-full text-[10px] ${tagStyle}`}>
+                          <span className={`px-2.5 py-0.5 rounded-full text-[13px] font-medium ${tagStyle}`}>
                             {dateTag}
                           </span>
                         )}
                       </div>
 
                       {/* Stats Pills */}
-                      <div className="flex items-center gap-1.5 text-[10px]">
+                      <div className="flex items-center gap-1.5 text-[13px]">
                         {group.activeTasks.length > 0 ? (
-                          <span className={`px-2 py-0.5 rounded-full ${
-                            isOledTheme ? 'bg-amber-500/10 border border-amber-500/30 text-amber-400' : 'bg-amber-50 border border-amber-200 text-amber-700'
-                          } font-semibold font-mono`}>
+                          <span 
+                            className={`px-2.5 py-0.5 rounded-full ${
+                              isOledTheme ? 'bg-amber-500/10 border border-amber-500/30 text-amber-400' : 'bg-amber-50 border border-amber-200 text-amber-700'
+                            } font-medium font-mono`}
+                            style={{ fontVariantNumeric: 'tabular-nums' }}
+                          >
                             {group.activeTasks.length} 项进行中
                           </span>
                         ) : (
-                          <span className={`flex items-center gap-1 px-2 py-0.5 rounded-full ${
-                            isOledTheme ? 'bg-[#B7FF3C]/10 border border-[#B7FF3C]/30 text-[#B7FF3C]' : 'bg-emerald-50 border border-emerald-200 text-emerald-700'
-                          } font-semibold font-mono`}>
-                            <Check size={11} strokeWidth={2.5} />
+                          <span 
+                            className={`flex items-center gap-1 px-2.5 py-0.5 rounded-full ${
+                              isOledTheme ? 'bg-[#B7FF3C]/10 border border-[#B7FF3C]/30 text-[#B7FF3C]' : 'bg-emerald-50 border border-emerald-200 text-emerald-700'
+                            } font-medium font-mono`}
+                            style={{ fontVariantNumeric: 'tabular-nums' }}
+                          >
+                            <Check size={13} strokeWidth={2.5} />
                             <span>已全部完成</span>
                           </span>
                         )}
 
                         {group.completedTasks.length > 0 && (
-                          <span className={`px-2 py-0.5 rounded-full ${
-                            isOledTheme ? 'bg-white/5 text-[#7D858A]' : 'bg-slate-100 text-slate-500'
-                          } font-medium font-mono`}>
+                          <span 
+                            className={`px-2.5 py-0.5 rounded-full ${
+                              isOledTheme ? 'bg-white/5 text-[#7D858A]' : 'bg-slate-100 text-[#4E5969]'
+                            } font-medium font-mono`}
+                            style={{ fontVariantNumeric: 'tabular-nums' }}
+                          >
                             {group.completedTasks.length} 项已完成
                           </span>
                         )}
                       </div>
                     </div>
 
-                    <div className={`flex items-center gap-1 ${isOledTheme ? 'text-white/40' : 'text-slate-400'}`}>
-                      <span className="text-[11px] font-medium hidden sm:inline">
+                    <div className={`flex items-center gap-1 ${isOledTheme ? 'text-white/40' : 'text-[#4E5969]'}`}>
+                      <span className="text-[13px] font-medium hidden sm:inline">
                         {isCollapsed ? '展开' : '收起'}
                       </span>
                       <ChevronDown
@@ -1062,22 +1095,22 @@ export const TodoList: React.FC<TodoListProps> = ({
                               e.stopPropagation();
                               toggleCompletedGroup(group.dateStr);
                             }}
-                            className={`flex items-center gap-2 px-3 py-1.5 text-xs ${
+                            className={`flex items-center gap-2 px-3 py-1.5 text-[13px] ${
                               isOledTheme
                                 ? 'text-[#7D858A] hover:text-[#F2F5F5] bg-[#111417] hover:bg-white/5 border border-white/[0.08]'
-                                : 'text-slate-600 hover:text-slate-900 bg-white/90 hover:bg-white border border-slate-200/80'
+                                : 'text-[#4E5969] hover:text-[#1D2129] bg-white/90 hover:bg-white border border-slate-200/80'
                             } rounded-xl transition-all shadow-2xs cursor-pointer group/comp`}
                           >
-                            <CheckCircle2 size={13} className={isOledTheme ? 'text-[#B7FF3C]' : 'text-emerald-600'} />
-                            <span className="font-semibold text-[11px]">
+                            <CheckCircle2 size={15} className={isOledTheme ? 'text-[#B7FF3C]' : 'text-emerald-600'} />
+                            <span className="font-medium text-[13px]">
                               已完成事项 ({group.completedTasks.length})
                             </span>
-                            <span className={`text-[10px] ${isOledTheme ? 'text-white/40 group-hover/comp:text-white/70' : 'text-slate-400 group-hover/comp:text-slate-600'}`}>
+                            <span className={`text-[12px] ${isOledTheme ? 'text-white/40 group-hover/comp:text-white/70' : 'text-[#4E5969] group-hover/comp:text-slate-700'}`}>
                               {isCompletedExpanded ? '点击折叠' : '点击查看'}
                             </span>
                             <ChevronDown
-                              size={13}
-                              className={`${isOledTheme ? 'text-white/40' : 'text-slate-400'} transition-transform duration-200 ${
+                              size={14}
+                              className={`${isOledTheme ? 'text-white/40' : 'text-[#4E5969]'} transition-transform duration-200 ${
                                 isCompletedExpanded ? 'rotate-180' : 'rotate-0'
                               }`}
                             />
@@ -1100,22 +1133,22 @@ export const TodoList: React.FC<TodoListProps> = ({
             })}
 
             {/* Bottom Add Todo Link */}
-            <div className={`pt-3 border-t ${isOledTheme ? 'border-white/[0.06]' : 'border-slate-100/80'} mt-2 flex items-center justify-between`}>
+            <div className={`pt-3.5 border-t ${isOledTheme ? 'border-white/[0.06]' : 'border-slate-100/80'} mt-2 flex items-center justify-between`}>
               <button
                 type="button"
                 onClick={() => {
                   setTaskToEdit(null);
                   setIsModalOpen(true);
                 }}
-                className={`flex items-center gap-1.5 text-xs font-medium transition-colors cursor-pointer py-1 ${
-                  isOledTheme ? 'text-[#7D858A] hover:text-[#00E5FF]' : 'text-slate-500 hover:text-blue-600'
+                className={`flex items-center gap-1.5 text-[14px] font-medium transition-colors cursor-pointer py-1 ${
+                  isOledTheme ? 'text-[#00E5FF] hover:underline' : 'text-[#1677FF] hover:text-blue-700'
                 }`}
               >
-                <Plus size={14} />
+                <Plus size={15} strokeWidth={2.2} />
                 <span>添加待办</span>
               </button>
 
-              <span className={`text-[11px] ${isOledTheme ? 'text-white/40' : 'text-slate-400'}`}>
+              <span className={`text-[13px] ${isOledTheme ? 'text-white/40' : 'text-[#4E5969]'}`}>
                 当前日期自动置顶 · 已完成事项自动折叠
               </span>
             </div>
@@ -1124,12 +1157,12 @@ export const TodoList: React.FC<TodoListProps> = ({
               <div className={`py-14 px-4 flex flex-col items-center justify-center text-center rounded-3xl border border-dashed ${
                 isOledTheme ? 'border-white/[0.08] bg-[#0C0F11]/40' : 'border-slate-200/80 bg-slate-50/40'
               } animate-fade-in my-2`}>
-                <div className={`w-12 h-12 rounded-2xl ${
-                  isOledTheme ? 'bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30' : 'bg-blue-50 text-[#0071E3] border border-blue-100/60'
-                } flex items-center justify-center mb-3 shadow-2xs`}>
-                  <Calendar size={22} strokeWidth={1.8} />
+                <div className={`w-13 h-13 rounded-2xl ${
+                  isOledTheme ? 'bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30' : 'bg-blue-50 text-[#1677FF] border border-blue-100/60'
+                } flex items-center justify-center mb-3.5 shadow-2xs`}>
+                  <Calendar size={24} strokeWidth={1.8} />
                 </div>
-                <div className={`text-sm font-bold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>
+                <div className={`text-[18px] font-semibold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>
                   {dateFilter === 'today'
                     ? '今日暂无待办事项'
                     : dateFilter === 'overdue'
@@ -1138,7 +1171,7 @@ export const TodoList: React.FC<TodoListProps> = ({
                     ? '未来暂无排期待办'
                     : '暂无符合条件的待办事项'}
                 </div>
-                <p className={`text-xs ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'} mt-1 max-w-sm leading-relaxed`}>
+                <p className={`text-[15px] leading-[24px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'} mt-1 max-w-sm`}>
                   {dateFilter === 'today'
                     ? '今天所有任务已搞定，或点击下方按钮添加新待办 ✨'
                     : dateFilter === 'overdue'
@@ -1153,13 +1186,13 @@ export const TodoList: React.FC<TodoListProps> = ({
                     setTaskToEdit(null);
                     setIsModalOpen(true);
                   }}
-                  className={`mt-4 px-4 py-2 rounded-xl ${
+                  className={`mt-4.5 px-4.5 py-2.5 rounded-xl ${
                     isOledTheme
                       ? 'bg-[#00E5FF] hover:bg-[#00cce6] text-[#050607]'
-                      : 'bg-[#0071E3] hover:bg-[#0077ED] text-white'
-                  } active:scale-95 text-xs font-semibold shadow-xs transition-all cursor-pointer flex items-center gap-1.5`}
+                      : 'bg-[#1677FF] hover:bg-blue-600 text-white'
+                  } active:scale-95 text-[14px] font-semibold shadow-xs transition-all cursor-pointer flex items-center gap-1.5`}
                 >
-                  <Plus size={13} strokeWidth={2.2} />
+                  <Plus size={15} strokeWidth={2.2} />
                   <span>添加一条待办</span>
                 </button>
               </div>

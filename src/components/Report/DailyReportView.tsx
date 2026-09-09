@@ -274,21 +274,24 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
       }`}>
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 ${
+            <div className={`w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 ${
               isOledTheme
                 ? 'bg-[#00E5FF]/15 text-[#00E5FF] border border-[#00E5FF]/30 shadow-none'
                 : 'bg-gradient-to-tr from-[#0071E3] to-[#42A5F5] text-white shadow-xs shadow-blue-500/20'
             }`}>
-              <FileText size={18} strokeWidth={1.75} />
+              <FileText size={20} strokeWidth={1.75} />
             </div>
             <div>
               <div className="flex items-center gap-2.5">
-                <h1 className={`text-base font-bold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>工作日报</h1>
-                <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${
-                  isOledTheme
-                    ? 'text-[#00E5FF] bg-[#00E5FF]/10 border-[#00E5FF]/30'
-                    : 'text-[#0071E3] bg-blue-50/90 border-blue-200/60'
-                }`}>
+                <h1 className={`text-[26px] font-semibold leading-[1.3] ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>工作日报</h1>
+                <span 
+                  className={`text-[13px] font-medium px-2.5 py-0.5 rounded-full border ${
+                    isOledTheme
+                      ? 'text-[#00E5FF] bg-[#00E5FF]/10 border-[#00E5FF]/30'
+                      : 'text-[#1677FF] bg-blue-50/90 border-blue-200/60'
+                  }`}
+                  style={{ fontVariantNumeric: 'tabular-nums' }}
+                >
                   共 {reports.length} 篇
                 </span>
               </div>
@@ -298,44 +301,44 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
           <button
             type="button"
             onClick={() => setIsAddModalOpen(true)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer shadow-xs ${
+            className={`flex items-center gap-1.5 px-4.5 py-2.5 rounded-xl text-[14px] font-semibold transition-all cursor-pointer shadow-xs ${
               isOledTheme
                 ? 'bg-[#00E5FF] hover:bg-[#33EAFF] text-[#050607] shadow-[#00E5FF]/20'
-                : 'bg-[#0071E3] hover:bg-blue-600 text-white shadow-blue-500/20'
+                : 'bg-[#1677FF] hover:bg-blue-600 text-white shadow-blue-500/20'
             }`}
           >
-            <Plus size={14} strokeWidth={2} />
+            <Plus size={15} strokeWidth={2.2} />
             <span>新建日报</span>
           </button>
         </div>
 
         {/* Excel Export Toolbar */}
-        <div className={`flex items-center justify-between flex-wrap gap-3 pt-3 border-t ${
+        <div className={`flex items-center justify-between flex-wrap gap-3 pt-3.5 border-t ${
           isOledTheme ? 'border-white/10' : 'border-slate-100/80'
         }`}>
-          <div className="flex items-center gap-2 flex-wrap text-xs">
-            <span className={`text-[11px] font-semibold flex items-center gap-1 ${
-              isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'
+          <div className="flex items-center gap-2.5 flex-wrap text-[13px]">
+            <span className={`text-[13px] font-medium flex items-center gap-1 ${
+              isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'
             }`}>
-              <FileSpreadsheet size={13} strokeWidth={1.75} className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#0071E3]'} />
+              <FileSpreadsheet size={15} strokeWidth={1.75} className={isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]'} />
               <span>导出：</span>
             </span>
 
             {/* Mode selection pills */}
-            <div className={`flex items-center gap-1 p-0.5 rounded-xl text-[11px] border ${
+            <div className={`flex items-center gap-1 p-0.5 rounded-xl text-[13px] border ${
               isOledTheme ? 'bg-[#111417] border-white/10' : 'bg-slate-100/80 border-transparent'
             }`}>
               <button
                 type="button"
                 onClick={() => setExportMode('range')}
-                className={`px-2.5 py-1 rounded-lg font-medium transition-colors cursor-pointer ${
+                className={`px-3 py-1 rounded-lg font-medium transition-colors cursor-pointer ${
                   exportMode === 'range'
                     ? isOledTheme
                       ? 'bg-[#00E5FF]/15 text-[#00E5FF] font-semibold border border-[#00E5FF]/30 shadow-xs'
-                      : 'bg-white text-[#0071E3] font-semibold shadow-xs'
+                      : 'bg-white text-[#1677FF] font-semibold shadow-xs'
                     : isOledTheme
                       ? 'text-[#7D858A] hover:text-[#F2F5F5]'
-                      : 'text-[#86868B] hover:text-[#1D1D1F]'
+                      : 'text-[#4E5969] hover:text-[#1D2129]'
                 }`}
               >
                 按日期范围
@@ -343,14 +346,14 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
               <button
                 type="button"
                 onClick={() => setExportMode('single')}
-                className={`px-2.5 py-1 rounded-lg font-medium transition-colors cursor-pointer ${
+                className={`px-3 py-1 rounded-lg font-medium transition-colors cursor-pointer ${
                   exportMode === 'single'
                     ? isOledTheme
                       ? 'bg-[#00E5FF]/15 text-[#00E5FF] font-semibold border border-[#00E5FF]/30 shadow-xs'
-                      : 'bg-white text-[#0071E3] font-semibold shadow-xs'
+                      : 'bg-white text-[#1677FF] font-semibold shadow-xs'
                     : isOledTheme
                       ? 'text-[#7D858A] hover:text-[#F2F5F5]'
-                      : 'text-[#86868B] hover:text-[#1D1D1F]'
+                      : 'text-[#4E5969] hover:text-[#1D2129]'
                 }`}
               >
                 按单日
@@ -358,14 +361,14 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
               <button
                 type="button"
                 onClick={() => setExportMode('all')}
-                className={`px-2.5 py-1 rounded-lg font-medium transition-colors cursor-pointer ${
+                className={`px-3 py-1 rounded-lg font-medium transition-colors cursor-pointer ${
                   exportMode === 'all'
                     ? isOledTheme
                       ? 'bg-[#00E5FF]/15 text-[#00E5FF] font-semibold border border-[#00E5FF]/30 shadow-xs'
-                      : 'bg-white text-[#0071E3] font-semibold shadow-xs'
+                      : 'bg-white text-[#1677FF] font-semibold shadow-xs'
                     : isOledTheme
                       ? 'text-[#7D858A] hover:text-[#F2F5F5]'
-                      : 'text-[#86868B] hover:text-[#1D1D1F]'
+                      : 'text-[#4E5969] hover:text-[#1D2129]'
                 }`}
               >
                 全部导出
@@ -374,16 +377,17 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
 
             {/* Range pickers */}
             {exportMode === 'range' && (
-              <div className={`flex items-center gap-1.5 text-xs ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'}`}>
+              <div className={`flex items-center gap-1.5 text-[13px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>
                 <input
                   type="date"
                   value={exportStartDate}
                   onChange={(e) => setExportStartDate(e.target.value)}
-                  className={`px-2.5 py-1 rounded-xl focus:outline-none font-mono text-[11px] border ${
+                  className={`px-3 py-1 rounded-xl focus:outline-none font-mono text-[13px] border ${
                     isOledTheme
                       ? 'bg-[#080A0C] border-white/10 text-[#F2F5F5] focus:border-[#00E5FF]'
-                      : 'bg-white border-slate-200/80 text-[#1D1D1F] focus:border-[#0071E3]'
+                      : 'bg-white border-slate-200/80 text-[#1D2129] focus:border-[#1677FF]'
                   }`}
+                  style={{ fontVariantNumeric: 'tabular-nums' }}
                 />
                 <span>至</span>
                 <input
@@ -391,27 +395,29 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                   value={exportEndDate}
                   min={exportStartDate}
                   onChange={(e) => setExportEndDate(e.target.value)}
-                  className={`px-2.5 py-1 rounded-xl focus:outline-none font-mono text-[11px] border ${
+                  className={`px-3 py-1 rounded-xl focus:outline-none font-mono text-[13px] border ${
                     isOledTheme
                       ? 'bg-[#080A0C] border-white/10 text-[#F2F5F5] focus:border-[#00E5FF]'
-                      : 'bg-white border-slate-200/80 text-[#1D1D1F] focus:border-[#0071E3]'
+                      : 'bg-white border-slate-200/80 text-[#1D2129] focus:border-[#1677FF]'
                   }`}
+                  style={{ fontVariantNumeric: 'tabular-nums' }}
                 />
               </div>
             )}
 
             {/* Single picker */}
             {exportMode === 'single' && (
-              <div className={`flex items-center gap-1.5 text-xs ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'}`}>
+              <div className={`flex items-center gap-1.5 text-[13px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>
                 <input
                   type="date"
                   value={exportSingleDate}
                   onChange={(e) => setExportSingleDate(e.target.value)}
-                  className={`px-2.5 py-1 rounded-xl focus:outline-none font-mono text-[11px] border ${
+                  className={`px-3 py-1 rounded-xl focus:outline-none font-mono text-[13px] border ${
                     isOledTheme
                       ? 'bg-[#080A0C] border-white/10 text-[#F2F5F5] focus:border-[#00E5FF]'
-                      : 'bg-white border-slate-200/80 text-[#1D1D1F] focus:border-[#0071E3]'
+                      : 'bg-white border-slate-200/80 text-[#1D2129] focus:border-[#1677FF]'
                   }`}
+                  style={{ fontVariantNumeric: 'tabular-nums' }}
                 />
               </div>
             )}
@@ -422,14 +428,13 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
             type="button"
             onClick={handleExportExcel}
             disabled={isExporting}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer disabled:opacity-50 ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-[14px] font-semibold shadow-xs transition-all cursor-pointer disabled:opacity-50 ${
               isOledTheme
                 ? 'bg-[#B7FF3C] hover:bg-[#c9ff6a] text-[#050607] shadow-[#B7FF3C]/20'
                 : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/20'
             }`}
           >
-            <Download size={13} strokeWidth={2} />
-            <span>{isExporting ? '导出中...' : '导出 Excel'}</span>
+            <Download size={15} strokeWidth={2} />
           </button>
         </div>
       </div>
@@ -484,19 +489,19 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
               >
                 {/* Date Header Row */}
                 <div
-                  className="p-4 flex items-center justify-between cursor-pointer flex-wrap gap-2"
+                  className="p-4 flex items-center justify-between cursor-pointer flex-wrap gap-2.5"
                   onClick={() => !isEditing && toggleExpand(rep.date)}
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 flex-wrap">
                     <div className="flex items-center gap-2">
-                      <span className={`text-sm font-bold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>
+                      <span className={`text-[18px] font-semibold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>
                         {formatChineseDate(rep.date)}
                       </span>
                       {isToday && (
-                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
+                        <span className={`text-[13px] font-medium px-2.5 py-0.5 rounded-full border ${
                           isOledTheme
                             ? 'text-[#00E5FF] bg-[#00E5FF]/10 border-[#00E5FF]/30'
-                            : 'text-[#0071E3] bg-blue-50 border-blue-200/60'
+                            : 'text-[#1677FF] bg-blue-50 border-blue-200/60'
                         }`}>
                           今天
                         </span>
@@ -504,9 +509,9 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                     </div>
 
                     {/* Stats pills */}
-                    <div className={`flex items-center gap-2 text-[11px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'}`}>
-                      <span className="flex items-center gap-1 font-medium font-mono">
-                        <CheckCircle2 size={12} strokeWidth={2} className={isOledTheme ? 'text-[#B7FF3C]' : 'text-emerald-600'} />
+                    <div className={`flex items-center gap-2 text-[13px] ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>
+                      <span className="flex items-center gap-1 font-medium font-mono" style={{ fontVariantNumeric: 'tabular-nums' }}>
+                        <CheckCircle2 size={14} strokeWidth={2} className={isOledTheme ? 'text-[#B7FF3C]' : 'text-emerald-600'} />
                         <span>{rep.completedTasksCount || 0} 项完成</span>
                       </span>
                     </div>
@@ -518,21 +523,21 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                     <button
                       type="button"
                       onClick={() => handleCopyReport(rep)}
-                      className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
+                      className={`flex items-center gap-1 px-3 py-1 rounded-xl text-[13px] font-medium transition-colors cursor-pointer ${
                         isOledTheme
                           ? 'text-[#7D858A] hover:text-[#00E5FF] hover:bg-[#00E5FF]/10'
-                          : 'text-[#86868B] hover:text-[#0071E3] hover:bg-blue-50/80'
+                          : 'text-[#4E5969] hover:text-[#1677FF] hover:bg-blue-50/80'
                       }`}
                       title="复制内容"
                     >
                       {copiedDate === rep.date ? (
                         <>
-                          <Check size={13} strokeWidth={2} className={isOledTheme ? 'text-[#B7FF3C]' : 'text-emerald-600'} />
+                          <Check size={14} strokeWidth={2} className={isOledTheme ? 'text-[#B7FF3C]' : 'text-emerald-600'} />
                           <span className={`font-medium ${isOledTheme ? 'text-[#B7FF3C]' : 'text-emerald-600'}`}>已复制</span>
                         </>
                       ) : (
                         <>
-                          <Copy size={13} strokeWidth={1.75} />
+                          <Copy size={14} strokeWidth={1.75} />
                           <span>复制</span>
                         </>
                       )}
@@ -543,14 +548,14 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                       <button
                         type="button"
                         onClick={() => startEdit(rep)}
-                        className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
+                        className={`flex items-center gap-1 px-3 py-1 rounded-xl text-[13px] font-medium transition-colors cursor-pointer ${
                           isOledTheme
                             ? 'text-[#00E5FF] hover:text-[#33EAFF] hover:bg-[#00E5FF]/10'
-                            : 'text-[#0071E3] hover:text-blue-700 hover:bg-blue-50/80'
+                            : 'text-[#1677FF] hover:text-blue-700 hover:bg-blue-50/80'
                         }`}
                         title="编辑"
                       >
-                        <Edit3 size={13} strokeWidth={1.75} />
+                        <Edit3 size={14} strokeWidth={1.75} />
                         <span>编辑</span>
                       </button>
                     )}
@@ -562,14 +567,14 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                         const url = api.getExportExcelUrl({ date: rep.date });
                         window.open(url, '_blank');
                       }}
-                      className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
+                      className={`flex items-center gap-1 px-3 py-1 rounded-xl text-[13px] font-medium transition-colors cursor-pointer ${
                         isOledTheme
                           ? 'text-[#B7FF3C] hover:text-[#c9ff6a] hover:bg-[#B7FF3C]/10'
                           : 'text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50/80'
                       }`}
                       title="导出 Excel"
                     >
-                      <Download size={13} strokeWidth={1.75} />
+                      <Download size={14} strokeWidth={1.75} />
                       <span>导出</span>
                     </button>
 
@@ -577,14 +582,14 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                     <button
                       type="button"
                       onClick={() => handleDeleteReport(rep.date)}
-                      className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
+                      className={`flex items-center gap-1 px-3 py-1 rounded-xl text-[13px] font-medium transition-colors cursor-pointer ${
                         isOledTheme
                           ? 'text-[#7D858A] hover:text-rose-400 hover:bg-rose-500/10'
-                          : 'text-[#86868B] hover:text-rose-600 hover:bg-rose-50/80'
+                          : 'text-[#4E5969] hover:text-rose-600 hover:bg-rose-50/80'
                       }`}
                       title="删除日报"
                     >
-                      <Trash2 size={13} strokeWidth={1.75} />
+                      <Trash2 size={14} strokeWidth={1.75} />
                       <span>删除</span>
                     </button>
 
@@ -592,11 +597,11 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                     <button
                       type="button"
                       onClick={() => toggleExpand(rep.date)}
-                      className={`p-1 rounded-lg transition-colors cursor-pointer ${
-                        isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#86868B] hover:text-[#1D1D1F]'
+                      className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                        isOledTheme ? 'text-[#7D858A] hover:text-[#F2F5F5]' : 'text-[#4E5969] hover:text-[#1D2129]'
                       }`}
                     >
-                      {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                      {isExpanded ? <ChevronUp size={17} /> : <ChevronDown size={17} />}
                     </button>
                   </div>
                 </div>
@@ -608,21 +613,21 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                   }`}>
                     {isEditing ? (
                       /* Editing Form Mode */
-                      <div className="flex flex-col gap-3.5 pt-2">
+                      <div className="flex flex-col gap-4 pt-2">
                         <div>
-                          <div className="flex items-center justify-between mb-1">
-                            <label className={`block text-xs font-bold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>
+                          <div className="flex items-center justify-between mb-1.5">
+                            <label className={`block text-[15px] font-semibold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>
                               今日工作
                             </label>
                             <button
                               type="button"
                               onClick={() => handleSyncTodayDeliverables(rep.date)}
-                              className={`flex items-center gap-1 text-[11px] font-semibold cursor-pointer ${
-                                isOledTheme ? 'text-[#00E5FF] hover:text-[#33EAFF]' : 'text-[#0071E3] hover:underline'
+                              className={`flex items-center gap-1.5 text-[13px] font-medium cursor-pointer ${
+                                isOledTheme ? 'text-[#00E5FF] hover:text-[#33EAFF]' : 'text-[#1677FF] hover:underline'
                               }`}
                               title="同步待办"
                             >
-                              <Clock size={11} strokeWidth={2} />
+                              <Clock size={13} strokeWidth={2} />
                               <span>同步待办</span>
                             </button>
                           </div>
@@ -631,28 +636,28 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                             value={editDeliverables}
                             onChange={(e) => setEditDeliverables(e.target.value)}
                             placeholder="1. XXXXX&#10;2. XXXXX"
-                            className={`w-full px-3.5 py-2 text-xs rounded-xl focus:outline-none border ${
+                            className={`w-full px-3.5 py-2.5 text-[15px] leading-[24px] rounded-xl focus:outline-none border ${
                               isOledTheme
                                 ? 'bg-[#080A0C] border-white/15 text-[#F2F5F5] focus:border-[#B7FF3C] focus:ring-2 focus:ring-[#B7FF3C]/20'
-                                : 'bg-white border-emerald-300 text-[#1D1D1F] focus:ring-2 focus:ring-emerald-500/20'
+                                : 'bg-white border-emerald-300 text-[#1D2129] focus:ring-2 focus:ring-emerald-500/20'
                             }`}
                           />
                         </div>
 
                         <div>
-                          <div className="flex items-center justify-between mb-1">
-                            <label className={`block text-xs font-bold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>
+                          <div className="flex items-center justify-between mb-1.5">
+                            <label className={`block text-[15px] font-semibold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>
                               明日计划:
                             </label>
                             <button
                               type="button"
                               onClick={() => handleAutoLinkTomorrow(rep.date)}
-                              className={`flex items-center gap-1 text-[11px] font-semibold cursor-pointer ${
-                                isOledTheme ? 'text-[#00E5FF] hover:text-[#33EAFF]' : 'text-[#0071E3] hover:underline'
+                              className={`flex items-center gap-1.5 text-[13px] font-medium cursor-pointer ${
+                                isOledTheme ? 'text-[#00E5FF] hover:text-[#33EAFF]' : 'text-[#1677FF] hover:underline'
                               }`}
                               title="导入明日计划"
                             >
-                              <Repeat size={11} strokeWidth={2} />
+                              <Repeat size={13} strokeWidth={2} />
                               <span>导入明日计划</span>
                             </button>
                           </div>
@@ -661,16 +666,16 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                             value={editTomorrowPlan}
                             onChange={(e) => setEditTomorrowPlan(e.target.value)}
                             placeholder="1. xxx&#10;2. xxx"
-                            className={`w-full px-3.5 py-2 text-xs rounded-xl focus:outline-none border ${
+                            className={`w-full px-3.5 py-2.5 text-[15px] leading-[24px] rounded-xl focus:outline-none border ${
                               isOledTheme
                                 ? 'bg-[#080A0C] border-white/15 text-[#F2F5F5] focus:border-[#00E5FF] focus:ring-2 focus:ring-[#00E5FF]/20'
-                                : 'bg-white border-blue-300 text-[#1D1D1F] focus:ring-2 focus:ring-[#0071E3]/20'
+                                : 'bg-white border-blue-300 text-[#1D2129] focus:ring-2 focus:ring-[#1677FF]/20'
                             }`}
                           />
                         </div>
 
                         <div>
-                          <label className={`block text-xs font-bold mb-1 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>
+                          <label className={`block text-[15px] font-semibold mb-1.5 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>
                             遇到问题 (可选)
                           </label>
                           <textarea
@@ -678,16 +683,16 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                             value={editBlockers}
                             onChange={(e) => setEditBlockers(e.target.value)}
                             placeholder="无..."
-                            className={`w-full px-3.5 py-2 text-xs rounded-xl focus:outline-none border ${
+                            className={`w-full px-3.5 py-2.5 text-[15px] leading-[24px] rounded-xl focus:outline-none border ${
                               isOledTheme
                                 ? 'bg-[#080A0C] border-white/15 text-[#F2F5F5] focus:border-rose-400 focus:ring-2 focus:ring-rose-500/20'
-                                : 'bg-white border-slate-200 text-[#1D1D1F] focus:ring-2 focus:ring-rose-500/20'
+                                : 'bg-white border-slate-200 text-[#1D2129] focus:ring-2 focus:ring-rose-500/20'
                             }`}
                           />
                         </div>
 
                         <div>
-                          <label className={`block text-xs font-bold mb-1 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>
+                          <label className={`block text-[15px] font-semibold mb-1.5 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>
                             备注 (可选)
                           </label>
                           <input
@@ -695,10 +700,10 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                             value={editCustomNotes}
                             onChange={(e) => setEditCustomNotes(e.target.value)}
                             placeholder="其他说明..."
-                            className={`w-full px-3.5 py-2 text-xs rounded-xl focus:outline-none border ${
+                            className={`w-full px-3.5 py-2.5 text-[15px] leading-[24px] rounded-xl focus:outline-none border ${
                               isOledTheme
                                 ? 'bg-[#080A0C] border-white/15 text-[#F2F5F5] focus:border-[#00E5FF] focus:ring-2 focus:ring-[#00E5FF]/20'
-                                : 'bg-white border-slate-200 text-[#1D1D1F] focus:ring-2 focus:ring-[#0071E3]/20'
+                                : 'bg-white border-slate-200 text-[#1D2129] focus:ring-2 focus:ring-[#1677FF]/20'
                             }`}
                           />
                         </div>
@@ -709,13 +714,13 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                             type="button"
                             onClick={() => handleDeleteReport(rep.date)}
                             disabled={isSaving}
-                            className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
+                            className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-[13px] font-medium transition-colors cursor-pointer ${
                               isOledTheme
                                 ? 'text-rose-400 hover:text-rose-300 hover:bg-rose-500/10'
                                 : 'text-rose-500 hover:text-rose-700 hover:bg-rose-50'
                             }`}
                           >
-                            <Trash2 size={13} strokeWidth={1.75} />
+                            <Trash2 size={14} strokeWidth={1.75} />
                             <span>删除日报</span>
                           </button>
 
@@ -724,26 +729,26 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                               type="button"
                               onClick={cancelEdit}
                               disabled={isSaving}
-                              className={`flex items-center gap-1 px-4 py-1.5 rounded-xl border text-xs font-medium transition-colors cursor-pointer ${
+                              className={`flex items-center gap-1 px-4 py-2 rounded-xl border text-[14px] font-medium transition-colors cursor-pointer ${
                                 isOledTheme
                                   ? 'border-white/10 bg-[#111417] text-[#7D858A] hover:text-[#F2F5F5] hover:border-white/20'
-                                  : 'border-slate-200 text-[#86868B] hover:text-[#1D1D1F] hover:bg-slate-50'
+                                  : 'border-slate-200 text-[#4E5969] hover:text-[#1D2129] hover:bg-slate-50'
                               }`}
                             >
-                              <X size={13} strokeWidth={2} />
+                              <X size={14} strokeWidth={2} />
                               <span>取消</span>
                             </button>
                             <button
                               type="button"
                               onClick={() => handleSaveEdit(rep.date)}
                               disabled={isSaving}
-                              className={`flex items-center gap-1.5 px-5 py-1.5 rounded-xl text-xs font-semibold shadow-xs transition-all cursor-pointer disabled:opacity-50 ${
+                              className={`flex items-center gap-1.5 px-5 py-2 rounded-xl text-[14px] font-semibold shadow-xs transition-all cursor-pointer disabled:opacity-50 ${
                                 isOledTheme
                                   ? 'bg-[#00E5FF] hover:bg-[#33EAFF] text-[#050607] shadow-[#00E5FF]/20'
-                                  : 'bg-[#0071E3] hover:bg-blue-600 text-white shadow-blue-500/20'
+                                  : 'bg-[#1677FF] hover:bg-blue-600 text-white shadow-blue-500/20'
                               }`}
                             >
-                              <Save size={13} strokeWidth={2} />
+                              <Save size={14} strokeWidth={2} />
                               <span>{isSaving ? '保存中...' : '保存'}</span>
                             </button>
                           </div>
@@ -751,16 +756,16 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                       </div>
                     ) : (
                       /* Display Detail Mode */
-                      <div className="flex flex-col gap-3 pt-2 text-xs">
+                      <div className="flex flex-col gap-3.5 pt-2 text-[15px]">
                         {/* 今日工作 */}
                         <div>
-                          <span className={`font-bold block mb-1 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>
+                          <span className={`font-semibold text-[16px] block mb-1.5 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>
                             今日工作
                           </span>
-                          <div className={`whitespace-pre-line leading-relaxed pl-3 border-l-2 p-2.5 rounded-r-xl ${
+                          <div className={`whitespace-pre-line leading-[24px] pl-3.5 border-l-2 p-3 rounded-r-xl ${
                             isOledTheme
                               ? 'border-[#B7FF3C] bg-[#B7FF3C]/5 text-[#F2F5F5]'
-                              : 'border-emerald-500 bg-emerald-50/40 text-[#48484A]'
+                              : 'border-emerald-500 bg-emerald-50/40 text-[#1D2129]'
                           }`}>
                             {rep.deliverables || '1. XXXXX\n2. XXXXX'}
                           </div>
@@ -768,13 +773,13 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
 
                         {/* 明日计划: */}
                         <div>
-                          <span className={`font-bold block mb-1 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>
+                          <span className={`font-semibold text-[16px] block mb-1.5 ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>
                             明日计划:
                           </span>
-                          <div className={`whitespace-pre-line leading-relaxed pl-3 border-l-2 p-2.5 rounded-r-xl ${
+                          <div className={`whitespace-pre-line leading-[24px] pl-3.5 border-l-2 p-3 rounded-r-xl ${
                             isOledTheme
                               ? 'border-[#00E5FF] bg-[#00E5FF]/5 text-[#F2F5F5]'
-                              : 'border-[#0071E3] bg-blue-50/40 text-[#48484A]'
+                              : 'border-[#1677FF] bg-blue-50/40 text-[#1D2129]'
                           }`}>
                             {rep.tomorrowPlan || '1. xxx\n2. xxx'}
                           </div>
@@ -782,17 +787,17 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
 
                         {/* Custom Notes */}
                         {rep.customNotes && (
-                          <div className={`text-[11px] pt-1 ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86868B]'}`}>
-                            <span className={`font-semibold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D1D1F]'}`}>备注：</span>
+                          <div className={`text-[13px] pt-1 ${isOledTheme ? 'text-[#7D858A]' : 'text-[#4E5969]'}`}>
+                            <span className={`font-semibold ${isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}`}>备注：</span>
                             <span>{rep.customNotes}</span>
                           </div>
                         )}
 
                         {/* Footer info */}
-                        <div className={`flex items-center justify-between text-[10px] pt-2 border-t ${
-                          isOledTheme ? 'border-white/10 text-[#7D858A]' : 'border-slate-100 text-[#86868B]'
+                        <div className={`flex items-center justify-between text-[13px] pt-2.5 border-t ${
+                          isOledTheme ? 'border-white/10 text-[#7D858A]' : 'border-slate-100 text-[#4E5969]'
                         }`}>
-                          <span>
+                          <span style={{ fontVariantNumeric: 'tabular-nums' }}>
                             更新时间：{rep.updatedAt ? new Date(rep.updatedAt).toLocaleString('zh-CN') : '暂无'}
                           </span>
                           {onSelectDateForCalendar && (
@@ -800,7 +805,7 @@ export const DailyReportView: React.FC<DailyReportViewProps> = ({
                               type="button"
                               onClick={() => onSelectDateForCalendar(rep.date)}
                               className={`font-medium cursor-pointer ${
-                                isOledTheme ? 'text-[#00E5FF] hover:text-[#33EAFF]' : 'text-[#0071E3] hover:underline'
+                                isOledTheme ? 'text-[#00E5FF] hover:text-[#33EAFF]' : 'text-[#1677FF] hover:underline'
                               }`}
                             >
                               查看日历 →

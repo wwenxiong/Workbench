@@ -370,10 +370,10 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
               <Sparkles size={18} strokeWidth={2.2} />
             </div>
             <div>
-              <h2 className="text-base font-bold text-[#1D1D1F] tracking-tight flex items-center gap-2">
+              <h2 className="text-[18px] font-semibold text-[#1D2129] tracking-tight flex items-center gap-2">
                 <span>AI 智能速记</span>
               </h2>
-              <p className="text-xs text-[#86868B] mt-0.5">
+              <p className="text-[13px] text-[#4E5969] mt-0.5">
                 支持智能识别为 待办任务、日程安排、快速记录（笔记 / 会议 / 灵感）
               </p>
             </div>
@@ -382,7 +382,7 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
+            className="p-2 text-[#4E5969] hover:text-[#1D2129] rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
           >
             <X size={18} />
           </button>
@@ -393,11 +393,11 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
           {/* Input Textarea Section */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wider">
+              <label className="text-[12px] font-medium text-[#4E5969] uppercase tracking-wider">
                 原始文字内容
               </label>
               <div className="flex items-center gap-1.5">
-                <span className="text-[10px] text-[#86868B]">填入示例:</span>
+                <span className="text-[11px] text-[#86909C]">填入示例:</span>
                 {QUICK_EXAMPLES.map((ex, i) => (
                   <button
                     key={i}
@@ -406,7 +406,7 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                       setInputText(ex);
                       triggerParse(ex);
                     }}
-                    className="text-[10px] text-[#0071E3] hover:underline bg-blue-50 px-2 py-0.5 rounded-md cursor-pointer"
+                    className="text-[11px] text-[#1677FF] hover:underline bg-blue-50 px-2 py-0.5 rounded-md cursor-pointer font-medium"
                   >
                     示例 {i + 1}
                   </button>
@@ -428,13 +428,13 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                 }}
                 placeholder="在此粘贴聊天记录、会议纪要、临时想法、日程或待办... 例如：明天下午3点在A会议室开产品评审会，讨论AI速记；灵感：做个悬浮录音球；周五前提交周报"
                 rows={parsedItems.length > 0 ? 3 : 5}
-                className="w-full px-4 py-3 text-xs rounded-2xl bg-slate-100/80 border border-slate-200/80 focus:bg-white focus:border-[#0071E3] focus:ring-3 focus:ring-[#0071E3]/15 transition-all outline-none text-[#1D1D1F] placeholder:text-slate-400 resize-none font-medium leading-relaxed"
+                className="w-full px-4 py-3 text-[15px] leading-[24px] rounded-2xl bg-slate-100/80 border border-slate-200/80 focus:bg-white focus:border-[#1677FF] focus:ring-3 focus:ring-[#1677FF]/15 transition-all outline-none text-[#1D2129] placeholder:text-[#86909C] resize-none font-normal"
               />
               <button
                 type="button"
                 onClick={() => triggerParse()}
                 disabled={isParsing || !inputText.trim()}
-                className="absolute right-3 bottom-3 px-3.5 py-1.5 rounded-xl bg-[#0071E3] hover:bg-[#0077ED] active:scale-95 text-white text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
+                className="absolute right-3 bottom-3 px-3.5 py-1.5 rounded-xl bg-[#1677FF] hover:bg-blue-600 active:scale-95 text-white text-[13px] font-medium shadow-xs flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
               >
                 {isParsing ? (
                   <>
@@ -443,7 +443,7 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                   </>
                 ) : (
                   <>
-                    <Sparkles size={13} />
+                    <Sparkles size={14} />
                     <span>AI 识别解析</span>
                   </>
                 )}
@@ -505,10 +505,10 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                   <button
                     type="button"
                     onClick={() => setActiveCategoryFilter('all')}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                    className={`px-2.5 py-1 rounded-lg text-[13px] font-medium transition-all cursor-pointer ${
                       activeCategoryFilter === 'all'
-                        ? 'bg-white text-slate-800 shadow-2xs'
-                        : 'text-slate-500 hover:text-slate-800'
+                        ? 'bg-white text-[#1D2129] font-semibold shadow-2xs'
+                        : 'text-[#4E5969] hover:text-[#1D2129]'
                     }`}
                   >
                     全部 ({categoryCounts.all})
@@ -523,15 +523,15 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                         key={cat}
                         type="button"
                         onClick={() => setActiveCategoryFilter(cat)}
-                        className={`px-2.5 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer ${
+                        className={`px-2.5 py-1 rounded-lg text-[13px] font-medium flex items-center gap-1.5 transition-all cursor-pointer ${
                           activeCategoryFilter === cat
-                            ? 'bg-white text-slate-800 font-semibold shadow-2xs'
-                            : 'text-slate-500 hover:text-slate-800'
+                            ? 'bg-white text-[#1D2129] font-semibold shadow-2xs'
+                            : 'text-[#4E5969] hover:text-[#1D2129]'
                         }`}
                       >
-                        <Icon size={12} />
+                        <Icon size={13} />
                         <span>{cfg.label}</span>
-                        <span className="text-[10px] opacity-75 font-mono">({count})</span>
+                        <span className="text-[11px] opacity-75 font-mono tabular-nums">({count})</span>
                       </button>
                     );
                   })}
@@ -541,9 +541,9 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                   <button
                     type="button"
                     onClick={() => handleAddManualItem('task')}
-                    className="text-xs font-semibold text-[#0071E3] hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-[13px] font-medium text-[#1677FF] hover:underline flex items-center gap-1 cursor-pointer"
                   >
-                    <Plus size={13} />
+                    <Plus size={14} />
                     <span>手动补充</span>
                   </button>
                 </div>
@@ -569,7 +569,7 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                         type="checkbox"
                         checked={isChecked}
                         onChange={() => handleToggleSelect(item.id)}
-                        className="w-4 h-4 mt-1 rounded border-slate-300 text-[#0071E3] focus:ring-[#0071E3] cursor-pointer accent-[#0071E3]"
+                        className="w-4 h-4 mt-1 rounded border-slate-300 text-[#1677FF] focus:ring-[#1677FF] cursor-pointer accent-[#1677FF]"
                       />
 
                       {/* Main Content Area */}
@@ -583,7 +583,7 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                               onChange={(e) =>
                                 handleSwitchCategory(item.id, e.target.value as SmartItemCategory)
                               }
-                              className={`text-[11px] font-bold px-2 py-0.5 rounded-lg border outline-none cursor-pointer appearance-none pr-5 transition-colors ${cfg.badgeClass}`}
+                              className={`text-[12px] font-medium px-2 py-0.5 rounded-lg border outline-none cursor-pointer appearance-none pr-5 transition-colors ${cfg.badgeClass}`}
                             >
                               <option value="task">待办任务</option>
                               <option value="schedule">日程安排</option>
@@ -613,7 +613,7 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                                 ? '日程事项...'
                                 : '任务名称...'
                             }
-                            className="flex-1 min-w-[140px] text-xs font-bold text-[#1D1D1F] bg-transparent border-b border-transparent focus:border-blue-400 outline-none pb-0.5 transition-colors"
+                            className="flex-1 min-w-[140px] text-[15px] font-semibold leading-[24px] text-[#1D2129] bg-transparent border-b border-transparent focus:border-[#1677FF] outline-none pb-0.5 transition-colors"
                           />
                         </div>
 
@@ -635,7 +635,7 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                                   ? '记录详细知识点、备忘资料或随笔正文...'
                                   : '补充任务备注信息 (可选)...'
                               }
-                              className="w-full text-[11px] text-slate-600 bg-slate-50/80 rounded-xl px-2.5 py-1.5 border border-slate-200/60 focus:bg-white focus:border-blue-400 outline-none resize-none font-medium leading-relaxed"
+                              className="w-full text-[13px] text-[#4E5969] bg-slate-50/80 rounded-xl px-2.5 py-1.5 border border-slate-200/60 focus:bg-white focus:border-[#1677FF] outline-none resize-none font-normal leading-relaxed"
                             />
                           </div>
                         )}
@@ -644,18 +644,18 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                         <div className="flex flex-wrap items-center gap-2 text-xs pt-0.5">
                           {/* Date */}
                           <div className="flex items-center gap-1 bg-slate-100 px-2 py-1 rounded-xl border border-slate-200/80">
-                            <Calendar size={12} className="text-[#86868B]" />
+                            <Calendar size={13} className="text-[#4E5969]" />
                             <input
                               type="date"
                               value={item.date}
                               onChange={(e) => handleUpdateItemField(item.id, 'date', e.target.value)}
-                              className="text-[11px] font-mono bg-transparent outline-none cursor-pointer text-[#1D1D1F]"
+                              className="text-[12px] font-mono tabular-nums bg-transparent outline-none cursor-pointer text-[#1D2129]"
                             />
                           </div>
 
                           {/* Time (for task & schedule) */}
                           <div className="flex items-center gap-1 bg-slate-100 px-2 py-1 rounded-xl border border-slate-200/80">
-                            <Clock size={12} className="text-[#86868B]" />
+                            <Clock size={13} className="text-[#4E5969]" />
                             <input
                               type="text"
                               value={item.time || ''}
@@ -663,7 +663,7 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                                 handleUpdateItemField(item.id, 'time', e.target.value || null)
                               }
                               placeholder={item.category === 'schedule' ? '全天或 14:00' : '开始时间'}
-                              className="text-[11px] font-mono bg-transparent outline-none cursor-pointer text-[#1D1D1F] w-20"
+                              className="text-[12px] font-mono tabular-nums bg-transparent outline-none cursor-pointer text-[#1D2129] w-20"
                             />
                           </div>
 
@@ -674,14 +674,14 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                               onChange={(e) =>
                                 handleUpdateItemField(item.id, 'priority', e.target.value as Priority)
                               }
-                              className={`text-[11px] font-semibold px-2 py-1 rounded-xl border outline-none cursor-pointer ${
+                              className={`text-[12px] font-medium px-2 py-1 rounded-xl border outline-none cursor-pointer ${
                                 item.priority === 'p1'
                                   ? 'bg-rose-50 text-rose-600 border-rose-200'
                                   : item.priority === 'p2'
                                   ? 'bg-orange-50 text-orange-600 border-orange-200'
                                   : item.priority === 'p3'
                                   ? 'bg-blue-50 text-blue-600 border-blue-200'
-                                  : 'bg-slate-100 text-slate-600 border-slate-200'
+                                  : 'bg-slate-100 text-[#4E5969] border-slate-200'
                               }`}
                             >
                               <option value="p1">P1 紧急</option>
@@ -697,7 +697,7 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                               {item.tags.map((tag, tagIdx) => (
                                 <span
                                   key={tagIdx}
-                                  className="text-[10px] font-medium bg-slate-100 border border-slate-200/60 text-[#6E6E73] px-2 py-0.5 rounded-lg flex items-center gap-0.5"
+                                  className="text-[11px] font-medium bg-slate-100 border border-slate-200/60 text-[#4E5969] px-2 py-0.5 rounded-lg flex items-center gap-0.5"
                                 >
                                   <span>#{tag}</span>
                                 </span>
@@ -714,7 +714,7 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
                         className="p-1.5 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
                         title="移除该项"
                       >
-                        <Trash2 size={13} />
+                        <Trash2 size={14} />
                       </button>
                     </div>
                   );
@@ -726,10 +726,10 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
 
         {/* Footer Actions */}
         <div className="pt-3 border-t border-slate-100 flex items-center justify-between flex-shrink-0">
-          <div className="text-xs text-[#86868B]">
+          <div className="text-[13px] text-[#4E5969]">
             {parsedItems.length > 0 ? (
               <span>
-                已选 <strong className="text-[#0071E3]">{selectedCount}</strong> / {parsedItems.length} 项
+                已选 <strong className="text-[#1677FF] font-semibold tabular-nums">{selectedCount}</strong> / {parsedItems.length} 项
               </span>
             ) : (
               <span>智能识别速记并归类保存</span>
@@ -740,7 +740,7 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-[#48484A] hover:bg-slate-100 rounded-xl transition-all cursor-pointer"
+              className="px-4 py-2 text-[14px] font-medium text-[#4E5969] hover:text-[#1D2129] hover:bg-slate-100 rounded-xl transition-all cursor-pointer"
             >
               取消
             </button>
@@ -748,9 +748,9 @@ export const SmartNoteModal: React.FC<SmartNoteModalProps> = ({
               type="button"
               onClick={handleConfirmAdd}
               disabled={isSubmitting || selectedCount === 0}
-              className="px-5 py-2.5 rounded-xl bg-[#0071E3] hover:bg-[#0077ED] text-white text-xs font-semibold shadow-md shadow-blue-500/25 active:scale-95 transition-all cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
+              className="px-5 py-2.5 rounded-xl bg-[#1677FF] hover:bg-blue-600 text-white text-[14px] font-medium shadow-md shadow-blue-500/25 active:scale-95 transition-all cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
             >
-              <Check size={14} strokeWidth={2.5} />
+              <Check size={15} strokeWidth={2.5} />
               <span>{isSubmitting ? '正在归类创建...' : `一键归类创建 (${selectedCount})`}</span>
             </button>
           </div>

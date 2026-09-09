@@ -102,12 +102,12 @@ export const NotesView: React.FC<NotesViewProps> = ({
         <div>
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 flex items-center justify-center rounded-2xl ${
-              isOledTheme ? 'bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/20' : 'bg-blue-600 text-white shadow-blue-500/25'
+              isOledTheme ? 'bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/20' : 'bg-[#1677FF] text-white shadow-[#1677FF]/25'
             }`}>
               <Feather size={20} />
             </div>
             <div>
-              <h2 className={`text-base font-extrabold ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-slate-900'} tracking-tight`}>
+              <h2 className={`text-[26px] font-semibold leading-[1.3] ${isOledTheme ? 'text-[#F2F5F5] font-mono' : 'text-[#1D2129]'} tracking-tight`}>
                 快速记录
               </h2>
             </div>
@@ -116,20 +116,20 @@ export const NotesView: React.FC<NotesViewProps> = ({
 
         {/* Stats & Actions */}
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-2 text-xs">
+          <div className="hidden sm:flex items-center gap-2 text-[13px]">
             <span className={`px-2.5 py-1 rounded-xl ${
-              isOledTheme ? 'bg-white/[0.04] border border-white/[0.08] text-[#AEB7BA] font-mono' : 'bg-white border border-slate-200/80 text-slate-600'
-            } font-medium`}>
-              共 <strong className={isOledTheme ? 'text-[#F2F5F5]' : 'text-slate-900'}>{pureNotes.length}</strong> 条
+              isOledTheme ? 'bg-white/[0.04] border border-white/[0.08] text-[#AEB7BA] font-mono' : 'bg-white border border-slate-200/80 text-[#4E5969]'
+            } font-medium`} style={{ fontVariantNumeric: 'tabular-nums' }}>
+              共 <strong className={isOledTheme ? 'text-[#F2F5F5]' : 'text-[#1D2129]'}>{pureNotes.length}</strong> 条
             </span>
             <span className={`px-2.5 py-1 rounded-xl ${
-              isOledTheme ? 'bg-[#00E5FF]/10 border border-[#00E5FF]/25 text-[#00E5FF] font-mono' : 'bg-blue-50 border border-blue-200 text-blue-700'
-            } font-medium`}>
+              isOledTheme ? 'bg-[#00E5FF]/10 border border-[#00E5FF]/25 text-[#00E5FF] font-mono' : 'bg-blue-50 border border-blue-200 text-[#1677FF]'
+            } font-medium`} style={{ fontVariantNumeric: 'tabular-nums' }}>
               笔记 <strong>{noteCount}</strong>
             </span>
             <span className={`px-2.5 py-1 rounded-xl ${
               isOledTheme ? 'bg-amber-500/10 border border-amber-500/25 text-amber-400 font-mono' : 'bg-amber-50 border border-amber-200 text-amber-700'
-            } font-medium`}>
+            } font-medium`} style={{ fontVariantNumeric: 'tabular-nums' }}>
               会议 <strong>{meetingCount}</strong>
             </span>
           </div>
@@ -140,13 +140,13 @@ export const NotesView: React.FC<NotesViewProps> = ({
               setModalDefaultType('note');
               setIsModalOpen(true);
             }}
-            className={`flex items-center gap-1.5 px-4 py-2 font-semibold text-xs rounded-xl shadow-xs transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-4 py-2 font-medium text-[14px] rounded-xl shadow-xs transition-all cursor-pointer ${
               isOledTheme
                 ? 'bg-[#00E5FF] hover:bg-[#33EAFF] text-[#050607] font-mono'
-                : 'bg-[#0071E3] hover:bg-blue-600 text-white shadow-blue-500/20'
+                : 'bg-[#1677FF] hover:bg-blue-600 text-white shadow-blue-500/20'
             }`}
           >
-            <Plus size={14} strokeWidth={2} />
+            <Plus size={15} strokeWidth={2} />
             <span>新建</span>
           </button>
         </div>
@@ -161,10 +161,10 @@ export const NotesView: React.FC<NotesViewProps> = ({
           <button
             type="button"
             onClick={() => setActiveType('all')}
-            className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+            className={`px-3.5 py-1.5 text-[14px] font-medium rounded-xl transition-all cursor-pointer ${
               activeType === 'all'
-                ? (isOledTheme ? 'bg-[#00E5FF] text-[#050607] font-mono font-bold shadow-xs' : 'bg-slate-900 text-white shadow-xs')
-                : (isOledTheme ? 'bg-white/[0.04] text-[#7D858A] hover:text-[#F2F5F5]' : 'bg-slate-100 text-slate-600 hover:bg-slate-200/80')
+                ? (isOledTheme ? 'bg-[#00E5FF] text-[#050607] font-mono font-bold shadow-xs' : 'bg-[#1D2129] text-white shadow-xs')
+                : (isOledTheme ? 'bg-white/[0.04] text-[#7D858A] hover:text-[#F2F5F5]' : 'bg-slate-100 text-[#4E5969] hover:bg-slate-200/80')
             }`}
           >
             全部 ({pureNotes.length})
@@ -173,70 +173,70 @@ export const NotesView: React.FC<NotesViewProps> = ({
           <button
             type="button"
             onClick={() => setActiveType('note')}
-            className={`flex items-center gap-1 px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+            className={`flex items-center gap-1 px-3.5 py-1.5 text-[14px] font-medium rounded-xl transition-all cursor-pointer ${
               activeType === 'note'
-                ? (isOledTheme ? 'bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 font-mono shadow-xs' : 'bg-blue-600 text-white shadow-xs')
-                : (isOledTheme ? 'bg-white/[0.03] text-[#7D858A] hover:text-[#00E5FF]' : 'bg-blue-50 text-blue-700 hover:bg-blue-100/70 border border-blue-200/60')
+                ? (isOledTheme ? 'bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 font-mono shadow-xs' : 'bg-[#1677FF] text-white shadow-xs')
+                : (isOledTheme ? 'bg-white/[0.03] text-[#7D858A] hover:text-[#00E5FF]' : 'bg-blue-50 text-[#1677FF] hover:bg-blue-100/70 border border-blue-200/60')
             }`}
           >
-            <Feather size={13} />
+            <Feather size={14} />
             <span>笔记 ({noteCount})</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveType('meeting')}
-            className={`flex items-center gap-1 px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+            className={`flex items-center gap-1 px-3.5 py-1.5 text-[14px] font-medium rounded-xl transition-all cursor-pointer ${
               activeType === 'meeting'
                 ? (isOledTheme ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono shadow-xs' : 'bg-amber-600 text-white shadow-xs')
                 : (isOledTheme ? 'bg-white/[0.03] text-[#7D858A] hover:text-amber-400' : 'bg-amber-50 text-amber-700 hover:bg-amber-100/70 border border-amber-200/60')
             }`}
           >
-            <Users size={13} />
+            <Users size={14} />
             <span>会议 ({meetingCount})</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveType('idea')}
-            className={`flex items-center gap-1 px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+            className={`flex items-center gap-1 px-3.5 py-1.5 text-[14px] font-medium rounded-xl transition-all cursor-pointer ${
               activeType === 'idea'
                 ? (isOledTheme ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40 font-mono shadow-xs' : 'bg-purple-600 text-white shadow-xs')
                 : (isOledTheme ? 'bg-white/[0.03] text-[#7D858A] hover:text-purple-400' : 'bg-purple-50 text-purple-700 hover:bg-purple-100/70 border border-purple-200/60')
             }`}
           >
-            <Sparkles size={13} />
+            <Sparkles size={14} />
             <span>灵感 ({ideaCount})</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveType('retrospective')}
-            className={`flex items-center gap-1 px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+            className={`flex items-center gap-1 px-3.5 py-1.5 text-[14px] font-medium rounded-xl transition-all cursor-pointer ${
               activeType === 'retrospective'
                 ? (isOledTheme ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 font-mono shadow-xs' : 'bg-rose-600 text-white shadow-xs')
                 : (isOledTheme ? 'bg-white/[0.03] text-[#7D858A] hover:text-rose-400' : 'bg-rose-50 text-rose-700 hover:bg-rose-100/70 border border-rose-200/60')
             }`}
           >
-            <Target size={13} />
+            <Target size={14} />
             <span>复盘 ({retroCount})</span>
           </button>
         </div>
 
         {/* Search Bar */}
         <div className="relative w-64">
-          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-            <Search size={14} />
+          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#86909C]">
+            <Search size={15} />
           </div>
           <input
             type="text"
             placeholder="搜索笔记..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className={`w-full pl-9 pr-3.5 py-1.5 text-xs rounded-xl focus:outline-none ${
+            className={`w-full pl-9 pr-3.5 py-1.5 text-[14px] rounded-xl focus:outline-none ${
               isOledTheme 
                 ? 'bg-[#111417] border border-white/[0.08] text-[#F2F5F5] placeholder-[#52595E] focus:border-[#00E5FF]' 
-                : 'bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-blue-500/20 text-slate-800 placeholder-slate-400'
+                : 'bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-blue-500/20 text-[#1D2129] placeholder-[#86909C]'
             }`}
           />
         </div>
@@ -245,17 +245,17 @@ export const NotesView: React.FC<NotesViewProps> = ({
       {/* 3. Cards Grid Area */}
       <div className="flex-1 p-5 overflow-y-auto custom-scrollbar">
         {filteredNotes.length === 0 ? (
-          <div className={`py-20 text-center ${isOledTheme ? 'text-[#7D858A]' : 'text-slate-400'} flex flex-col items-center gap-2`}>
+          <div className={`py-20 text-center ${isOledTheme ? 'text-[#7D858A]' : 'text-[#86909C]'} flex flex-col items-center gap-2`}>
             <Filter size={32} className={isOledTheme ? 'text-[#52595E]' : 'text-slate-300'} />
-            <p className="text-xs">暂无记录</p>
+            <p className="text-[14px]">暂无记录</p>
             <button
               type="button"
               onClick={() => {
                 setModalDefaultType('note');
                 setIsModalOpen(true);
               }}
-              className={`mt-1 text-xs font-semibold hover:underline cursor-pointer ${
-                isOledTheme ? 'text-[#00E5FF]' : 'text-blue-600'
+              className={`mt-1 text-[14px] font-medium hover:underline cursor-pointer ${
+                isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]'
               }`}
             >
               新建记录
@@ -280,17 +280,17 @@ export const NotesView: React.FC<NotesViewProps> = ({
                   <div>
                     {/* Card Top: Type Badge & Pin */}
                     <div className="flex items-center justify-between mb-2.5">
-                      <div className="flex items-center gap-1.5">
-                        <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold border flex items-center gap-1 ${
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className={`px-2 py-0.5 rounded-lg text-[13px] font-medium border flex items-center gap-1 ${
                           isOledTheme ? 'bg-white/[0.04] border-white/[0.08] text-[#AEB7BA]' : cfg.badge
                         }`}>
-                          <IconComp size={11} />
+                          <IconComp size={13} />
                           <span>{cfg.label}</span>
                         </span>
                         {note.tags?.map((tg) => (
-                          <span key={tg} className={`text-[10px] ${
-                            isOledTheme ? 'text-[#7D858A] bg-white/[0.04]' : 'text-slate-400 bg-slate-100'
-                          } px-1.5 py-0.2 rounded-md font-medium`}>
+                          <span key={tg} className={`text-[13px] ${
+                            isOledTheme ? 'text-[#7D858A] bg-white/[0.04]' : 'text-[#4E5969] bg-slate-100'
+                          } px-2 py-0.5 rounded-md font-medium`}>
                             #{tg}
                           </span>
                         ))}
@@ -299,7 +299,7 @@ export const NotesView: React.FC<NotesViewProps> = ({
                       <div className="flex items-center gap-1">
                         {note.isPinned && (
                           <span title="置顶" className="text-amber-500">
-                            <Bookmark size={13} className="fill-amber-500" />
+                            <Bookmark size={14} className="fill-amber-500" />
                           </span>
                         )}
                         <button
@@ -309,11 +309,11 @@ export const NotesView: React.FC<NotesViewProps> = ({
                             setEditingNote(note);
                           }}
                           className={`opacity-0 group-hover:opacity-100 p-1 ${
-                            isOledTheme ? 'text-[#7D858A] hover:text-[#00E5FF] hover:bg-white/[0.05]' : 'text-slate-400 hover:text-[#0071E3] hover:bg-blue-50'
+                            isOledTheme ? 'text-[#7D858A] hover:text-[#00E5FF] hover:bg-white/[0.05]' : 'text-[#86909C] hover:text-[#1677FF] hover:bg-blue-50'
                           } rounded-lg transition-all cursor-pointer`}
                           title="放大查看与修改"
                         >
-                          <Edit3 size={13} />
+                          <Edit3 size={14} />
                         </button>
                         <button
                           type="button"
@@ -326,34 +326,34 @@ export const NotesView: React.FC<NotesViewProps> = ({
                           } rounded-lg transition-all cursor-pointer`}
                           title="删除"
                         >
-                          <Trash2 size={13} />
+                          <Trash2 size={14} />
                         </button>
                       </div>
                     </div>
 
                     {/* Title if any */}
                     {note.title && (
-                      <h4 className={`text-xs font-bold ${
-                        isOledTheme ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]' : 'text-slate-800 group-hover:text-[#0071E3]'
+                      <h4 className={`text-[16px] font-semibold ${
+                        isOledTheme ? 'text-[#F2F5F5] group-hover:text-[#00E5FF]' : 'text-[#1D2129] group-hover:text-[#1677FF]'
                       } mb-1.5 line-clamp-1 transition-colors`}>
                         {note.title}
                       </h4>
                     )}
 
                     {/* Content */}
-                    <p className={`text-xs ${
-                      isOledTheme ? 'text-[#AEB7BA]' : 'text-slate-600'
-                    } leading-relaxed whitespace-pre-wrap line-clamp-6 font-normal`}>
+                    <p className={`text-[15px] ${
+                      isOledTheme ? 'text-[#AEB7BA]' : 'text-[#1D2129]'
+                    } leading-[24px] whitespace-pre-wrap line-clamp-6 font-normal`}>
                       {note.content}
                     </p>
                   </div>
 
                   {/* Card Bottom Meta */}
                   <div className={`pt-3 mt-3 border-t ${
-                    isOledTheme ? 'border-white/[0.08] text-[#7D858A] font-mono' : 'border-slate-100 text-slate-400'
-                  } flex items-center justify-between text-[10px]`}>
-                    <div className="flex items-center gap-1.5">
-                      <CalendarIcon size={11} />
+                    isOledTheme ? 'border-white/[0.08] text-[#7D858A] font-mono' : 'border-slate-100 text-[#4E5969]'
+                  } flex items-center justify-between text-[13px]`}>
+                    <div className="flex items-center gap-1.5 font-mono" style={{ fontVariantNumeric: 'tabular-nums' }}>
+                      <CalendarIcon size={13} />
                       <span>{note.date} {note.time || ''}</span>
                     </div>
 
@@ -364,7 +364,7 @@ export const NotesView: React.FC<NotesViewProps> = ({
                           e.stopPropagation();
                           onSelectDateForCalendar(note.date);
                         }}
-                        className={`${isOledTheme ? 'text-[#00E5FF]' : 'text-blue-600'} hover:underline font-medium cursor-pointer`}
+                        className={`${isOledTheme ? 'text-[#00E5FF]' : 'text-[#1677FF]'} hover:underline font-medium cursor-pointer`}
                       >
                         查看日历 →
                       </button>

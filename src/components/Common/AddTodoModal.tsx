@@ -156,14 +156,14 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-blue-50 text-[#0071E3] flex items-center justify-center shadow-xs">
+            <div className="w-10 h-10 rounded-2xl bg-blue-50 text-[#1677FF] flex items-center justify-center shadow-xs">
               <Sparkles size={20} strokeWidth={2} />
             </div>
             <div>
-              <h3 className="text-base font-bold text-[#1D1D1F]">
+              <h3 className="text-[18px] font-semibold text-[#1D2129]">
                 {taskToEdit ? '编辑待办' : '新建待办'}
               </h3>
-              <p className="text-xs text-[#86868B] mt-0.5">
+              <p className="text-[13px] text-[#4E5969] mt-0.5">
                 {taskToEdit ? '修改待办内容与时间' : '输入待办内容与时间'}
               </p>
             </div>
@@ -171,7 +171,7 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
           <button 
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-[#86868B] hover:text-[#1D1D1F] flex items-center justify-center transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-[#4E5969] hover:text-[#1D2129] flex items-center justify-center transition-colors cursor-pointer"
           >
             <X size={16} />
           </button>
@@ -181,11 +181,11 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
         <div className="flex flex-col gap-3.5">
           {/* Field 1: 待办标题 */}
           <div>
-            <div className="flex items-center justify-between mb-1">
-              <label className="block text-xs font-semibold text-[#1D1D1F]">
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-[14px] font-medium text-[#1D2129]">
                 待办内容 <span className="text-rose-500">*</span>
               </label>
-              <span className="text-[10px] text-[#86868B]">可输入详细描述</span>
+              <span className="text-[12px] text-[#86909C]">可输入详细描述</span>
             </div>
             <textarea
               autoFocus
@@ -194,15 +194,15 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
               value={todoTitle}
               onChange={(e) => setTodoTitle(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-full px-3.5 py-2.5 text-xs bg-slate-50/80 border border-slate-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#0071E3]/20 focus:bg-white focus:border-[#0071E3] text-[#1D1D1F] placeholder-slate-400 transition-all resize-none"
+              className="w-full px-3.5 py-2.5 text-[15px] leading-[24px] bg-slate-50/80 border border-slate-200/80 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#1677FF]/20 focus:bg-white focus:border-[#1677FF] text-[#1D2129] placeholder-[#86909C] transition-all resize-none"
             />
           </div>
 
           {/* Field 2: 日期与时间 */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-[#1D1D1F] mb-1 flex items-center gap-1">
-                <CalendarIcon size={13} strokeWidth={1.75} className="text-[#0071E3]" />
+              <label className="block text-[14px] font-medium text-[#1D2129] mb-1.5 flex items-center gap-1.5">
+                <CalendarIcon size={14} strokeWidth={1.75} className="text-[#1677FF]" />
                 <span>日期</span>
               </label>
               <input
@@ -213,19 +213,19 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
                   setTodoDate(newD);
                   if (isRecurring) setRecurringStartDate(newD);
                 }}
-                className="w-full px-3 py-2 text-xs bg-slate-50/80 border border-slate-200/80 rounded-xl text-[#1D1D1F] focus:outline-none focus:border-[#0071E3] font-mono cursor-pointer"
+                className="w-full px-3 py-2 text-[14px] font-mono tabular-nums bg-slate-50/80 border border-slate-200/80 rounded-xl text-[#1D2129] focus:outline-none focus:border-[#1677FF] cursor-pointer"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-[#1D1D1F] mb-1 flex items-center gap-1">
-                <Clock size={13} strokeWidth={1.75} className="text-[#0071E3]" />
+              <label className="block text-[14px] font-medium text-[#1D2129] mb-1.5 flex items-center gap-1.5">
+                <Clock size={14} strokeWidth={1.75} className="text-[#1677FF]" />
                 <span>时间</span>
               </label>
               <input
                 type="time"
                 value={todoTime}
                 onChange={(e) => setTodoTime(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-50/80 border border-slate-200/80 rounded-xl text-[#1D1D1F] focus:outline-none focus:border-[#0071E3] font-mono cursor-pointer"
+                className="w-full px-3 py-2 text-[14px] font-mono tabular-nums bg-slate-50/80 border border-slate-200/80 rounded-xl text-[#1D2129] focus:outline-none focus:border-[#1677FF] cursor-pointer"
               />
             </div>
           </div>
@@ -234,12 +234,12 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
           <div className="rounded-2xl border border-slate-200/80 bg-slate-50/60 p-3 flex flex-col gap-2.5 transition-all">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-lg bg-blue-100/70 text-[#0071E3] flex items-center justify-center">
-                  <Repeat size={13} strokeWidth={2} />
+                <div className="w-7 h-7 rounded-lg bg-blue-100/70 text-[#1677FF] flex items-center justify-center">
+                  <Repeat size={14} strokeWidth={2} />
                 </div>
                 <div>
-                  <span className="text-xs font-semibold text-[#1D1D1F] block">设为重复任务</span>
-                  <span className="text-[10px] text-[#86868B] block">每天或工作日自动生成该待办</span>
+                  <span className="text-[14px] font-medium text-[#1D2129] block">设为重复任务</span>
+                  <span className="text-[12px] text-[#86909C] block">每天或工作日自动生成该待办</span>
                 </div>
               </div>
 
@@ -251,7 +251,7 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
                   onChange={(e) => setIsRecurring(e.target.checked)}
                   className="sr-only peer"
                 />
-                <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#0071E3]"></div>
+                <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#1677FF]"></div>
               </label>
             </div>
 
@@ -260,7 +260,7 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
               <div className="pt-2 border-t border-slate-200/60 flex flex-col gap-2.5 animate-fadeIn">
                 {/* 循环频次 */}
                 <div>
-                  <label className="block text-[11px] font-semibold text-[#1D1D1F] mb-1">
+                  <label className="block text-[12px] font-medium text-[#1D2129] mb-1">
                     重复周期
                   </label>
                   <div className="grid grid-cols-4 gap-1.5">
@@ -274,10 +274,10 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
                         key={opt.id}
                         type="button"
                         onClick={() => setRecurringFreq(opt.id as RecurringFrequency)}
-                        className={`py-1.5 px-2 text-xs rounded-xl font-medium border text-center transition-all cursor-pointer ${
+                        className={`py-1.5 px-2 text-[13px] rounded-xl font-medium border text-center transition-all cursor-pointer ${
                           recurringFreq === opt.id
-                            ? 'bg-[#0071E3] text-white border-[#0071E3] font-semibold shadow-xs'
-                            : 'bg-white text-[#48484A] border-slate-200/80 hover:bg-slate-50'
+                            ? 'bg-[#1677FF] text-white border-[#1677FF] font-medium shadow-xs'
+                            : 'bg-white text-[#4E5969] border-slate-200/80 hover:bg-slate-50'
                         }`}
                       >
                         {opt.label}
@@ -289,15 +289,15 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
                 {/* 日期范围 */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-[11px] font-semibold text-[#1D1D1F]">
+                    <label className="text-[12px] font-medium text-[#1D2129]">
                       日期范围
                     </label>
                     <div className="flex items-center gap-1">
                       <button
                         type="button"
                         onClick={() => setHasEndDate(false)}
-                        className={`px-2 py-0.5 text-[10px] rounded-md transition-colors cursor-pointer ${
-                          !hasEndDate ? 'bg-[#0071E3] text-white font-medium' : 'bg-slate-200/70 text-[#86868B]'
+                        className={`px-2 py-0.5 text-[11px] rounded-md transition-colors cursor-pointer ${
+                          !hasEndDate ? 'bg-[#1677FF] text-white font-medium' : 'bg-slate-200/70 text-[#86909C]'
                         }`}
                       >
                         长期有效
@@ -305,8 +305,8 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
                       <button
                         type="button"
                         onClick={() => setHasEndDate(true)}
-                        className={`px-2 py-0.5 text-[10px] rounded-md transition-colors cursor-pointer ${
-                          hasEndDate ? 'bg-[#0071E3] text-white font-medium' : 'bg-slate-200/70 text-[#86868B]'
+                        className={`px-2 py-0.5 text-[11px] rounded-md transition-colors cursor-pointer ${
+                          hasEndDate ? 'bg-[#1677FF] text-white font-medium' : 'bg-slate-200/70 text-[#86909C]'
                         }`}
                       >
                         指定截止日
@@ -316,16 +316,16 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <span className="block text-[10px] text-[#86868B] mb-0.5">开始日期</span>
+                      <span className="block text-[11px] text-[#86909C] mb-0.5">开始日期</span>
                       <input
                         type="date"
                         value={recurringStartDate}
                         onChange={(e) => setRecurringStartDate(e.target.value)}
-                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200/80 rounded-xl text-[#1D1D1F] focus:outline-none focus:border-[#0071E3] font-mono"
+                        className="w-full px-2.5 py-1.5 text-[13px] font-mono tabular-nums bg-white border border-slate-200/80 rounded-xl text-[#1D2129] focus:outline-none focus:border-[#1677FF]"
                       />
                     </div>
                     <div>
-                      <span className="block text-[10px] text-[#86868B] mb-0.5">
+                      <span className="block text-[11px] text-[#86909C] mb-0.5">
                         {hasEndDate ? '截止日期' : '截止状态'}
                       </span>
                       {hasEndDate ? (
@@ -334,10 +334,10 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
                           value={recurringEndDate}
                           min={recurringStartDate}
                           onChange={(e) => setRecurringEndDate(e.target.value)}
-                          className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200/80 rounded-xl text-[#1D1D1F] focus:outline-none focus:border-[#0071E3] font-mono"
+                          className="w-full px-2.5 py-1.5 text-[13px] font-mono tabular-nums bg-white border border-slate-200/80 rounded-xl text-[#1D2129] focus:outline-none focus:border-[#1677FF]"
                         />
                       ) : (
-                        <div className="w-full px-2.5 py-1.5 text-xs bg-white/60 border border-dashed border-slate-200 text-[#86868B] rounded-xl flex items-center">
+                        <div className="w-full px-2.5 py-1.5 text-[13px] bg-white/60 border border-dashed border-slate-200 text-[#86909C] rounded-xl flex items-center">
                           无截止日 · 持续重复
                         </div>
                       )}
@@ -346,8 +346,8 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
                 </div>
 
                 {/* Info Note */}
-                <div className="flex items-start gap-1.5 text-[10px] text-[#86868B] bg-white/70 p-2 rounded-xl border border-slate-200/60">
-                  <Info size={12} strokeWidth={1.75} className="text-[#0071E3] flex-shrink-0 mt-0.5" />
+                <div className="flex items-start gap-1.5 text-[12px] text-[#4E5969] bg-white/70 p-2 rounded-xl border border-slate-200/60">
+                  <Info size={13} strokeWidth={1.75} className="text-[#1677FF] flex-shrink-0 mt-0.5" />
                   <span>
                     该任务会在指定周期自动生成，每天完成后不影响后面的日期。
                   </span>
@@ -358,8 +358,8 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
 
           {/* Field 4: 标签 */}
           <div>
-            <label className="block text-xs font-semibold text-[#1D1D1F] mb-1.5 flex items-center gap-1">
-              <Tag size={13} strokeWidth={1.75} className="text-[#0071E3]" />
+            <label className="block text-[14px] font-medium text-[#1D2129] mb-1.5 flex items-center gap-1.5">
+              <Tag size={14} strokeWidth={1.75} className="text-[#1677FF]" />
               <span>标签</span>
             </label>
             <div className="flex items-center gap-1.5 flex-wrap">
@@ -368,10 +368,10 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
                   key={t}
                   type="button"
                   onClick={() => setTodoTag(t)}
-                  className={`px-3 py-1 text-xs rounded-xl transition-all cursor-pointer ${
+                  className={`px-3 py-1 text-[13px] rounded-xl transition-all cursor-pointer ${
                     todoTag === t 
-                      ? 'bg-[#0071E3] text-white font-semibold shadow-xs shadow-blue-500/25' 
-                      : 'bg-slate-100 text-[#48484A] hover:bg-slate-200/70 border border-transparent'
+                      ? 'bg-[#1677FF] text-white font-medium shadow-xs shadow-blue-500/25' 
+                      : 'bg-slate-100 text-[#4E5969] hover:bg-slate-200/70 border border-transparent'
                   }`}
                 >
                   {t}
@@ -382,8 +382,8 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
 
           {/* Field 5: 优先级选择 */}
           <div>
-            <label className="block text-xs font-semibold text-[#1D1D1F] mb-1.5 flex items-center gap-1">
-              <Flag size={13} strokeWidth={1.75} className="text-[#0071E3]" />
+            <label className="block text-[14px] font-medium text-[#1D2129] mb-1.5 flex items-center gap-1.5">
+              <Flag size={14} strokeWidth={1.75} className="text-[#1677FF]" />
               <span>优先级</span>
             </label>
             <div className="grid grid-cols-4 gap-2">
@@ -391,16 +391,16 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
                 { id: 'p1', label: 'P1 重要紧急', color: 'text-rose-600 bg-rose-50/80 border-rose-200' },
                 { id: 'p2', label: 'P2 重要不急', color: 'text-amber-600 bg-amber-50/80 border-amber-200' },
                 { id: 'p3', label: 'P3 紧急不重', color: 'text-blue-600 bg-blue-50/80 border-blue-200' },
-                { id: 'p4', label: 'P4 普通日常', color: 'text-slate-600 bg-slate-100 border-slate-200' },
+                { id: 'p4', label: 'P4 普通日常', color: 'text-[#4E5969] bg-slate-100 border-slate-200' },
               ].map((p) => (
                 <button
                   key={p.id}
                   type="button"
                   onClick={() => setTodoPriority(p.id as Priority)}
-                  className={`py-1.5 px-2 text-[11px] rounded-xl border text-center transition-all cursor-pointer ${
+                  className={`py-1.5 px-2 text-[13px] rounded-xl border text-center transition-all cursor-pointer ${
                     todoPriority === p.id 
-                      ? 'ring-2 ring-[#0071E3] font-bold ' + p.color 
-                      : 'border-slate-200/80 bg-white text-[#48484A] hover:bg-slate-50'
+                      ? 'ring-2 ring-[#1677FF] font-medium ' + p.color 
+                      : 'border-slate-200/80 bg-white text-[#4E5969] hover:bg-slate-50'
                   }`}
                 >
                   {p.label}
@@ -412,14 +412,14 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
 
         {/* Footer Buttons */}
         <div className="flex items-center justify-between pt-3 border-t border-slate-100 mt-1">
-          <span className="text-[11px] text-[#86868B]">
-            按 <kbd className="px-1.5 py-0.5 bg-slate-100 rounded text-[#1D1D1F] font-mono">Enter</kbd> 保存
+          <span className="text-[12px] text-[#86909C]">
+            按 <kbd className="px-1.5 py-0.5 bg-slate-100 rounded text-[#1D2129] font-mono">Enter</kbd> 保存
           </span>
           <div className="flex items-center gap-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-[#86868B] hover:text-[#1D1D1F] hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
+              className="px-4 py-2 text-[14px] font-medium text-[#4E5969] hover:text-[#1D2129] hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
             >
               取消
             </button>
@@ -427,9 +427,9 @@ export const AddTodoModal: React.FC<AddTodoModalProps> = ({
               type="button"
               onClick={handleConfirm}
               disabled={!todoTitle.trim() || isSubmitting}
-              className="flex items-center gap-1.5 px-5 py-2 text-xs font-semibold text-white bg-[#0071E3] hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-md shadow-blue-500/20 transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-5 py-2 text-[14px] font-medium text-white bg-[#1677FF] hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl shadow-md shadow-blue-500/20 transition-all cursor-pointer"
             >
-              <Plus size={14} strokeWidth={2} />
+              <Plus size={15} strokeWidth={2} />
               <span>{isSubmitting ? '保存中...' : '保存'}</span>
             </button>
           </div>

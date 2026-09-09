@@ -197,17 +197,17 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
                 </div>
               </div>
 
-              <h2 className="text-xl font-bold text-[#1D1D1F] tracking-tight">
+              <h2 className="text-[22px] font-semibold text-[#1D2129] tracking-tight">
                 {currentUser.username}
               </h2>
-              <p className="text-xs text-[#86868B] mt-1 font-medium">
+              <p className="text-[13px] text-[#4E5969] mt-1 font-normal">
                 工作台已锁定 · 输入密码即可恢复
               </p>
             </div>
 
             {/* Error Alert */}
             {errorMsg && (
-              <div className="mt-4 p-3 rounded-2xl bg-rose-50 border border-rose-200/80 text-xs text-rose-600 flex items-center gap-2 animate-fade-in">
+              <div className="mt-4 p-3 rounded-2xl bg-rose-50 border border-rose-200/80 text-[13px] text-rose-600 flex items-center gap-2 animate-fade-in">
                 <AlertCircle size={15} className="flex-shrink-0" />
                 <span>{errorMsg}</span>
               </div>
@@ -215,7 +215,7 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
 
             {/* Success Alert */}
             {successMsg && (
-              <div className="mt-4 p-3 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-xs text-emerald-600 flex items-center gap-2 animate-fade-in">
+              <div className="mt-4 p-3 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-[13px] text-emerald-600 flex items-center gap-2 animate-fade-in">
                 <CheckCircle2 size={15} className="flex-shrink-0" />
                 <span>{successMsg}</span>
               </div>
@@ -233,7 +233,7 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="请输入密码恢复解锁"
-                  className="w-full pl-10 pr-11 py-3 text-sm rounded-2xl bg-slate-100/80 border border-slate-200/80 focus:bg-white focus:border-[#0071E3] focus:ring-4 focus:ring-[#0071E3]/15 transition-all outline-none text-[#1D1D1F] placeholder:text-slate-400 font-medium"
+                  className="w-full pl-10 pr-11 py-3 text-[15px] rounded-2xl bg-slate-100/80 border border-slate-200/80 focus:bg-white focus:border-[#1677FF] focus:ring-4 focus:ring-[#1677FF]/15 transition-all outline-none text-[#1D2129] placeholder:text-[#86909C] font-normal"
                 />
                 <button
                   type="button"
@@ -248,7 +248,7 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-2 py-3 rounded-2xl bg-[#0071E3] hover:bg-[#0077ED] active:scale-[0.98] text-white font-semibold text-sm shadow-md shadow-blue-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                className="w-full mt-2 py-3 rounded-2xl bg-[#1677FF] hover:bg-blue-600 active:scale-[0.98] text-white font-medium text-[15px] shadow-md shadow-blue-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
               >
                 <ShieldCheck size={18} />
                 <span>{isLoading ? '验证中...' : '解锁恢复'}</span>
@@ -265,10 +265,10 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
                       switchMode('login');
                     }
                   }}
-                  className="text-xs text-[#6E6E73] hover:text-[#0071E3] hover:underline cursor-pointer font-medium transition-colors flex items-center gap-1"
+                  className="text-[13px] text-[#4E5969] hover:text-[#1677FF] hover:underline cursor-pointer font-medium transition-colors flex items-center gap-1"
                 >
                   <span>切换账号登录</span>
-                  <ArrowRight size={12} />
+                  <ArrowRight size={13} />
                 </button>
               </div>
             </form>
@@ -277,7 +277,7 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
           /* ==================== 2. LOGIN / REGISTER MODE ==================== */
           <div>
             <div className="flex flex-col items-center text-center">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#0071E3] via-[#0077ED] to-[#409CFF] text-white flex items-center justify-center shadow-lg shadow-blue-500/25 mb-4 animate-bounce-subtle">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#1677FF] via-[#409CFF] to-indigo-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/25 mb-4 animate-bounce-subtle">
                 {mode === 'login' ? (
                   <Lock size={28} strokeWidth={2.2} />
                 ) : (
@@ -285,10 +285,10 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
                 )}
               </div>
 
-              <h2 className="text-2xl font-bold text-[#1D1D1F] tracking-tight">
+              <h2 className="text-[26px] font-semibold text-[#1D2129] tracking-tight leading-[1.3]">
                 {mode === 'login' ? '欢迎回来' : '新用户注册'}
               </h2>
-              <p className="text-xs text-[#86868B] mt-1.5 max-w-xs font-normal">
+              <p className="text-[14px] text-[#4E5969] mt-1.5 max-w-xs font-normal">
                 {mode === 'login'
                   ? '请输入您的用户名与密码登录工作台'
                   : '创建属于您的个人工作空间（无需手机邮箱）'}
@@ -297,7 +297,7 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
 
             {/* Error Alert */}
             {errorMsg && (
-              <div className="mt-4 p-3 rounded-2xl bg-rose-50 border border-rose-200/80 text-xs text-rose-600 flex items-center gap-2 animate-fade-in">
+              <div className="mt-4 p-3 rounded-2xl bg-rose-50 border border-rose-200/80 text-[13px] text-rose-600 flex items-center gap-2 animate-fade-in">
                 <AlertCircle size={15} className="flex-shrink-0" />
                 <span>{errorMsg}</span>
               </div>
@@ -305,7 +305,7 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
 
             {/* Success Alert */}
             {successMsg && (
-              <div className="mt-4 p-3 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-xs text-emerald-600 flex items-center gap-2 animate-fade-in">
+              <div className="mt-4 p-3 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-[13px] text-emerald-600 flex items-center gap-2 animate-fade-in">
                 <CheckCircle2 size={15} className="flex-shrink-0" />
                 <span>{successMsg}</span>
               </div>
@@ -315,7 +315,7 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
             <form onSubmit={mode === 'login' ? handleLogin : handleRegister} className="mt-6 flex flex-col gap-3.5">
               {/* Username */}
               <div>
-                <label className="block text-[11px] font-semibold text-[#6E6E73] mb-1.5 uppercase tracking-wider">
+                <label className="block text-[13px] font-medium text-[#4E5969] mb-1.5 uppercase tracking-wider">
                   用户名
                 </label>
                 <div className="relative">
@@ -328,14 +328,14 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder={mode === 'login' ? '请输入用户名' : '请输入用户名 (2~16位)'}
-                    className="w-full pl-10 pr-4 py-3 text-sm rounded-2xl bg-slate-100/80 border border-slate-200/80 focus:bg-white focus:border-[#0071E3] focus:ring-4 focus:ring-[#0071E3]/15 transition-all outline-none text-[#1D1D1F] placeholder:text-slate-400 font-medium"
+                    className="w-full pl-10 pr-4 py-3 text-[15px] leading-[24px] rounded-2xl bg-slate-100/80 border border-slate-200/80 focus:bg-white focus:border-[#1677FF] focus:ring-4 focus:ring-[#1677FF]/15 transition-all outline-none text-[#1D2129] placeholder:text-[#86909C] font-normal"
                   />
                 </div>
               </div>
 
               {/* Password */}
               <div>
-                <label className="block text-[11px] font-semibold text-[#6E6E73] mb-1.5 uppercase tracking-wider">
+                <label className="block text-[13px] font-medium text-[#4E5969] mb-1.5 uppercase tracking-wider">
                   密码
                 </label>
                 <div className="relative">
@@ -347,7 +347,7 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder={mode === 'login' ? '请输入密码' : '请设置密码 (至少6位)'}
-                    className="w-full pl-10 pr-11 py-3 text-sm rounded-2xl bg-slate-100/80 border border-slate-200/80 focus:bg-white focus:border-[#0071E3] focus:ring-4 focus:ring-[#0071E3]/15 transition-all outline-none text-[#1D1D1F] placeholder:text-slate-400 font-medium"
+                    className="w-full pl-10 pr-11 py-3 text-[15px] leading-[24px] rounded-2xl bg-slate-100/80 border border-slate-200/80 focus:bg-white focus:border-[#1677FF] focus:ring-4 focus:ring-[#1677FF]/15 transition-all outline-none text-[#1D2129] placeholder:text-[#86909C] font-normal"
                   />
                   <button
                     type="button"
@@ -363,7 +363,7 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
               {/* Confirm Password (Register mode only) */}
               {mode === 'register' && (
                 <div className="animate-fade-in">
-                  <label className="block text-[11px] font-semibold text-[#6E6E73] mb-1.5 uppercase tracking-wider">
+                  <label className="block text-[13px] font-medium text-[#4E5969] mb-1.5 uppercase tracking-wider">
                     确认密码
                   </label>
                   <div className="relative">
@@ -375,7 +375,7 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="请再次输入密码以防手抖"
-                      className="w-full pl-10 pr-4 py-3 text-sm rounded-2xl bg-slate-100/80 border border-slate-200/80 focus:bg-white focus:border-[#0071E3] focus:ring-4 focus:ring-[#0071E3]/15 transition-all outline-none text-[#1D1D1F] placeholder:text-slate-400 font-medium"
+                      className="w-full pl-10 pr-4 py-3 text-[15px] leading-[24px] rounded-2xl bg-slate-100/80 border border-slate-200/80 focus:bg-white focus:border-[#1677FF] focus:ring-4 focus:ring-[#1677FF]/15 transition-all outline-none text-[#1D2129] placeholder:text-[#86909C] font-normal"
                     />
                   </div>
                 </div>
@@ -384,14 +384,14 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
               {/* Remember Me checkbox (Login mode only) */}
               {mode === 'login' && (
                 <div className="flex items-center justify-between mt-1 px-1">
-                  <label className="flex items-center gap-2 text-xs text-[#424245] cursor-pointer hover:text-[#1D1D1F] transition-colors">
+                  <label className="flex items-center gap-2 text-[13px] text-[#4E5969] cursor-pointer hover:text-[#1D2129] transition-colors">
                     <input
                       type="checkbox"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
-                      className="w-4 h-4 rounded border-slate-300 text-[#0071E3] focus:ring-[#0071E3] cursor-pointer accent-[#0071E3]"
+                      className="w-4 h-4 rounded border-slate-300 text-[#1677FF] focus:ring-[#1677FF] cursor-pointer accent-[#1677FF]"
                     />
-                    <span className="font-medium">记住我（保持登录 30 天）</span>
+                    <span className="font-normal">记住我（保持登录 30 天）</span>
                   </label>
                 </div>
               )}
@@ -400,7 +400,7 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-3 py-3.5 rounded-2xl bg-[#0071E3] hover:bg-[#0077ED] active:scale-[0.98] text-white font-semibold text-sm shadow-md shadow-blue-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                className="w-full mt-3 py-3.5 rounded-2xl bg-[#1677FF] hover:bg-blue-600 active:scale-[0.98] text-white font-medium text-[15px] shadow-md shadow-blue-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
               >
                 {mode === 'login' ? (
                   <>
@@ -421,7 +421,7 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
                   <button
                     type="button"
                     onClick={() => switchMode('register')}
-                    className="text-xs text-[#0071E3] hover:text-[#005bb5] hover:underline cursor-pointer font-medium transition-colors"
+                    className="text-[13px] text-[#1677FF] hover:underline cursor-pointer font-medium transition-colors"
                   >
                     没有账号？<span className="font-semibold">新用户注册</span>
                   </button>
@@ -429,7 +429,7 @@ export const AuthLockModal: React.FC<AuthLockModalProps> = ({
                   <button
                     type="button"
                     onClick={() => switchMode('login')}
-                    className="text-xs text-[#0071E3] hover:text-[#005bb5] hover:underline cursor-pointer font-medium transition-colors"
+                    className="text-[13px] text-[#1677FF] hover:underline cursor-pointer font-medium transition-colors"
                   >
                     已有账号？<span className="font-semibold">直接登录</span>
                   </button>
